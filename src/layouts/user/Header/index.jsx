@@ -3,15 +3,16 @@ import { Button, Container, Image, Nav } from "react-bootstrap";
 import UserImage from "../../../data/img/user_icon.webp"
 import "./styles.scss";
 import { BsAmd } from "react-icons/bs";
-import { FaSearch } from "react-icons/fa";
-import { FaShoppingBag } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
+import { FaSearch, FaUser } from "react-icons/fa";
 import { IoMenuSharp } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
+import { IconCart } from "../../../components/user/cart/IconCart";
 
 export const Header = () => {
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = React.useState(false);
+
+    const SIZE_ICON_HEADER = 20;
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
@@ -50,17 +51,17 @@ export const Header = () => {
                         <div className="d-flex justify-content-between btn-header">
                             <Nav.Item>
                                 <Button variant="link" onClick={() => { navigate("/search") }}>
-                                    <FaSearch />
+                                    <FaSearch size={SIZE_ICON_HEADER} />
                                 </Button>
                             </Nav.Item>
                             <Nav.Item>
                                 <Button variant="link">
-                                    <FaShoppingBag />
+                                    <IconCart size={SIZE_ICON_HEADER} />
                                 </Button>
                             </Nav.Item>
                             <Nav.Item className="btn-profile">
                                 <Button variant="link" >
-                                    <FaUser />
+                                    <FaUser size={SIZE_ICON_HEADER} />
                                 </Button>
                             </Nav.Item>
                         </div>

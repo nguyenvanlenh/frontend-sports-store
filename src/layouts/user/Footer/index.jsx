@@ -1,13 +1,10 @@
 import { Col, Container, Row, Stack } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import "./style.scss"
-import { IoLogoInstagram } from "react-icons/io5";
-import { IoLogoFacebook } from "react-icons/io5";
-import { IoLogoYoutube } from "react-icons/io5";
-import { IoLogoTiktok } from "react-icons/io5";
+import { IoLogoInstagram, IoLogoFacebook, IoLogoYoutube, IoLogoTiktok } from "react-icons/io5";
 export const Footer = () => {
     return (
-        <div id="footer-user" className="pt-3 pb-2">
+        <div id="footer-user" className="pt-3 pb-2 mt-5">
             <Container>
                 <Row xs={12} lg={12} className='ml-row'>
                     <Col sm={12} md={3}>

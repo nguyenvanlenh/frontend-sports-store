@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import { Home } from "../pages/user/Home";
 import { UserLayout } from "../layouts/user/UserLayout";
@@ -18,6 +18,10 @@ export const AppRoutes = createBrowserRouter([
         path: "/",
         element: <ProtectedRoute roles={["ROLE_USER"]}><UserLayout /></ProtectedRoute>,
         children: [
+            {
+                path: "/",
+                element: <Navigate to="home" replace />
+            },
             {
                 path: "home",
                 element: <Home />

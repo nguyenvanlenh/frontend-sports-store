@@ -20,7 +20,7 @@ export const Header = () => {
 
     return (
         <>
-            <div id="header-user">
+            <div id="header-user" className="mb-3">
                 <Container>
                     <Nav className="justify-content-between pt-3 pb-3 align-items-center" activeKey="/home">
                         <Nav.Item>
@@ -34,16 +34,16 @@ export const Header = () => {
                                 <Link to="/home">Giảm giá</Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Link eventKey="link-1">Đồ Nam</Link>
+                                <Link >Đồ Nam</Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Link eventKey="link-2">Đồ Nữ</Link>
+                                <Link >Đồ Nữ</Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Link eventKey="link-2">Blog</Link>
+                                <Link >Blog</Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Link eventKey="disabled" disabled>
+                                <Link disabled>
                                     Sự kiện
                                 </Link>
                             </Nav.Item>
@@ -87,16 +87,16 @@ export const Header = () => {
                         <Link to="/home" onClick={toggleMenu}>Giảm giá</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link eventKey="link-1" onClick={toggleMenu}>Đồ Nam</Link>
+                        <Link onClick={toggleMenu}>Đồ Nam</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link eventKey="link-2" onClick={toggleMenu}>Đồ Nữ</Link>
+                        <Link onClick={toggleMenu}>Đồ Nữ</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link eventKey="link-2" onClick={toggleMenu}>Blog</Link>
+                        <Link onClick={toggleMenu}>Blog</Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Link eventKey="disabled" onClick={toggleMenu} disabled>
+                        <Link onClick={toggleMenu} disabled>
                             Sự kiện
                         </Link>
                     </Nav.Item>

@@ -8,6 +8,7 @@ import { AdminLayout } from "../layouts/admin/AdminLayout";
 import { Dashboard } from "../pages/admin/Dashboard";
 import { Search } from "../pages/user/Search";
 import { Cart } from "../pages/user/Cart";
+import { ProductDetail } from "../pages/user/ProductDetail";
 
 export const AppRoutes = createBrowserRouter([
     {
@@ -31,6 +32,9 @@ export const AppRoutes = createBrowserRouter([
             }, {
                 path: "cart",
                 element: <Cart />
+            }, {
+                path: "product-detail",
+                element: <ProductDetail />
             }
         ]
     },

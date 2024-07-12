@@ -9,6 +9,7 @@ import { Dashboard } from "../pages/admin/Dashboard";
 import { Search } from "../pages/user/Search";
 import { Cart } from "../pages/user/Cart";
 import { ProductDetail } from "../pages/user/ProductDetail";
+import { ListProducts } from "../pages/user/ListProducts";
 
 export const AppRoutes = createBrowserRouter([
     {
@@ -33,8 +34,12 @@ export const AppRoutes = createBrowserRouter([
                 path: "cart",
                 element: <Cart />
             }, {
-                path: "product-detail",
+                path: "product/:productId",
                 element: <ProductDetail />
+            }
+            , {
+                path: "list-products",
+                element: <ListProducts />
             }
         ]
     },

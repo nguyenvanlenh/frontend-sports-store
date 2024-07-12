@@ -7,6 +7,7 @@ import { FaSearch, FaUser } from "react-icons/fa";
 import { IoMenuSharp } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { IconCart } from "../../../components/user/cart/IconCart";
+import { OffcanvasComponent } from "../../../components/common/Offcanvas";
 
 export const Header = () => {
     const navigate = useNavigate();
@@ -34,10 +35,7 @@ export const Header = () => {
                                 <Link to="/home">Giảm giá</Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Link >Đồ Nam</Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Link >Đồ Nữ</Link>
+                                <Link to="/list-products">Sản phẩm</Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Link >Blog</Link>
@@ -73,7 +71,7 @@ export const Header = () => {
                     </Nav>
                 </Container>
             </div>
-            <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
+            {/* <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
                 <div className="close-btn" onClick={toggleMenu}>&times;</div>
                 <div className="text-center">
                     <Image src={UserImage} roundedCircle height={40} />
@@ -101,7 +99,37 @@ export const Header = () => {
                         </Link>
                     </Nav.Item>
                 </Nav>
-            </div>
+            </div> */}
+            <OffcanvasComponent
+                show={menuOpen}
+                handleClose={toggleMenu}
+                title="">
+                <div className="">
+                    <div className="text-center">
+                        <Image src={UserImage} roundedCircle height={40} />
+                        <h6 className="">Lênh Nguyễn</h6>
+                    </div>
+                    <Nav className="flex-column text-dark">
+                        <Nav.Item>
+                            <Link to="/home" onClick={toggleMenu}>Trang chủ</Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Link to="/home" onClick={toggleMenu}>Giảm giá</Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Link to="/list-products">Sản phẩm</Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Link onClick={toggleMenu}>Blog</Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Link onClick={toggleMenu} disabled>
+                                Sự kiện
+                            </Link>
+                        </Nav.Item>
+                    </Nav>
+                </div>
+            </OffcanvasComponent>
         </>
     );
 };

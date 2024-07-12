@@ -1,6 +1,7 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import ImageSlide1 from "../../../../data/img/slideshow.webp";
+import { Link } from "react-router-dom";
 
 const cardStyle = {
     position: 'relative',
@@ -19,8 +20,10 @@ const textStyle = {
 export const CardImageProduct = () => {
     return (
         <Card style={cardStyle}>
-            <Card.Img variant="top" src={ImageSlide1} />
-            <div style={textStyle}>Nike</div>
+            <Link to={"/list-products"}>
+                <Card.Img variant="top" src={ImageSlide1} />
+                <div style={textStyle}>Nike</div>
+            </Link>
         </Card>
     );
 };

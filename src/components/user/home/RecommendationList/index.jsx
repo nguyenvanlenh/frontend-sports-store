@@ -14,9 +14,9 @@ export const RecommendationList = ({ title, type }) => {
     return (
         <>
             <h2 className="text-center mt-5 mb-3">{title.toUpperCase()}</h2>
-            <Row xs={1} md={3} lg={4} className="g-3">
+            <Row className="g-3">
                 {Array.from({ length: 8 }).map((_, idx) => (
-                    <Col key={idx}>
+                    <Col key={idx} xs={12} sm={6} md={4} lg={3}>
                         {renderProductCard(idx)}
                     </Col>
                 ))}

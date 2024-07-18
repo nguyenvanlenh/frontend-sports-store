@@ -1,0 +1,29 @@
+import { Button, Form, Image, Row } from "react-bootstrap"
+import { formatCurrencyVN } from "../../../../utils/common"
+import PaymentMethod from "../../../../data/img/footer_trustbadge.webp"
+const buttonCheckout = {
+    backgroundColor: "#d81f19",
+}
+export const CartPrice = () => {
+    return (
+        <Row className="shadow-none p-4 m-1 bg-light rounded">
+            <Form>
+                <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                    <Form.Check
+                        type="checkbox"
+                        id="r-bill"
+                        label="Xuất hóa đơn công ty"
+                        className="text-secondary text-uppercase"
+                    />
+                </Form.Group>
+            </Form>
+            <div className="d-flex justify-content-between">
+                <p className="text-uppercase">Tổng cộng</p>
+                <strong className="text-secondary"> {formatCurrencyVN(250000)}</strong>
+            </div>
+            <i className="text-end text-secondary">(Đã bao gồm VAT nếu có)</i>
+            <Button variant="danger" style={buttonCheckout} className="mt-2">Thanh toán</Button>
+            <Image src={PaymentMethod} fluid className="p-0" />
+        </Row>
+    )
+}

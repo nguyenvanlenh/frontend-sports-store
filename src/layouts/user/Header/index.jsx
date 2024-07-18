@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Container, Image, Nav } from "react-bootstrap";
-import UserImage from "../../../data/img/user_icon.webp"
+import UserImage from "../../../data/img/user_icon.webp";
 import "./styles.scss";
 import { BsAmd } from "react-icons/bs";
 import { FaSearch, FaUser } from "react-icons/fa";
@@ -11,13 +11,21 @@ import { OffcanvasComponent } from "../../../components/common/Offcanvas";
 
 export const Header = () => {
     const navigate = useNavigate();
-    const [menuOpen, setMenuOpen] = React.useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const SIZE_ICON_HEADER = 20;
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
+
+    const menuItems = [
+        { path: "/home", label: "Trang chủ" },
+        { path: "/home", label: "Giảm giá" },
+        { path: "/list-products", label: "Sản phẩm" },
+        { path: "#", label: "Blog" },
+        { path: "#", label: "Sự kiện" }
+    ];
 
     return (
         <>
@@ -28,23 +36,13 @@ export const Header = () => {
                             <Link to="/home"><BsAmd size={30} /></Link>
                         </Nav.Item>
                         <div className="d-flex flex-fill justify-content-around main-tab">
-                            <Nav.Item>
-                                <Link to="/home">Trang chủ</Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Link to="/home">Giảm giá</Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Link to="/list-products">Sản phẩm</Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Link >Blog</Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Link disabled>
-                                    Sự kiện
-                                </Link>
-                            </Nav.Item>
+                            {menuItems.map((item, index) => (
+                                <Nav.Item key={index}>
+                                    <Link to={item.path} className={item.disabled ? "disabled" : ""}>
+                                        {item.label}
+                                    </Link>
+                                </Nav.Item>
+                            ))}
                         </div>
                         <div className="d-flex justify-content-between btn-header">
                             <Nav.Item>
@@ -54,11 +52,13 @@ export const Header = () => {
                             </Nav.Item>
                             <Nav.Item>
                                 <Button variant="link">
-                                    <IconCart size={SIZE_ICON_HEADER} />
+                                    <Link to="/cart">
+                                        <IconCart size={SIZE_ICON_HEADER} />
+                                    </Link>
                                 </Button>
                             </Nav.Item>
                             <Nav.Item className="btn-profile">
-                                <Button variant="link" >
+                                <Button variant="link">
                                     <FaUser size={SIZE_ICON_HEADER} />
                                 </Button>
                             </Nav.Item>
@@ -71,64 +71,20 @@ export const Header = () => {
                     </Nav>
                 </Container>
             </div>
-            {/* <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
-                <div className="close-btn" onClick={toggleMenu}>&times;</div>
+            <OffcanvasComponent show={menuOpen} handleClose={toggleMenu} title="">
                 <div className="text-center">
                     <Image src={UserImage} roundedCircle height={40} />
-                    <h6 className="text-white">Lênh Nguyễn</h6>
+                    <h6>Lênh Nguyễn</h6>
                 </div>
-                <Nav className="flex-column">
-                    <Nav.Item>
-                        <Link to="/home" onClick={toggleMenu}>Trang chủ</Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Link to="/home" onClick={toggleMenu}>Giảm giá</Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Link onClick={toggleMenu}>Đồ Nam</Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Link onClick={toggleMenu}>Đồ Nữ</Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Link onClick={toggleMenu}>Blog</Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Link onClick={toggleMenu} disabled>
-                            Sự kiện
-                        </Link>
-                    </Nav.Item>
-                </Nav>
-            </div> */}
-            <OffcanvasComponent
-                show={menuOpen}
-                handleClose={toggleMenu}
-                title="">
-                <div className="">
-                    <div className="text-center">
-                        <Image src={UserImage} roundedCircle height={40} />
-                        <h6 className="">Lênh Nguyễn</h6>
-                    </div>
-                    <Nav className="flex-column text-dark">
-                        <Nav.Item>
-                            <Link to="/home" onClick={toggleMenu}>Trang chủ</Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Link to="/home" onClick={toggleMenu}>Giảm giá</Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Link to="/list-products">Sản phẩm</Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Link onClick={toggleMenu}>Blog</Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Link onClick={toggleMenu} disabled>
-                                Sự kiện
+                <Nav className="flex-column text-dark">
+                    {menuItems.map((item, index) => (
+                        <Nav.Item key={index}>
+                            <Link to={item.path} onClick={toggleMenu}>
+                                {item.label}
                             </Link>
                         </Nav.Item>
-                    </Nav>
-                </div>
+                    ))}
+                </Nav>
             </OffcanvasComponent>
         </>
     );

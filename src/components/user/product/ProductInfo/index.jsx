@@ -3,32 +3,31 @@ import { Promotion } from "../Promotion"
 import { ButtonAction } from "../../../common/ButtonAction"
 import { InputGroup } from "react-bootstrap"
 import React from "react"
+import { QuantityAdjuster } from "../../../common/QuantityAdjuster"
+import { localStorages } from "../../../../utils/localStorage"
+import { CART_LS } from "../../../../utils/constant"
 
 
 export const ProductInfo = () => {
 
     const [quantitySelected, setQuantitySelected] = React.useState(1)
     const [sizeSelected, setSizeSelected] = React.useState({})
-
-    const memoizedListSizes = React.useMemo(() =>
-        <ListSizes
-            listSizes={[]}
-            onSizeChange={(size) =>
-                setSizeSelected(size)
-            }
-        />, [sizeSelected]);
-
-    const memoizedQuantityAdjuster = React.useMemo(() =>
-        <QuantityAdjuster
-            onQuantityChange={(quantity) =>
-                setQuantitySelected(quantity)}
-        />
-        , [quantitySelected])
+    const handleAddCart = () => {
+        localStorages.setDataByKey(CART_LS, ["product"])
+    }
     return (
         <>
             <Info />
-            {memoizedListSizes}
-            {memoizedQuantityAdjuster}
+            <ListSizes
+                listSizes={[]}
+                onSizeChange={(size) =>
+                    setSizeSelected(size)
+                }
+            />
+            <QuantityAdjuster
+                onQuantityChange={(quantity) =>
+                    setQuantitySelected(quantity)}
+            />
             <div className="d-flex mt-3">
                 <ButtonAction
                     content="Mua ngay"
@@ -38,7 +37,7 @@ export const ProductInfo = () => {
                 <ButtonAction
                     content="Thêm vào giỏ hàng"
                     color="danger"
-                    handleOperations={() => console.log("Thêm vào giỏ")}
+                    handleOperations={handleAddCart}
                 />
             </div>
             <Promotion />
@@ -72,49 +71,3 @@ const Info = () => {
     )
 }
 
-const QuantityAdjuster = ({ initialQuantity = 1, max = 20, onQuantityChange }) => {
-    const [quantity, setQuantity] = React.useState(initialQuantity);
-    const handleIncrease = () => {
-        if (quantity < max) {
-            setQuantity(prevQuantity => prevQuantity + 1);
-            onQuantityChange(quantity + 1);
-        }
-    };
-
-    const handleDecrease = () => {
-        if (quantity > 1) {
-            setQuantity(prevQuantity => prevQuantity - 1);
-            onQuantityChange(quantity - 1);
-        }
-    };
-
-    return (
-        <div className="mt-3 mb-3">
-            <InputGroup className="mb-3">
-                <InputGroup.Text
-                    aria-readonly
-                    className="bg-white user-select-none"
-                    onClick={handleDecrease}
-                    style={{
-                        cursor: 'pointer',
-                    }}>
-                    -
-                </InputGroup.Text>
-                <InputGroup.Text
-                    aria-readonly
-                    className="bg-white user-select-none">
-                    {quantity}
-                </InputGroup.Text>
-                <InputGroup.Text
-                    aria-readonly
-                    className="bg-white user-select-none"
-                    onClick={handleIncrease}
-                    style={{
-                        cursor: 'pointer',
-                    }} >
-                    +
-                </InputGroup.Text>
-            </InputGroup>
-        </div>
-    )
-}

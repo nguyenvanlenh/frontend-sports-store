@@ -17,12 +17,12 @@ const textStyle = {
     borderRadius: '5px',
 };
 
-export const CardImageProduct = () => {
+export const CardImageProduct = ({ category }) => {
     return (
         <Card style={cardStyle}>
             <Link to={"/list-products"}>
                 <Card.Img variant="top" src={ImageSlide1} />
-                <div style={textStyle}>Nike</div>
+                <div style={textStyle}>{category.name}</div>
             </Link>
         </Card>
     );

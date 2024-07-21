@@ -2,12 +2,12 @@ import { Col, Row } from "react-bootstrap";
 import { CardImageProduct } from "../../product/CardImageProduct";
 import { CardProduct } from "../../product/CardProduct";
 
-export const RecommendationList = ({ title, type }) => {
-    const renderProductCard = (idx) => {
+export const RecommendationList = ({ title, type, data }) => {
+    const renderProductCard = (idx, item) => {
         if (type === "brand") {
-            return <CardImageProduct key={idx} />;
+            return <CardImageProduct key={idx} category={item} />;
         } else {
-            return <CardProduct key={idx} />;
+            return <CardProduct key={idx} product={item} />;
         }
     };
 
@@ -15,9 +15,9 @@ export const RecommendationList = ({ title, type }) => {
         <>
             <h2 className="text-center mt-5 mb-3">{title.toUpperCase()}</h2>
             <Row className="g-3">
-                {Array.from({ length: 8 }).map((_, idx) => (
+                {data?.map((item, idx) => (
                     <Col key={idx} xs={12} sm={6} md={4} lg={3}>
-                        {renderProductCard(idx)}
+                        {renderProductCard(idx, item)}
                     </Col>
                 ))}
             </Row>

@@ -1,38 +1,32 @@
-import { Col, Form, Row } from "react-bootstrap"
+import React from "react";
+import { Col, Form, Row } from "react-bootstrap";
 
-export const BlockFilter = () => {
+export const BlockFilter = ({ name, items }) => {
     return (
         <>
-            <Row className="text-uppercase mb-2"><strong>Thương hiệu</strong></Row>
+            <Row className="text-uppercase mb-2"><strong>{name}</strong></Row>
             <Row>
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
-                <Item />
+                {items.map((item, idx) => (
+                    <Item key={idx} item={item} />
+                ))}
             </Row>
         </>
-    )
-}
+    );
+};
 
-const Item = () => {
+const Item = ({ item }) => {
     return (
         <Col xs={6}>
             <Form>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                <Form.Group className="mb-3" controlId={`formBasicCheckbox-${item.id}`}>
                     <Form.Check
                         type="checkbox"
-                        id="nike-checkbox"
-                        label="Nike"
+                        id={`${item.name}-checkbox`}
+                        label={item.name}
                         className="text-secondary"
                     />
                 </Form.Group>
             </Form>
         </Col>
-    )
-}
+    );
+};

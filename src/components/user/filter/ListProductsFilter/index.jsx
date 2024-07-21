@@ -4,10 +4,14 @@ import React from "react";
 import { ListFilters } from "../ListFilters";
 import { PaginationComponent } from "../../../common/Pagination";
 import { OffcanvasComponent } from "../../../common/Offcanvas";
+import { usePagination } from "../../../../hooks/usePagination";
 
-export const ListProductsFilter = () => {
-
+export const ListProductsFilter = ({ data }) => {
+    const [products] = React.useState(() => data?.content)
     const [show, setShow] = React.useState(false);
+
+    const { currentPage, totalPage, handleChangePage } = usePagination(data?.currentPage, data?.totalPage);
+
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -38,17 +42,17 @@ export const ListProductsFilter = () => {
             </div>
 
             <Row className="g-3">
-                {Array.from({ length: 20 }).map((_, idx) => (
+                {products?.map((item, idx) => (
                     <Col key={idx} xs={12} sm={6} md={4} lg={3}>
-                        <CardProduct key={idx} />
+                        <CardProduct key={idx} product={item} />
                     </Col>
                 ))}
             </Row>
 
             <PaginationComponent
-                currentPage={2}
-                totalPages={6}
-                onPageChange />
+                currentPage={currentPage}
+                totalPages={totalPage}
+                onPageChange={handleChangePage} />
             <OffcanvasComponent
                 show={show}
                 handleClose={handleClose}

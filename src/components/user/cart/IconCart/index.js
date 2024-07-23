@@ -1,8 +1,7 @@
 import React from "react";
 import { Badge } from "react-bootstrap";
 import { FaShoppingBag } from "react-icons/fa";
-import { localStorages } from "../../../../utils/localStorage";
-import { CART_LS } from "../../../../utils/constant";
+import { useSelector } from "react-redux";
 
 const iconContainerStyle = {
     position: 'relative',
@@ -16,22 +15,18 @@ const badgeStyle = {
 };
 
 export const IconCart = ({ size }) => {
-    const [itemCount, setItemCount] = React.useState(0);
-    React.useEffect(() => {
-        const cartItems = localStorages.getDataByKey(CART_LS) || [];
-        setItemCount(cartItems.length);
-    }, []);
+    const cartItemsCount = useSelector((state) => state.cart.length);
 
     return (
         <div style={iconContainerStyle}>
             <FaShoppingBag size={size} />
-            {itemCount > 0 && (
+            {cartItemsCount > 0 && (
                 <Badge
                     pill
                     bg="warning"
                     style={badgeStyle}
                 >
-                    {itemCount}
+                    {cartItemsCount}
                 </Badge>
             )}
         </div>

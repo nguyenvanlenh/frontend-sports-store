@@ -44,7 +44,7 @@ const data = [
 
 export const ListSizes = ({ listSizes = [], onSizeChange }) => {
     const [selectedSize, setSelectedSize] = React.useState(() => {
-        return data[0]
+        return listSizes[0]
     });
     const handleSelect = (size) => {
         setSelectedSize(size);
@@ -54,7 +54,7 @@ export const ListSizes = ({ listSizes = [], onSizeChange }) => {
         <>
             <h5 className="fs-6">SIZE</h5>
             <div className="d-flex">
-                {data.map((size) => (
+                {listSizes.map((size) => (
                     <SizeItem
                         key={size.id}
                         name={size.name}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Carousel, Col, Image, Row, Modal } from 'react-bootstrap';
+import { Carousel, Col, Image, Row } from 'react-bootstrap';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import ImageLiver1 from "../../../../data/img/liver5.jpg";
@@ -9,10 +9,14 @@ import ImageLiver4 from "../../../../data/img/liver4.jpg";
 import ImageLiver5 from "../../../../data/img/liver4.jpeg";
 
 const listItemStyle = {
-    marginRight: '7px',
+    display: "flex",
+    justifyContent: "center",
 };
 
 const imageStyle = {
+    height: "150px",
+    width: "100px",
+    objectFit: "cover",
     cursor: 'pointer',
 };
 
@@ -23,14 +27,14 @@ const carouselImageStyle = {
 };
 
 const listImages = [
-    { imageUrl: ImageLiver2, altText: 'image select size' },
-    { imageUrl: ImageLiver1, altText: 'image select size' },
-    { imageUrl: ImageLiver3, altText: 'image select size' },
-    { imageUrl: ImageLiver4, altText: 'image select size' },
-    { imageUrl: ImageLiver5, altText: 'image select size' },
+    { path: ImageLiver2, altText: 'image select size' },
+    { path: ImageLiver1, altText: 'image select size' },
+    { path: ImageLiver3, altText: 'image select size' },
+    { path: ImageLiver4, altText: 'image select size' },
+    { path: ImageLiver5, altText: 'image select size' },
 ];
 
-export const ImagesProduct = () => {
+export const ImagesProduct = ({ }) => {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     const handleSelect = (selectedIndex) => {
         setSelectedIndex(selectedIndex);
@@ -53,8 +57,9 @@ export const ImagesProduct = () => {
                             <Carousel.Item key={index}>
                                 <Zoom zoomMargin={10}>
                                     <Image
+                                        loading="lazy"
                                         className="d-block w-100"
-                                        src={image.imageUrl}
+                                        src={image.path}
                                         style={carouselImageStyle}
                                     /></Zoom>
                             </Carousel.Item>
@@ -63,13 +68,13 @@ export const ImagesProduct = () => {
                 </Col>
             </Row>
             <Row>
-                <ul className="d-flex list-unstyled">
+                <ul className="d-flex list-unstyled justify-content-around mt-2">
                     {listImages.map((item, index) => (
                         <li
                             key={index}
                             style={index < listImages.length - 1 ? listItemStyle : {}}>
                             <Image
-                                src={item.imageUrl}
+                                src={item.path}
                                 thumbnail
                                 onClick={() => handleImageClick(index)}
                                 style={imageStyle}

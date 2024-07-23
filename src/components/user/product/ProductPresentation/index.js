@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Nav } from 'react-bootstrap';
 
-export const ProductPresentation = () => {
+export const ProductPresentation = ({ product }) => {
     const [activeTab, setActiveTab] = useState('description');
 
     const renderContent = () => {
@@ -10,8 +10,8 @@ export const ProductPresentation = () => {
                 return (
                     <div>
                         <h2>Mô tả sản phẩm</h2>
-                        <p>Nội dung mô tả sản phẩm ở đây.</p>
-                        <p>Sản phẩm này là một chiếc áo bóng đá chính hãng Liverpool sân nhà mùa giải 2024/25.</p>
+                        <p>{product.shortDescription}</p>
+                        <p>{product.description}</p>
                     </div>
                 );
             case 'purchase-guide':

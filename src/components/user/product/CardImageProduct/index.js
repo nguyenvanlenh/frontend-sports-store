@@ -21,7 +21,7 @@ export const CardImageProduct = ({ category }) => {
     return (
         <Card style={cardStyle}>
             <Link to={"/list-products"}>
-                <Card.Img variant="top" src={ImageSlide1} />
+                <Card.Img loading="lazy" variant="top" src={ImageSlide1} />
                 <div style={textStyle}>{category.name}</div>
             </Link>
         </Card>

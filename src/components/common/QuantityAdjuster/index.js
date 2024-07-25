@@ -1,7 +1,7 @@
 import React from "react";
 import { InputGroup } from "react-bootstrap";
 
-export const QuantityAdjuster = ({ initialQuantity = 1, max = 20, onQuantityChange }) => {
+export const QuantityAdjuster = ({ min = 1, initialQuantity = 1, max = 20, onQuantityChange }) => {
     const [quantity, setQuantity] = React.useState(initialQuantity);
     const handleIncrease = () => {
         if (quantity < max) {
@@ -11,7 +11,7 @@ export const QuantityAdjuster = ({ initialQuantity = 1, max = 20, onQuantityChan
     };
 
     const handleDecrease = () => {
-        if (quantity > 1) {
+        if (quantity > min) {
             setQuantity(prevQuantity => prevQuantity - 1);
             onQuantityChange(quantity - 1);
         }

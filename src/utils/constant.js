@@ -1,4 +1,4 @@
-const CART_LS = "CART";
+const CART_LS = "cart";
 const ACCESS_TOKEN = "ACCESS_TOKEN";
 const REFRESH_TOKEN = "REFRESH_TOKEN";
 const APP_BASE_URL = "http://localhost:8081"

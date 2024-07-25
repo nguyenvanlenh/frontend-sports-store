@@ -5,6 +5,7 @@ import { ImagesProduct } from "../../../components/user/product/ImagesProduct"
 import { useParams } from "react-router-dom"
 import { useQuery } from "react-query"
 import { productService } from "../../../services/productService"
+import { Loading } from "../../../components/common/Loading"
 
 export const ProductDetail = () => {
     const { productId } = useParams();
@@ -24,15 +25,10 @@ export const ProductDetail = () => {
         {
             staleTime: 10 * 60 * 1000,
             cacheTime: 10 * 60 * 1000,
-
         }
-
     );
-
-
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <Loading />;
     if (isError) return <div>Error: {error.message}</div>;
-
 
     return (
         <>

@@ -3,10 +3,9 @@ import { ListSizes } from "../ListSizes"
 import { Promotion } from "../Promotion"
 import { ButtonAction } from "../../../common/ButtonAction"
 import { QuantityAdjuster } from "../../../common/QuantityAdjuster"
-import { localStorages } from "../../../../utils/localStorage"
-import { CART_LS } from "../../../../utils/constant"
+import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux"
-import { addProduct } from "../../../../redux/cartSlice"
+import { addProductToCart } from "../../../../redux/cartSlice"
 import { formatCurrencyVN } from "../../../../utils/common"
 
 
@@ -17,16 +16,11 @@ export const ProductInfo = ({ product }) => {
     const [quantitySelected, setQuantitySelected] = React.useState(1)
     const [sizeSelected, setSizeSelected] = React.useState(() => product.listSize[0])
     const handleAddCart = () => {
-        localStorages.setDataByKey(CART_LS, {
-            productId: product.id,
-            sizeId: sizeSelected.id,
-            quantity: quantitySelected,
-            product: product
-        })
         console.log(sizeSelected);
-        dispatch(addProduct({
+        dispatch(addProductToCart({
+            id: uuidv4(),
             productId: product.id,
-            sizeId: sizeSelected.id,
+            size: sizeSelected.name,
             quantity: quantitySelected,
             product: product
         }))

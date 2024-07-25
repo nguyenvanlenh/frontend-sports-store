@@ -59,9 +59,9 @@ export const CardProduct = ({ product }) => {
 export const CardPlaceholder = () => {
     return (
         <div className="d-flex justify-content-center">
-            <Card style={{ width: '18rem' }}>
+            <Card>
                 <Card.Img variant="top" src={PlaceholderImage} />
-                <Card.Body>
+                <Card.Body >
                     <Placeholder as={Card.Title} animation="glow" className="d-flex justify-content-center">
                         <Placeholder xs={6} />
                     </Placeholder>

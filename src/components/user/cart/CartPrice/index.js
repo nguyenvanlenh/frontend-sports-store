@@ -4,7 +4,7 @@ import PaymentMethod from "../../../../data/img/footer_trustbadge.webp"
 const buttonCheckout = {
     backgroundColor: "#d81f19",
 }
-export const CartPrice = () => {
+export const CartPrice = ({ totalPrice }) => {
     return (
         <Row className="shadow-none p-4 m-1 bg-light rounded">
             <Form>
@@ -19,7 +19,7 @@ export const CartPrice = () => {
             </Form>
             <div className="d-flex justify-content-between">
                 <p className="text-uppercase">Tổng cộng</p>
-                <strong className="text-secondary"> {formatCurrencyVN(250000)}</strong>
+                <strong className="text-secondary"> {formatCurrencyVN(totalPrice)}</strong>
             </div>
             <i className="text-end text-secondary">(Đã bao gồm VAT nếu có)</i>
             <Button variant="danger" style={buttonCheckout} className="mt-2">Thanh toán</Button>

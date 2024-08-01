@@ -5,7 +5,7 @@ import { CardProduct } from "../../product/CardProduct";
 export const RecommendationList = ({ title, type, data }) => {
     const renderProductCard = (idx, item) => {
         if (type === "brand") {
-            return <CardImageProduct key={idx} category={item} />;
+            return <CardImageProduct key={idx} brand={item} />;
         } else {
             return <CardProduct key={idx} product={item} />;
         }

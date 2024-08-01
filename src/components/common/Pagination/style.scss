@@ -1,0 +1,14 @@
+@import "../../../styles/root.scss";
+.active > .page-link,
+.page-link.active {
+    background-color: $color_second !important;
+    color: #fff;
+    border-color: transparent !important;
+    cursor: pointer;
+}
+a.page-link {
+    color: $color-text;
+    &:hover {
+        color: $color_second;
+    }
+}

@@ -1,26 +1,15 @@
 import React from "react";
-import { useQuery } from "react-query";
 import { brandService } from "../../../../services/brandService";
 import { categoryService } from "../../../../services/categoryService";
 import { sizeService } from "../../../../services/sizeService";
 import { BlockFilter } from "../BlockFilter";
-
-const fetchData = async (service) => {
-    const { data } = await service();
-    return data;
-};
-
-const useFetchData = (key, service) => {
-    return useQuery(key, () => fetchData(service), {
-        staleTime: 1800000,
-        refetchInterval: 1800000,
-        onError: (error) => {
-            console.error(`Error fetching ${key}:`, error);
-        }
-    });
-};
+import { useDispatch, useSelector } from "react-redux";
+import { brandFilter, categoryFilter, sizeFilter } from "../../../../redux/filterSlice";
+import { useFetchData } from "../../../../hooks/useFetchData";
 
 export const ListFilters = () => {
+    const dispatch = useDispatch();
+    const productFilter = useSelector(state => state.filter.productFilter);
     const {
         data: brands,
         isLoading: isLoadingBrands,
@@ -53,12 +42,23 @@ export const ListFilters = () => {
             </div>
         );
     }
+    const handleBrandChange = (brandId) => {
+        dispatch(brandFilter(brandId));
+    };
+
+    const handleCategoryChange = (categoryId) => {
+        dispatch(categoryFilter(categoryId));
+    };
+
+    const handleSizeChange = (sizeId) => {
+        dispatch(sizeFilter(sizeId));
+    };
 
     return (
         <>
-            <BlockFilter name="Thương hiệu" items={brands} />
-            <BlockFilter name="Danh mục" items={categories} />
-            <BlockFilter name="Kích cỡ" items={sizes} />
+            <BlockFilter name="Thương hiệu" items={brands} onChange={handleBrandChange} selectedItems={productFilter.brand} />
+            <BlockFilter name="Danh mục" items={categories} onChange={handleCategoryChange} selectedItems={productFilter.category} />
+            <BlockFilter name="Kích cỡ" items={sizes} onChange={handleSizeChange} selectedItems={productFilter.size} />
         </>
     );
 };

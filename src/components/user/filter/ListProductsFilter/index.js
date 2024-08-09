@@ -44,7 +44,7 @@ export const ListProductsFilter = () => {
             </div>
 
             <Row className="g-3">
-                {products?.content.length
+                {products?.content?.length
                     ? products?.content?.map((item, idx) => (
                         <Col key={idx} xs={12} sm={6} md={4} lg={3}>
                             <CardProduct key={idx} product={item} />

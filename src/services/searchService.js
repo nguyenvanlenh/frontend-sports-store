@@ -6,10 +6,10 @@ export const searchService = {
         brands = [],
         categories = [],
         sizes = [],
-        currentPage,
-        sizePage,
-        sortBy,
-        sortDirection
+        currentPage = 0,
+        sizePage = 4,
+        sortBy = "name",
+        sortDirection = "asc"
     ) => {
         const url = "/api/search";
 

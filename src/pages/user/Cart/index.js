@@ -7,6 +7,7 @@ import { removeProductFromCart } from "../../../redux/cartSlice";
 import { FaReply, FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "../../../utils/sweetAlert";
+import { v4 as uuidv4 } from "uuid";
 const tableStyle = {
     borderCollapse: 'collapse',
     width: '100%',
@@ -46,7 +47,7 @@ export const Cart = () => {
                                 <tbody>
                                     {cartItems.map((item, index) => (
                                         <CartItem
-                                            key={index}
+                                            key={uuidv4()}
                                             item={item}
                                             onDelete={handleDelete} />
                                     ))}

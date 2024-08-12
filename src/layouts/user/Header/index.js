@@ -5,7 +5,7 @@ import "./styles.scss";
 import { BsAmd } from "react-icons/bs";
 import { FaSearch, FaUser, FaSearchMinus } from "react-icons/fa";
 import { IoMenuSharp } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IconCart } from "../../../components/user/cart/IconCart";
 import { OffcanvasComponent } from "../../../components/common/Offcanvas";
 import { SearchBar } from "../../../components/user/search/SearchBar";
@@ -14,6 +14,7 @@ import { clearSearch } from "../../../redux/filterSlice";
 
 export const Header = () => {
     const dispatch = useDispatch();
+    const navigation = useNavigate();
     const [menuOpen, setMenuOpen] = React.useState(false);
     const [searchOpen, setSearchOpen] = React.useState(false);
     const searchInputRef = React.useRef(null);
@@ -84,7 +85,9 @@ export const Header = () => {
                                 </Button>
                             </Nav.Item>
                             <Nav.Item className="d-none d-md-block">
-                                <Button variant="link">
+                                <Button variant="link" onClick={() => {
+                                    navigation("/login")
+                                }}>
                                     <FaUser size={SIZE_ICON_HEADER} />
                                 </Button>
                             </Nav.Item>

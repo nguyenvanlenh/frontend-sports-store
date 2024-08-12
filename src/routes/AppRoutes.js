@@ -10,11 +10,16 @@ import { Search } from "../pages/user/Search";
 import { Cart } from "../pages/user/Cart";
 import { ProductDetail } from "../pages/user/ProductDetail";
 import { ListProducts } from "../pages/user/ListProducts";
+import { Register } from "../pages/auth/Register";
 
 export const AppRoutes = createBrowserRouter([
     {
         path: "/login",
         element: <Login />
+    },
+    {
+        path: "/register",
+        element: <Register />
     },
     {
         path: "/",

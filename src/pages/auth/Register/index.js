@@ -2,53 +2,83 @@ import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import React from "react";
 import { authService } from "../../../services/authService";
-import { localStorages } from "../../../utils/localStorage";
-import { ACCESS_TOKEN, REFRESH_TOKEN, USER_LS } from "../../../utils/constant";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-
-const btnLoginStyle = {
+import { successAlert } from "../../../utils/sweetAlert";
+const btnRegisterStyle = {
     backgroundColor: "#d81f19"
 };
 
-export const Login = () => {
+export const Register = () => {
+    const navigation = useNavigate();
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
     const [showPassword, setShowPassword] = React.useState(false);
-    const navigation = useNavigate();
     const validationSchema = Yup.object({
         username: Yup.string()
             .required("Vui lòng nhập tên đăng nhập")
             .min(8, "Tên đăng nhập phải từ 8 đến 20 ký tự")
             .max(20, "Tên đăng nhập phải từ 8 đến 20 ký tự"),
+        email: Yup.string()
+            .required("Vui lòng nhập email")
+            .email("Email không hợp lệ"),
         password: Yup.string()
             .required("Vui lòng nhập mật khẩu")
             .min(8, "Mật khẩu phải từ 8 đến 50 ký tự")
             .max(50, "Mật khẩu phải từ 8 đến 50 ký tự"),
+        rePassword: Yup.string()
+            .required("Vui lòng nhập lại mật khẩu")
+            .oneOf([Yup.ref('password'), null], "Mật khẩu nhập không khớp")
     });
+
+    const handleRegistration = async (values, setErrors) => {
+        setLoading(true);
+        setError("");
+
+        try {
+            await authService.register({
+                username: values.username,
+                email: values.email,
+                password: values.password,
+                listRoles: [],
+            });
+
+            successAlert(
+                "Đăng ký thành công",
+                "Vui lòng kiểm tra email để xác thực tài khoản",
+                4500,
+                () => navigation("/login")
+            );
+        } catch (error) {
+            const responseError = error.response.data;
+
+            if (responseError.status === 409) {
+                const errorMessage = responseError.message;
+                if (errorMessage.includes("username")) {
+                    setErrors({ username: "Tên đăng nhập này đã được đăng ký" });
+                } else if (errorMessage.includes("email")) {
+                    setErrors({ email: "Email này đã được đăng ký" });
+                } else {
+                    setError("Đã xảy ra lỗi khi đăng ký");
+                }
+            } else {
+                setError("Đã xảy ra lỗi khi đăng ký");
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const formik = useFormik({
         initialValues: {
             username: "",
+            email: "",
             password: "",
+            rePassword: "",
         },
-        validationSchema: validationSchema,
-        onSubmit: async (values) => {
-            setLoading(true);
-            setError("");
-            try {
-                const response = await authService.login(values);
-                localStorages.setDataByKey(ACCESS_TOKEN, response.data.accessToken);
-                localStorages.setDataByKey(REFRESH_TOKEN, response.data.refreshToken);
-                localStorages.setDataByKey(USER_LS, response.data);
-                navigation("/home");
-            } catch (error) {
-                setError("Đăng nhập không thành công. Vui lòng kiểm tra thông tin đăng nhập và thử lại.");
-            } finally {
-                setLoading(false);
-            }
-        },
+        validationSchema,
+        onSubmit: (values) => handleRegistration(values, formik.setErrors),
     });
 
     return (
@@ -57,10 +87,10 @@ export const Login = () => {
                 <div className="d-flex justify-content-center">
                     <Col lg={5} md={6} sm={12} className="p-5 bg-light rounded">
                         <div className="text-center mb-5">
-                            <h1>Đăng nhập</h1>
+                            <h1>Đăng ký</h1>
                         </div>
                         <Form onSubmit={formik.handleSubmit}>
-                            <Form.Group controlId="customer_username" className="mb-4">
+                            <Form.Group controlId="username" className="mb-4">
                                 <Form.Control
                                     type="text"
                                     name="username"
@@ -76,7 +106,23 @@ export const Login = () => {
                                     {formik.errors.username}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group controlId="customer_password" className="mb-4 position-relative">
+                            <Form.Group controlId="email" className="mb-4">
+                                <Form.Control
+                                    type="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    required
+                                    className="form-control-md"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.email}
+                                    isInvalid={formik.touched.email && formik.errors.email}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {formik.errors.email}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group controlId="password" className="mb-4 position-relative">
                                 <Form.Control
                                     type={showPassword ? "text" : "password"}
                                     name="password"
@@ -105,28 +151,43 @@ export const Login = () => {
 
                                 </div>
                             </Form.Group>
+                            <Form.Group controlId="repassword" className="mb-4">
+                                <Form.Control
+                                    type="password"
+                                    name="rePassword"
+                                    placeholder="Xác nhận mật khẩu"
+                                    required
+                                    className="form-control-md"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.rePassword}
+                                    isInvalid={formik.touched.rePassword && formik.errors.rePassword}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {formik.errors.rePassword}
+                                </Form.Control.Feedback>
+                            </Form.Group>
                             <Button
                                 type="submit"
                                 className="w-100 mb-3"
                                 variant="danger"
                                 size="md"
-                                style={btnLoginStyle}
-                                disabled={loading}
+                                style={btnRegisterStyle}
                             >
-                                {loading ? "Đang đăng nhập..." : "Đăng nhập"}
+                                {loading
+                                    ? "Đang đăng ký..."
+                                    : "Đăng ký"}
                             </Button>
-                            {error && <div className="text-danger text-center mt-3">{error}</div>}
-                            <div className="d-flex justify-content-between">
-                                <Link to={"/forgot-password"} className="text-muted">
-                                    Quên mật khẩu?
-                                </Link>
-                                <Link to={"/register"} className="text-muted">
-                                    Đăng ký tại đây
+                            {error
+                                && <div className="text-danger text-center mt-2 mb-1">{error}</div>}
+                            <div className="text-center">
+                                <Link to={"/login"} className="text-muted">
+                                    Đã có tài khoản? Đăng nhập tại đây
                                 </Link>
                             </div>
                         </Form>
                         <div className="text-center mt-4">
-                            <span>hoặc đăng nhập qua</span>
+                            <span>hoặc đăng ký qua</span>
                             <div className="d-flex justify-content-center mt-3">
                                 <Link
                                     className="w-100 me-2"

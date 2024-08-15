@@ -10,8 +10,6 @@ export const authService = {
         return httpRequest.post(url, registerRequest);
     },
     refreshToken: (token) => {
-        console.log(token);
-
         const url = "/api/auth/refresh-token";
         return httpRequest.post(url,
             {

@@ -20,7 +20,7 @@ export const ProductInfo = ({ product }) => {
         dispatch(addProductToCart({
             id: uuidv4(),
             productId: product.id,
-            size: sizeSelected.name,
+            size: sizeSelected,
             quantity: quantitySelected,
             product: product
         }))

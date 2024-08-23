@@ -8,7 +8,7 @@ export const cartSlice = createSlice({
         addProductToCart: (state, action) => {
             const exists = state.some(item =>
                 item.productId === action.payload.productId
-                && item.size === action.payload.size);
+                && item.size.id === action.payload.size.id);
 
             if (!exists) {
                 state.push(action.payload);

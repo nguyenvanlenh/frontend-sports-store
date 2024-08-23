@@ -40,7 +40,7 @@ export const CartItem = ({ item, onDelete }) => {
             </td>
             <td>
                 <strong className="text-uppercase">{item.product.name}</strong>
-                <p>Size: {item.size}</p>
+                <p>Size: {item.size.name}</p>
             </td>
             <td className="text-secondary"><strong>{formatCurrencyVN(price)}</strong></td>
             <td><QuantityAdjuster

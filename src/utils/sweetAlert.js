@@ -38,6 +38,8 @@ export const successAlert = (title, text, time = 1500, func) => {
         showConfirmButton: false,
         timer: time
     }).then(() => {
-        func();
+        if (typeof func === "function") {
+            func();
+        }
     })
 }

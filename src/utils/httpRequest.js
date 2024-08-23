@@ -36,8 +36,6 @@ const refreshAccessToken = async () => {
     if (rfToken) {
         try {
             const response = await authService.refreshToken(rfToken);
-            console.log(response);
-
             if (response.status === 200) {
                 let newAccessToken = response.data.accessToken;
                 localStorages.setDataByKey(ACCESS_TOKEN, newAccessToken);

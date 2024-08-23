@@ -11,6 +11,7 @@ import { Cart } from "../pages/user/Cart";
 import { ProductDetail } from "../pages/user/ProductDetail";
 import { ListProducts } from "../pages/user/ListProducts";
 import { Register } from "../pages/auth/Register";
+import { Checkout } from "../pages/user/Checkout";
 
 export const AppRoutes = createBrowserRouter([
     {
@@ -45,6 +46,10 @@ export const AppRoutes = createBrowserRouter([
             , {
                 path: "list-products",
                 element: <ListProducts />
+            }
+            , {
+                path: "checkout",
+                element: <Checkout />
             }
         ]
     },

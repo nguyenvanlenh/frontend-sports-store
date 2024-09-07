@@ -8,8 +8,8 @@ const fetchData = async (service) => {
 
 export const useFetchData = (key, service) => {
     return useQuery(key, () => fetchData(service), {
-        staleTime: 1800000,
-        refetchInterval: 1800000,
+        staleTime: 0,
+        refetchInterval: 0,
         onError: (error) => {
             console.error(`Error fetching ${key}:`, error);
         }

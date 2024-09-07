@@ -20,11 +20,38 @@ const deliveryMethod = {
 };
 
 const deliveryStatus = {
-    PREPARING: "PREPARING",
-    DELIVERING: "DELIVERING",
-    DELIVERED: "DELIVERED",
-    CANCELLED: "CANCELLED"
+    ALL: {
+        key: "ALL",
+        displayName: "Tất cả"
+    },
+    PREPARING: {
+        key: "PREPARING",
+        displayName: "Đang xử lý"
+    },
+    DELIVERING: {
+        key: "DELIVERING",
+        displayName: "Đang vận chuyển"
+    },
+    DELIVERED: {
+        key: "DELIVERED",
+        displayName: "Đã giao"
+    },
+    CANCELLED: {
+        key: "CANCELLED",
+        displayName: "Đã hủy"
+    }
 };
+
+const paymentMethod = {
+    COD: "COD",
+    BANKING: "BANKING",
+    PAYPAL: "PAYPAL"
+}
+const paymentStatus = {
+    PENDING: "PENDING",
+    COMPLETED: "COMPLETED",
+    CANCELLED: "CANCELLED"
+}
 
 export {
     CART_LS,
@@ -36,5 +63,7 @@ export {
     COUNTRY,
     orderStatus,
     deliveryMethod,
-    deliveryStatus
+    deliveryStatus,
+    paymentStatus,
+    paymentMethod
 }

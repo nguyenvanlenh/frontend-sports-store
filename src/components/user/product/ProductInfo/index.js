@@ -16,7 +16,6 @@ export const ProductInfo = ({ product }) => {
     const [quantitySelected, setQuantitySelected] = React.useState(1)
     const [sizeSelected, setSizeSelected] = React.useState(() => product.listSize[0])
     const handleAddCart = () => {
-        console.log(sizeSelected);
         dispatch(addProductToCart({
             id: uuidv4(),
             productId: product.id,

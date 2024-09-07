@@ -12,6 +12,9 @@ import { ProductDetail } from "../pages/user/ProductDetail";
 import { ListProducts } from "../pages/user/ListProducts";
 import { Register } from "../pages/auth/Register";
 import { Checkout } from "../pages/user/Checkout";
+import { UserOrders } from "../components/user/profile/UserOrders";
+import { Profile } from "../pages/user/Profile";
+import { Account } from "../components/user/profile/Account";
 
 export const AppRoutes = createBrowserRouter([
     {
@@ -50,7 +53,22 @@ export const AppRoutes = createBrowserRouter([
             , {
                 path: "checkout",
                 element: <Checkout />
+            },
+            {
+                path: "profile",
+                element: <Profile />,
+                children: [
+                    {
+                        path: "order/history",
+                        element: <UserOrders />
+                    }
+                    , {
+                        path: "customer/account",
+                        element: <Account />
+                    }
+                ]
             }
+
         ]
     },
     {

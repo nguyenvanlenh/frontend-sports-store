@@ -4,13 +4,17 @@ import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PaymentMethod } from "../PaymentMethod";
-import { COUNTRY, deliveryMethod, deliveryStatus, orderStatus, URL_LOCATION } from "../../../../utils/constant";
+import { COUNTRY, deliveryMethod, deliveryStatus, orderStatus, paymentMethod, paymentStatus, URL_LOCATION } from "../../../../utils/constant";
 import { orderAddressRequest } from "../../../../models/orderAddressRequest";
 import { orderRequest } from "../../../../models/orderRequest";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { orderDetailRequest } from "../../../../models/orderDetailRequest";
 import { orderService } from "../../../../services/orderService";
-import { successAlert } from "../../../../utils/sweetAlert";
+import { errorAlert, successAlert } from "../../../../utils/sweetAlert";
+import { paymentService } from "../../../../services/paymentService";
+import { paymentRequest } from "../../../../models/paymentRequest";
+import { clearCart } from "../../../../redux/cartSlice";
+import { useNavigate } from "react-router-dom";
 const validationSchema = Yup.object({
     fullName: Yup.string().required("Họ và tên không được để trống"),
     email: Yup.string().email("Email không hợp lệ").required("Email không được để trống"),
@@ -23,13 +27,14 @@ const validationSchema = Yup.object({
 });
 
 export const ShippingInfo = () => {
-    const [selectedMethod, setSelectedMethod] = React.useState("cod");
+    const [selectedMethod, setSelectedMethod] = React.useState(() => paymentMethod.BANKING);
     const [data, setData] = React.useState({ province: [], district: [], commune: [] });
     const [provinces, setProvinces] = React.useState([]);
     const [districts, setDistricts] = React.useState([]);
     const [communes, setCommunes] = React.useState([]);
     const cartItems = useSelector(state => state.cart);
-
+    const dispatch = useDispatch();
+    const navigation = useNavigate();
     const totalPrice = React.useMemo(() => {
         return cartItems.reduce((total, item) => {
             return total + item.quantity * item.product.price;
@@ -105,21 +110,38 @@ export const ShippingInfo = () => {
                 phoneNumberCustomer: values.phoneNumber,
                 totalPrice: totalPrice,
                 orderStatus: orderStatus.PENDING,
-                deliveryStatus: deliveryStatus.PREPARING,
+                deliveryStatus: deliveryStatus.PREPARING.key,
                 deliveryMethod: deliveryMethod.SPORTER_EXPRESS,
                 listOrderDetails: orderDetails
             })
             try {
-                console.log(order);
-                await orderService.createOrder(order)
-                    .then((result) =>
-                        console.log(result)
-                    );
-                successAlert("Thành công", "Tạo đơn hàng thành công")
-            } catch (error) {
-                console.log(error.response.message)
-            }
+                const orderResult = await orderService.createOrder(order);
 
+                const payment = paymentRequest({
+                    orderId: orderResult.data.id,
+                    amount: orderResult.data.totalPrice,
+                    paymentFee: orderResult.data.deliveryFee,
+                    paymentMethod: selectedMethod,
+                    paymentStatus: paymentStatus.PENDING
+                });
+
+                await paymentService.createPayment(payment);
+
+                dispatch(clearCart())
+
+                successAlert("Thành công", "Tạo đơn hàng thành công", 2000, () => navigation("/"));
+
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    const errorMessage = error.response?.data?.message || error.message;
+                    errorAlert("Lỗi", `Yêu cầu thất bại: ${errorMessage}`);
+                } else if (error.response?.status < 500) {
+                    errorAlert("Lỗi", "Tạo đơn hàng thất bại");
+                } else {
+                    errorAlert("Xin lỗi", "Hệ thống hiện đang bảo trì. Vui lòng quay lại và đặt hàng sau.");
+                }
+                console.error(error.response?.data?.message || error.message);
+            }
 
         }
     });
@@ -235,7 +257,7 @@ export const ShippingInfo = () => {
                 />
             </div>
             <div className="d-flex justify-content-between mt-3">
-                <Button variant="light">Giỏ hàng</Button>
+                <Button onClick={() => navigation("/cart")} variant="light">Giỏ hàng</Button>
                 <Button variant="secondary" type="submit">Hoàn tất đơn hàng</Button>
             </div>
         </Form>

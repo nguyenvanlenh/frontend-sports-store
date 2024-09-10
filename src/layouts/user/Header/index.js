@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Container, Image, Nav } from "react-bootstrap";
+import { Button, Container, Dropdown, Image, Nav } from "react-bootstrap";
 import UserImage from "../../../data/img/user_icon.webp";
 import "./styles.scss";
 import { BsAmd } from "react-icons/bs";
@@ -11,6 +11,9 @@ import { OffcanvasComponent } from "../../../components/common/Offcanvas";
 import { SearchBar } from "../../../components/user/search/SearchBar";
 import { useDispatch } from "react-redux";
 import { clearSearch } from "../../../redux/filterSlice";
+import { localStorages } from "../../../utils/localStorage";
+import { USER_LS } from "../../../utils/constant";
+
 
 export const Header = () => {
     const dispatch = useDispatch();
@@ -24,6 +27,9 @@ export const Header = () => {
         setMenuOpen(!menuOpen);
     };
 
+    const isLogin = () => {
+        return localStorages.getDataByKey(USER_LS);
+    }
     const handleOpenSearch = () => {
         setSearchOpen(!searchOpen);
         if (searchOpen) {
@@ -44,6 +50,10 @@ export const Header = () => {
         { path: "#", label: "Blog" },
         { path: "#", label: "Sự kiện" }
     ];
+    const handleLogout = () => {
+        localStorage.clear();
+        navigation("/login")
+    }
 
     return (
         <>
@@ -85,11 +95,26 @@ export const Header = () => {
                                 </Button>
                             </Nav.Item>
                             <Nav.Item className="d-none d-md-block">
-                                <Button variant="link" onClick={() => {
-                                    navigation("/login")
-                                }}>
-                                    <FaUser size={SIZE_ICON_HEADER} />
-                                </Button>
+                                {
+                                    isLogin()
+                                        ? <Dropdown drop="down-centered">
+                                            <Dropdown.Toggle as={Button} variant="link">
+                                                <FaUser size={SIZE_ICON_HEADER} />
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu>
+                                                <Dropdown.Item as={Link} to="/profile/customer/account" className="text-secondary">Trang cá nhân</Dropdown.Item>
+                                                <Dropdown.Item as={Link} to="/profile/order/history" className="text-secondary">Đơn hàng của tôi</Dropdown.Item>
+                                                <Dropdown.Item as={Button} onClick={handleLogout} className="text-secondary">Đăng xuất</Dropdown.Item>
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+
+                                        : <Button variant="link" onClick={() => {
+                                            navigation("/login")
+                                        }}>
+                                            <FaUser size={SIZE_ICON_HEADER} />
+                                        </Button>
+                                }
+
                             </Nav.Item>
                             <Nav.Item className="d-block d-md-none">
                                 <Button variant="link" onClick={toggleMenu}>
@@ -101,8 +126,13 @@ export const Header = () => {
                 </Container>
             </div>
             <OffcanvasComponent show={menuOpen} handleClose={toggleMenu} title="">
-                <div className="text-center">
-                    <Image src={UserImage} roundedCircle height={40} />
+                <div className="text-center"
+                    onClick={() => {
+                        toggleMenu()
+                        navigation("/profile/customer/account")
+                    }
+                    }>
+                    < Image src={UserImage} roundedCircle height={40} />
                     <h6>Lênh Nguyễn</h6>
                 </div>
                 <Nav className="flex-column text-dark">
@@ -113,8 +143,13 @@ export const Header = () => {
                             </Link>
                         </Nav.Item>
                     ))}
+                    <Nav.Item key={1000}>
+                        <Link onClick={handleLogout}>
+                            Đăng xuất
+                        </Link>
+                    </Nav.Item>
                 </Nav>
-            </OffcanvasComponent>
+            </OffcanvasComponent >
         </>
     );
 };

@@ -30,7 +30,7 @@ export const errorAlert = (title = "Oops...", text) => {
     });
 };
 
-export const successAlert = (title, text, time = 1500, func) => {
+export const successAlert = (title, text, time = 1500, callback) => {
     return Swal.fire({
         icon: "success",
         title: title,
@@ -38,8 +38,8 @@ export const successAlert = (title, text, time = 1500, func) => {
         showConfirmButton: false,
         timer: time
     }).then(() => {
-        if (typeof func === "function") {
-            func();
+        if (typeof callback === "function") {
+            callback();
         }
     })
 }

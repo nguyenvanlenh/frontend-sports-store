@@ -1,27 +1,30 @@
 import React from "react";
-import { Badge, Button, Col, Form, Image, InputGroup, Nav, Row } from "react-bootstrap";
+import { Button, Form, InputGroup, Nav } from "react-bootstrap";
 import { deliveryStatus, USER_LS } from "../../../../utils/constant";
 import { formatCurrencyVN } from "../../../../utils/common";
-import ImageLiver from "../../../../data/img/liver.webp";
 import { ScrollToTop } from "../../../../routes/ScrollToTop";
 import { useFetchData } from "../../../../hooks/useFetchData";
 import { paymentService } from "../../../../services/paymentService";
 import { localStorages } from "../../../../utils/localStorage";
 import { Loading } from "../../../common/Loading";
 import { ItemOrderDetail } from "../../checkout/ItemOrderDetail";
+import { ProductReviewModal } from "../../../common/Modal";
 const tabContentStyle = { minHeight: "500px" };
+
+const userId = localStorages.getDataByKey(USER_LS)?.userId;
+
 export const UserOrders = () => {
     const [activeTab, setActiveTab] = React.useState(deliveryStatus.ALL.key);
     const [isSticky, setIsSticky] = React.useState(false);
-    const [searchTerm, setSearchTerm] = React.useState(""); // State để lưu từ khóa tìm kiếm
+    const [searchTerm, setSearchTerm] = React.useState("");
     const navRef = React.useRef(null);
     const headerHeight = React.useRef(0);
-    const userId = localStorages.getDataByKey(USER_LS)?.userId;
     const {
         data: payments,
         isLoading,
         isError,
-        error
+        error,
+        refetch
     } = useFetchData("payments", () => paymentService.getPaymentsByUserId(userId));
 
     React.useEffect(() => {
@@ -52,7 +55,7 @@ export const UserOrders = () => {
             : payments?.content?.filter(payment => payment.order.deliveryStatus === status);
 
         return filteredData?.filter(payment =>
-            payment.order.id == searchTerm ||
+            payment.order.id === searchTerm ||
             payment.order.listOrderDetails.some(orderDetail =>
                 orderDetail.product.name.toLowerCase().includes(searchTerm)
             )
@@ -60,13 +63,32 @@ export const UserOrders = () => {
     };
 
     const tabContent = {
-        [deliveryStatus.ALL.key]: <ItemOrderList data={filterDataByStatusAndSearch(deliveryStatus.ALL.key)} />,
-        [deliveryStatus.PREPARING.key]: <ItemOrderList data={filterDataByStatusAndSearch(deliveryStatus.PREPARING.key)} />,
-        [deliveryStatus.DELIVERING.key]: <ItemOrderList data={filterDataByStatusAndSearch(deliveryStatus.DELIVERING.key)} />,
-        [deliveryStatus.DELIVERED.key]: <ItemOrderList data={filterDataByStatusAndSearch(deliveryStatus.DELIVERED.key)} />,
-        [deliveryStatus.CANCELLED.key]: <ItemOrderList data={filterDataByStatusAndSearch(deliveryStatus.CANCELLED.key)} />
+        [deliveryStatus.ALL.key]: <ItemOrderList
+            data={filterDataByStatusAndSearch(deliveryStatus.ALL.key)}
+            refetch={refetch} />,
+        [deliveryStatus.PREPARING.key]: <ItemOrderList
+            data={filterDataByStatusAndSearch(deliveryStatus.PREPARING.key)}
+            refetch={refetch} />,
+        [deliveryStatus.DELIVERING.key]: <ItemOrderList
+            data={filterDataByStatusAndSearch(deliveryStatus.DELIVERING.key)}
+            refetch={refetch} />,
+        [deliveryStatus.DELIVERED.key]: <ItemOrderList
+            data={filterDataByStatusAndSearch(deliveryStatus.DELIVERED.key)}
+            refetch={refetch} />,
+        [deliveryStatus.CANCELLED.key]: <ItemOrderList
+            data={filterDataByStatusAndSearch(deliveryStatus.CANCELLED.key)}
+            refetch={refetch} />
     };
-
+    if (isLoading) {
+        return <Loading />;
+    }
+    if (isError) {
+        return (
+            <div>
+                {isError && <div>Error loading list payments: {error.message}</div>}
+            </div>
+        );
+    }
     return (
         <>
             <h1 className="fs-3">Đơn hàng của tôi</h1>
@@ -108,34 +130,48 @@ export const UserOrders = () => {
     );
 };
 
-const ItemOrderList = ({ data }) => (
-    <div style={tabContentStyle}>
+const ItemOrderList = ({ data, refetch }) => {
+    const hasData = Array.isArray(data) && data.length > 0;
 
-        {data.length > 0 ?
-            data?.map((payment, idx) =>
-                <ItemOrder key={idx} data={payment} />
-            )
-            : <div className="d-flex align-items-center justify-content-center">
-                <i>Không có đơn hàng nào</i>
-            </div>
-        }
-    </div>
-);
-
-const ItemOrder = ({ data }) => (
-    <>
-        <div className="bg-light p-3 rounded">
-            <OrderHeader
-                id={data.order.id}
-                status={data.order.deliveryStatus} />
-            <hr className="m-0 mt-1" />
-            {data.order.listOrderDetails.map((orderDetail, idx) =>
-                <ItemOrderDetail key={idx} detail={orderDetail} />)}
-
+    return (
+        <div style={tabContentStyle}>
+            {hasData ? (
+                data.map((payment, idx) => (
+                    <ItemOrder key={idx} data={payment} refetch={refetch} />
+                ))
+            ) : (
+                <div className="d-flex align-items-center justify-content-center">
+                    <i>Không có đơn hàng nào</i>
+                </div>
+            )}
         </div>
-        <OrderFooter amount={data.amount} status={data.order.deliveryStatus} />
-    </>
-);
+    );
+};
+
+
+const ItemOrder = ({ data, refetch }) => {
+
+    return (
+        data.order.listOrderDetails.map((orderDetail, idx) =>
+            <React.Fragment key={idx}>
+                <div className="bg-light p-3 rounded">
+                    <OrderHeader
+                        id={data.order.id}
+                        status={data.order.deliveryStatus} />
+                    <hr className="m-0 mt-1" />
+                    <ItemOrderDetail key={idx} detail={orderDetail} />
+                </div>
+                <OrderFooter
+                    amount={data.amount}
+                    status={data.order.deliveryStatus}
+                    productId={orderDetail.product.id}
+                    orderDetailId={orderDetail.id}
+                    isRating={orderDetail.isRating}
+                    refetch={refetch} />
+            </React.Fragment>
+        )
+    )
+}
 
 const OrderHeader = ({ id, status }) => (
     <div className="d-flex justify-content-between align-items-center">
@@ -162,22 +198,54 @@ const OrderHeader = ({ id, status }) => (
 );
 
 
-const OrderFooter = ({ amount, status }) => (
-    <div className="d-flex justify-content-end bg-light p-3 mb-3 rounded" style={{ borderTop: "1px dotted rgba(0, 0, 0, .2)" }}>
-        <div>
-            <div className="d-flex justify-content-end align-items-center mb-2">
-                <span>Thành tiền:</span>
-                <span className="fs-4 ms-2">{formatCurrencyVN(amount)}</span>
+const OrderFooter = ({
+    amount,
+    status,
+    productId,
+    orderDetailId,
+    isRating = true,
+    refetch }) => {
+    const [showModal, setShowModal] = React.useState(false);
+    const renderDeliveredActions = () => (
+        <>
+            {!isRating &&
+                <Button
+                    variant="warning"
+                    className="px-5 me-2"
+                    onClick={() => setShowModal(true)}
+                >Đánh giá</Button>}
+            <Button variant="danger" className="px-5">Mua lại</Button>
+        </>
+    );
+
+    const renderCancelOrderButton = () => (
+        <Button variant="danger" className="px-5">Hủy đơn hàng</Button>
+    );
+    return (
+        <>
+            <div className="d-flex justify-content-end bg-light p-3 mb-3 rounded" style={{ borderTop: "1px dotted rgba(0, 0, 0, .2)" }}>
+                <div>
+                    <div className="d-flex justify-content-end align-items-center mb-2">
+                        <span>Thành tiền:</span>
+                        <span className="fs-4 ms-2">{formatCurrencyVN(amount)}</span>
+                    </div>
+                    <div>
+                        {status === deliveryStatus.DELIVERED.key
+                            ? renderDeliveredActions()
+                            : renderCancelOrderButton()}
+                        <Button variant="outline-secondary" className="px-5 ms-2">Liên hệ shop</Button>
+                    </div>
+                </div>
             </div>
-            <div>
-                {
-                    status === deliveryStatus.DELIVERED.key
-                        ? <Button variant="danger" className="px-5">Mua lại</Button>
-                        : <Button variant="danger" className="px-5">Hủy đơn hàng</Button>
-                }
-                <Button variant="outline-secondary" className="px-5 ms-2">Liên hệ shop</Button>
-            </div>
-        </div>
-    </div>
-);
+            <ProductReviewModal
+                show={showModal}
+                handleClose={() => setShowModal(false)}
+                productId={productId}
+                userId={userId}
+                orderDetailId={orderDetailId}
+                refetch={refetch}
+            />
+        </>
+    )
+}
 

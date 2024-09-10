@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom"
 import { useQuery } from "react-query"
 import { productService } from "../../../services/productService"
 import { Loading } from "../../../components/common/Loading"
+import { DisplayRatings } from "../../../components/user/product/DisplayRatings"
 
 export const ProductDetail = () => {
     const { productId } = useParams();
@@ -45,6 +46,8 @@ export const ProductDetail = () => {
             <Row>
                 <ProductPresentation product={product} />
             </Row>
+
+            <DisplayRatings productId={productId} />
         </>
     )
 }

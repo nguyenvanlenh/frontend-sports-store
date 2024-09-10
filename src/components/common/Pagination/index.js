@@ -2,6 +2,7 @@ import { Col, Pagination, Row } from "react-bootstrap";
 import { v4 as uuidv4 } from 'uuid';
 import "./style.scss"
 import { useSelector } from "react-redux";
+import { ScrollToTop } from "../../../routes/ScrollToTop";
 export const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
     const pagination = useSelector(state => state.pagination)
     const createPaginationItems = () => {
@@ -60,12 +61,15 @@ export const PaginationComponent = ({ currentPage, totalPages, onPageChange }) =
     };
 
     return (
-        <Row className="mt-4 mb-2">
-            <Col md={12} className="d-flex justify-content-center">
-                <Pagination className="pagination">
-                    {createPaginationItems()}
-                </Pagination>
-            </Col>
-        </Row>
+        <>
+            <Row className="mt-4 mb-2">
+                <Col md={12} className="d-flex justify-content-center">
+                    <Pagination className="pagination">
+                        {createPaginationItems()}
+                    </Pagination>
+                </Col>
+            </Row>
+            <ScrollToTop trigger={currentPage} />
+        </>
     );
 };

@@ -22,3 +22,18 @@ export const slugify = (string) => {
         .replace(/^-+/, '')
         .replace(/-+$/, '')
 }
+
+export const maskEmail = (email) => {
+    const atIndex = email.indexOf("@");
+    if (atIndex === -1)
+        return "Invalid email";
+
+    const namePart = email.slice(0, atIndex);
+    const domainPart = email.slice(atIndex + 1);
+
+    const maskedName = namePart.slice(0, 2) + "*".repeat(namePart.length - 4) + namePart.slice(-2);
+    const maskedEmail = maskedName + "@" + domainPart;
+
+    return maskedEmail;
+}
+

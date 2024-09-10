@@ -5,13 +5,17 @@ const fetchData = async (service) => {
     return data;
 };
 
-
-export const useFetchData = (key, service) => {
-    return useQuery(key, () => fetchData(service), {
-        staleTime: 0,
-        refetchInterval: 0,
-        onError: (error) => {
-            console.error(`Error fetching ${key}:`, error);
+export const useFetchData = (key, service, keepPreviousData = false) => {
+    return useQuery(
+        key,
+        () => fetchData(service),
+        {
+            staleTime: 1000 * 60 * 5,
+            refetchInterval: 1000 * 60 * 5,
+            keepPreviousData: keepPreviousData,
+            onError: (error) => {
+                console.error(`Error fetching ${key}:`, error);
+            }
         }
-    });
+    );
 };

@@ -38,8 +38,9 @@ export const Authenticate = () => {
                     break;
                 case authType.GOOGLE: handleAuthentication(authCode, authType.GOOGLE);
                     break;
+                case authType.FACEBOOK: handleAuthentication(authCode, authType.FACEBOOK);
+                    break;
                 default:
-                    alert("Unknown authentication type");
                     navigation("/login");
                     break;
             }

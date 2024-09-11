@@ -21,11 +21,12 @@ export const confirmAlert = (
         }
     });
 };
-export const errorAlert = (title = "Oops...", text) => {
+export const errorAlert = (title = "Oops...", text, time = 1500) => {
     return Swal.fire({
         icon: "error",
         title: title,
         text: text,
+        timer: time,
         confirmButtonColor: "#aa1814",
     });
 };

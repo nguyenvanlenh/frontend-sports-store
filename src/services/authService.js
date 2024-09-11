@@ -17,7 +17,7 @@ export const authService = {
             });
     },
     outboundUser: (code, type) => {
-        const url = `${BASE_URL}/outbound/authentication?code=${code}&type=${type}`;
+        const url = `${BASE_URL}/outbound/authentication?type=${type}&code=${code}`;
         return httpRequest.post(url);
     },
 }

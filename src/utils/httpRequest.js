@@ -28,8 +28,8 @@ const setAuthorizationHeader = (request) => {
 const handleSessionExpired = () => {
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
-    // window.location.href = "/login";
-    errorAlert("Thông báo hết hạn", "Hết phiên đăng nhập. Vui lòng đăng nhập lại.")
+    errorAlert("Thông báo hết hạn", "Hết phiên đăng nhập. Vui lòng đăng nhập lại.", 2000)
+    window.location.href = "/login";
 };
 const refreshAccessToken = async () => {
     let rfToken = localStorages.getDataByKey(REFRESH_TOKEN);

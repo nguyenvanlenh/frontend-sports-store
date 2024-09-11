@@ -9,7 +9,7 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { OAuthFBConfig, OAuthGGConfig, OAuthGHConfig } from "../../../configurations/configuration";
 import LogoGithub from "../../../data/img/logo/logoGitBlack.png"
 import { AUTH_TYPE, authType } from "../../../utils/constant";
-
+import { v4 as uuidv4 } from "uuid";
 const btnLoginStyle = {
     backgroundColor: "#d81f19"
 };
@@ -58,10 +58,10 @@ export const Login = () => {
         const callbackUrl = OAuthFBConfig.redirectUri;
         const authUrl = OAuthFBConfig.authUri;
         const facebookClientId = OAuthFBConfig.clientId;
-        localStorages.setDataByKey(AUTH_TYPE, authType.GITHUB)
+        localStorages.setDataByKey(AUTH_TYPE, authType.FACEBOOK)
         const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
             callbackUrl
-        )}&client_id=${facebookClientId}&state=`;
+        )}&client_id=${facebookClientId}&state=${uuidv4()}`;
         window.location.href = targetUrl;
 
     }

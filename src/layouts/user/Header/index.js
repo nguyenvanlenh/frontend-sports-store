@@ -9,13 +9,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { IconCart } from "../../../components/user/cart/IconCart";
 import { OffcanvasComponent } from "../../../components/common/Offcanvas";
 import { SearchBar } from "../../../components/user/search/SearchBar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearSearch } from "../../../redux/filterSlice";
 import { localStorages } from "../../../utils/localStorage";
 import { USER_LS } from "../../../utils/constant";
-
+import { logout } from "../../../redux/authSlice";
 
 export const Header = () => {
+    const authentication = useSelector((state) => state.auth);
+    React.useEffect(() => { }, [authentication])
     const dispatch = useDispatch();
     const navigation = useNavigate();
     const [menuOpen, setMenuOpen] = React.useState(false);
@@ -27,9 +29,7 @@ export const Header = () => {
         setMenuOpen(!menuOpen);
     };
 
-    const isLogin = () => {
-        return localStorages.getDataByKey(USER_LS);
-    }
+
     const handleOpenSearch = () => {
         setSearchOpen(!searchOpen);
         if (searchOpen) {
@@ -51,8 +51,10 @@ export const Header = () => {
         { path: "#", label: "Sự kiện" }
     ];
     const handleLogout = () => {
+        dispatch(logout());
         localStorage.clear();
         navigation("/login")
+        window.history.pushState(null, null, "/login");
     }
 
     return (
@@ -96,7 +98,7 @@ export const Header = () => {
                             </Nav.Item>
                             <Nav.Item className="d-none d-md-block">
                                 {
-                                    isLogin()
+                                    !!(authentication?.userId)
                                         ? <Dropdown drop="down-centered">
                                             <Dropdown.Toggle as={Button} variant="link">
                                                 <FaUser size={SIZE_ICON_HEADER} />
@@ -127,13 +129,16 @@ export const Header = () => {
             </div>
             <OffcanvasComponent show={menuOpen} handleClose={toggleMenu} title="">
                 <div className="text-center"
+                    style={{ cursor: "pointer" }}
                     onClick={() => {
                         toggleMenu()
                         navigation("/profile/customer/account")
                     }
                     }>
-                    < Image src={UserImage} roundedCircle height={40} />
-                    <h6>Lênh Nguyễn</h6>
+                    < Image src={authentication?.avatar || UserImage} roundedCircle height={40} />
+                    <h6>{authentication.firstName ||
+                        authentication.lastName ||
+                        authentication.email}</h6>
                 </div>
                 <Nav className="flex-column text-dark">
                     {menuItems.map((item, index) => (

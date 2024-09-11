@@ -9,11 +9,13 @@ import { localStorages } from "../../../../utils/localStorage";
 import { Loading } from "../../../common/Loading";
 import { ItemOrderDetail } from "../../checkout/ItemOrderDetail";
 import { ProductReviewModal } from "../../../common/Modal";
+import { useSelector } from "react-redux";
 const tabContentStyle = { minHeight: "500px" };
 
-const userId = localStorages.getDataByKey(USER_LS)?.userId;
 
 export const UserOrders = () => {
+    const authentication = useSelector((state) => state.auth);
+    React.useEffect(() => { }, [authentication])
     const [activeTab, setActiveTab] = React.useState(deliveryStatus.ALL.key);
     const [isSticky, setIsSticky] = React.useState(false);
     const [searchTerm, setSearchTerm] = React.useState("");
@@ -25,7 +27,7 @@ export const UserOrders = () => {
         isError,
         error,
         refetch
-    } = useFetchData("payments", () => paymentService.getPaymentsByUserId(userId));
+    } = useFetchData("payments", () => paymentService.getPaymentsByUserId(authentication?.userId));
 
     React.useEffect(() => {
         const header = document.querySelector("#header-user");
@@ -206,6 +208,8 @@ const OrderFooter = ({
     isRating = true,
     refetch }) => {
     const [showModal, setShowModal] = React.useState(false);
+    const authentication = useSelector((state) => state.auth);
+    React.useEffect(() => { }, [authentication])
     const renderDeliveredActions = () => (
         <>
             {!isRating &&
@@ -241,7 +245,7 @@ const OrderFooter = ({
                 show={showModal}
                 handleClose={() => setShowModal(false)}
                 productId={productId}
-                userId={userId}
+                userId={authentication?.userId}
                 orderDetailId={orderDetailId}
                 refetch={refetch}
             />

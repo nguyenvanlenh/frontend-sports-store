@@ -7,6 +7,7 @@ import { authService } from "../../../services/authService";
 import { localStorages } from "../../../utils/localStorage";
 import { ACCESS_TOKEN, REFRESH_TOKEN, USER_LS } from "../../../utils/constant";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { OAuthGGConfig } from "../../../configurations/configuration";
 
 const btnLoginStyle = {
     backgroundColor: "#d81f19"
@@ -27,6 +28,21 @@ export const Login = () => {
             .min(8, "Mật khẩu phải từ 8 đến 50 ký tự")
             .max(50, "Mật khẩu phải từ 8 đến 50 ký tự"),
     });
+
+    const handleContinueWithGoogle = () => {
+        const callbackUrl = OAuthGGConfig.redirectUri;
+        const authUrl = OAuthGGConfig.authUri;
+        const googleClientId = OAuthGGConfig.clientId;
+
+        const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
+            callbackUrl
+        )}&response_type=code&client_id=${googleClientId}&scope=openid%20email%20profile`;
+
+        console.log(targetUrl);
+
+        window.location.href = targetUrl;
+
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -145,6 +161,7 @@ export const Login = () => {
                                     }}
                                 >
                                     <Image
+                                        onClick={handleContinueWithGoogle}
                                         src={"https://bizweb.dktcdn.net/assets/admin/images/login/gp-btn.svg"}
                                         style={{ height: "100%", width: "100%", objectFit: "contain" }} />
                                 </Link>

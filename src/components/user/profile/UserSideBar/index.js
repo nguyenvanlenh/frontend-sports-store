@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import UserImage from "../../../../data/img/user_icon.webp";
 import "./style.scss";
+import { useSelector } from "react-redux";
 
 const menuItems = [
     {
@@ -51,31 +52,35 @@ const menuItems = [
     }
 ];
 
-export const UserSideBar = () => (
-    <Row className="sidebar-profile bg-light pe-1 pt-2 rounded">
-        <Col md={12} className="p-0">
-            <div className="d-flex align-items-center justify-content-around flex-wrap mb-2">
-                <Image src={UserImage} roundedCircle height={50} />
-                <div className="ms-2">
-                    <p className="m-0">Tài khoản của</p>
-                    <p className="m-0 fs-5">Nguyễn Văn Lênh</p>
+export const UserSideBar = () => {
+    const authentication = useSelector((state) => state.auth);
+    React.useEffect(() => { }, [authentication])
+    return (
+        <Row className="sidebar-profile bg-light pe-1 pt-2 rounded">
+            <Col md={12} className="p-0">
+                <div className="d-flex align-items-center justify-content-around flex-wrap mb-2">
+                    <Image src={authentication?.avatar || UserImage} roundedCircle height={50} />
+                    <div className="ms-2">
+                        <p className="m-0">Tài khoản của</p>
+                        <p className="m-0 fs-5">Nguyễn Văn Lênh</p>
+                    </div>
                 </div>
-            </div>
-            <div className="sidebar-content">
-                <ul className="sidebar-menu">
-                    {menuItems.map(({ to, icon, title }, index) => (
-                        <li key={index}>
-                            <NavLink
-                                className="d-flex justify-content-center align-items-center"
-                                to={to}
-                                title={title}>
-                                <span className="icon">{icon}</span>
-                                <span className="text d-none d-md-block">{title}</span>
-                            </NavLink>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </Col>
-    </Row>
-);
+                <div className="sidebar-content">
+                    <ul className="sidebar-menu">
+                        {menuItems.map(({ to, icon, title }, index) => (
+                            <li key={index}>
+                                <NavLink
+                                    className="d-flex justify-content-center align-items-center"
+                                    to={to}
+                                    title={title}>
+                                    <span className="icon">{icon}</span>
+                                    <span className="text d-none d-md-block">{title}</span>
+                                </NavLink>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </Col>
+        </Row>
+    )
+};

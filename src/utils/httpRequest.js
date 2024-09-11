@@ -4,7 +4,7 @@ import { ACCESS_TOKEN, APP_BASE_URL, REFRESH_TOKEN } from "./constant";
 import { authService } from "../services/authService";
 import { localStorages } from "./localStorage";
 import { errorAlert } from "./sweetAlert";
-const notAuthenticationURL = ["/api/auth/login", "/api/auth/register", "/api/auth/refresh-token"];
+const notAuthenticationURL = ["/api/auth/login", "/api/auth/register", "/api/auth/refresh-token", "/api/auth/outbound/authentication"];
 
 const httpRequest = axios.create({
     baseURL: APP_BASE_URL,
@@ -28,7 +28,7 @@ const setAuthorizationHeader = (request) => {
 const handleSessionExpired = () => {
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
-    window.location.href = "/login";
+    // window.location.href = "/login";
     errorAlert("Thông báo hết hạn", "Hết phiên đăng nhập. Vui lòng đăng nhập lại.")
 };
 const refreshAccessToken = async () => {

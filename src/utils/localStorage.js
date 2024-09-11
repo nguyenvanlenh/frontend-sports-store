@@ -1,3 +1,5 @@
+import { ACCESS_TOKEN, REFRESH_TOKEN, USER_LS } from "./constant";
+
 export const localStorages = {
     getDataByKey: (key) => {
         try {
@@ -16,3 +18,8 @@ export const localStorages = {
         }
     }
 }
+export const setLogin = (data) => {
+    localStorages.setDataByKey(ACCESS_TOKEN, data.accessToken);
+    localStorages.setDataByKey(REFRESH_TOKEN, data.refreshToken);
+    localStorages.setDataByKey(USER_LS, data);
+} 

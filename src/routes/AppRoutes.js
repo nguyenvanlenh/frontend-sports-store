@@ -15,11 +15,16 @@ import { Checkout } from "../pages/user/Checkout";
 import { UserOrders } from "../components/user/profile/UserOrders";
 import { Profile } from "../pages/user/Profile";
 import { Account } from "../components/user/profile/Account";
+import { Authenticate } from "../pages/auth/Authenticate";
 
 export const AppRoutes = createBrowserRouter([
     {
         path: "/login",
         element: <Login />
+    },
+    {
+        path: "/authenticate",
+        element: <Authenticate />
     },
     {
         path: "/register",

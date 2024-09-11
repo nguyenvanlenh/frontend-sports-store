@@ -8,8 +8,15 @@ export const authSlice = createSlice({
         saveAuthentication: (state, action) => {
             return action.payload;
         },
-        logout: () => []
+        logout: () => [],
+        setAuthenticationType: (state, action) => {
+            return {
+                ...state,
+                typeAccount: action.payload
+            }
+        },
+
     }
 })
-export const { saveAuthentication, logout } = authSlice.actions;
+export const { saveAuthentication, logout, setAuthenticationType } = authSlice.actions;
 export default authSlice.reducer

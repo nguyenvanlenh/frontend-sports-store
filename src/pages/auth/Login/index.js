@@ -4,10 +4,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import React from "react";
 import { authService } from "../../../services/authService";
-import { localStorages } from "../../../utils/localStorage";
-import { ACCESS_TOKEN, REFRESH_TOKEN, USER_LS } from "../../../utils/constant";
+import { localStorages, setLogin } from "../../../utils/localStorage";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { OAuthGGConfig } from "../../../configurations/configuration";
+import { OAuthFBConfig, OAuthGGConfig, OAuthGHConfig } from "../../../configurations/configuration";
+import LogoGithub from "../../../data/img/logo/logoGitBlack.png"
+import { AUTH_TYPE, authType } from "../../../utils/constant";
 
 const btnLoginStyle = {
     backgroundColor: "#d81f19"
@@ -28,18 +29,39 @@ export const Login = () => {
             .min(8, "Mật khẩu phải từ 8 đến 50 ký tự")
             .max(50, "Mật khẩu phải từ 8 đến 50 ký tự"),
     });
-
+    React.useEffect(() => {
+        localStorages.setDataByKey(AUTH_TYPE, "")
+    }, [])
     const handleContinueWithGoogle = () => {
         const callbackUrl = OAuthGGConfig.redirectUri;
         const authUrl = OAuthGGConfig.authUri;
         const googleClientId = OAuthGGConfig.clientId;
-
         const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
             callbackUrl
         )}&response_type=code&client_id=${googleClientId}&scope=openid%20email%20profile`;
+        localStorages.setDataByKey(AUTH_TYPE, authType.GOOGLE)
+        window.location.href = targetUrl;
 
-        console.log(targetUrl);
+    }
+    const handleContinueWithGithub = () => {
+        const callbackUrl = OAuthGHConfig.redirectUri;
+        const authUrl = OAuthGHConfig.authUri;
+        const githubClientId = OAuthGHConfig.clientId;
+        localStorages.setDataByKey(AUTH_TYPE, authType.GITHUB)
+        const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
+            callbackUrl
+        )}&response_type=code&client_id=${githubClientId}&scope=read:user&prompt=select_account`;
+        window.location.href = targetUrl;
 
+    }
+    const handleContinueWithFacebook = () => {
+        const callbackUrl = OAuthFBConfig.redirectUri;
+        const authUrl = OAuthFBConfig.authUri;
+        const facebookClientId = OAuthFBConfig.clientId;
+        localStorages.setDataByKey(AUTH_TYPE, authType.GITHUB)
+        const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
+            callbackUrl
+        )}&client_id=${facebookClientId}&state=`;
         window.location.href = targetUrl;
 
     }
@@ -55,9 +77,7 @@ export const Login = () => {
             setError("");
             try {
                 const response = await authService.login(values);
-                localStorages.setDataByKey(ACCESS_TOKEN, response.data.accessToken);
-                localStorages.setDataByKey(REFRESH_TOKEN, response.data.refreshToken);
-                localStorages.setDataByKey(USER_LS, response.data);
+                setLogin(response?.data);
                 navigation("/home");
             } catch (error) {
                 setError("Đăng nhập không thành công. Vui lòng kiểm tra thông tin đăng nhập và thử lại.");
@@ -144,6 +164,7 @@ export const Login = () => {
                         <div className="text-center mt-4">
                             <span>hoặc đăng nhập qua</span>
                             <div className="d-flex justify-content-center mt-3">
+
                                 <Link
                                     className="w-100 me-2"
                                     style={{
@@ -151,6 +172,7 @@ export const Login = () => {
                                     }}
                                 >
                                     <Image
+                                        onClick={handleContinueWithFacebook}
                                         src={"https://bizweb.dktcdn.net/assets/admin/images/login/fb-btn.svg"}
                                         style={{ height: "100%", width: "100%", objectFit: "contain" }} />
                                 </Link>
@@ -163,6 +185,20 @@ export const Login = () => {
                                     <Image
                                         onClick={handleContinueWithGoogle}
                                         src={"https://bizweb.dktcdn.net/assets/admin/images/login/gp-btn.svg"}
+                                        style={{ height: "100%", width: "100%", objectFit: "contain" }} />
+                                </Link>
+                            </div>
+                            <div className="d-flex justify-content-center mt-3">
+                                <Link
+                                    className="w-100 me-2"
+                                    style={{
+                                        height: "40px",
+                                        maxWidth: "150px"
+                                    }}
+                                >
+                                    <Image
+                                        onClick={handleContinueWithGithub}
+                                        src={LogoGithub}
                                         style={{ height: "100%", width: "100%", objectFit: "contain" }} />
                                 </Link>
                             </div>

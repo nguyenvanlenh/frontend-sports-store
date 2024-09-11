@@ -1,7 +1,7 @@
 import { Button, Col, FloatingLabel, Form, Image, Row } from "react-bootstrap"
 import UserImage from "../../../../data/img/user_icon.webp";
 import { localStorages } from "../../../../utils/localStorage";
-import { USER_LS } from "../../../../utils/constant";
+import { authType, USER_LS } from "../../../../utils/constant";
 import React from "react";
 import { useSelector } from "react-redux";
 export const Account = () => {
@@ -133,17 +133,26 @@ export const Account = () => {
                         <div className="d-flex flex-column">
                             <span>Facebook</span>
                         </div>
-                        <Button variant={authentication.typeAccount === "FACEBOOK" ?
-                            "primary" : "outline-primary"}>{authentication.typeAccount === "FACEBOOK" ? "Đã liên kết" : "Liên kết"}</Button>
+                        <Button variant={authentication.typeAccount === authType.FACEBOOK ?
+                            "primary" : "outline-primary"}>{authentication.typeAccount === authType.FACEBOOK ? "Đã liên kết" : "Liên kết"}</Button>
                     </div>
                     <hr />
-                    <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
                         <div className="d-flex flex-column">
                             <span>Google</span>
                         </div>
                         <Button
-                            variant={authentication.typeAccount === "GOOGLE" ?
-                                "primary" : "outline-primary"}>{authentication.typeAccount === "GOOGLE" ? "Đã liên kết" : "Liên kết"}</Button>
+                            variant={authentication.typeAccount === authType.GOOGLE ?
+                                "primary" : "outline-primary"}>{authentication.typeAccount === authType.GOOGLE ? "Đã liên kết" : "Liên kết"}</Button>
+                    </div>
+                    <hr />
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div className="d-flex flex-column">
+                            <span>Github</span>
+                        </div>
+                        <Button
+                            variant={authentication.typeAccount === authType.GITHUB ?
+                                "primary" : "outline-primary"}>{authentication.typeAccount === authType.GITHUB ? "Đã liên kết" : "Liên kết"}</Button>
                     </div>
                 </Col>
             </Row >

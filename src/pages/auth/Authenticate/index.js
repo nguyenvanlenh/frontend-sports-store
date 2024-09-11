@@ -2,43 +2,55 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../../../components/common/Loading";
 import { authService } from "../../../services/authService";
-import { setLogin } from "../../../utils/localStorage";
+import { localStorages, setLogin } from "../../../utils/localStorage";
 import { useDispatch } from "react-redux";
 import { saveAuthentication } from "../../../redux/authSlice";
+import { AUTH_TYPE, authType } from "../../../utils/constant";
 
 export const Authenticate = () => {
-    const navigatiton = useNavigate();
+    const navigation = useNavigate();
     const dispatch = useDispatch();
     const [isLoggedin, setIsLoggedin] = React.useState(false);
     React.useEffect(() => {
+        const handleAuthentication = async (authCode, type) => {
+            try {
+                const response = await authService.outboundUser(authCode, type);
+                setLogin(response?.data);
+                dispatch(saveAuthentication(response?.data));
+                setIsLoggedin(true);
+            } catch (error) {
+                console.error(`An error occurred while logging in with ${type}: ${error}`);
+                navigation("/login");
+            }
+        };
+        const type = localStorages.getDataByKey(AUTH_TYPE);
 
         const authCodeRegex = /code=([^&]+)/;
         const isMatch = window.location.href.match(authCodeRegex);
-        const outboundUser = async (code) => {
-            const response = await authService.outboundUserGG(code);
-            setLogin(response?.data);
-            dispatch(saveAuthentication(response?.data));
-
+        if (window.location.href.includes("error")) {
+            navigation("/login");
+            return;
         }
         if (isMatch) {
             const authCode = isMatch[1];
-            console.log(authCode);
-            try {
-                outboundUser(authCode)
-                setIsLoggedin(true)
-            } catch (error) {
-                console.error(`An error occured while login with gg ${error}`);
-                // navigatiton("/login");
+            switch (type) {
+                case authType.GITHUB: handleAuthentication(authCode, authType.GITHUB);
+                    break;
+                case authType.GOOGLE: handleAuthentication(authCode, authType.GOOGLE);
+                    break;
+                default:
+                    alert("Unknown authentication type");
+                    navigation("/login");
+                    break;
             }
-
         }
-    }, []);
+    }, [dispatch, navigation]);
 
     React.useEffect(() => {
         if (isLoggedin) {
-            navigatiton("/home");
+            navigation("/home");
         }
-    }, [isLoggedin, navigatiton]);
+    }, [isLoggedin, navigation]);
     return (
         <>
             <Loading />

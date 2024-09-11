@@ -55,6 +55,11 @@ const menuItems = [
 export const UserSideBar = () => {
     const authentication = useSelector((state) => state.auth);
     React.useEffect(() => { }, [authentication])
+    const [fullName] = React.useState(() => {
+        const firstName = authentication?.firstName || "";
+        const lastName = authentication?.lastName || "";
+        return firstName || lastName ? firstName + " " + lastName : "Người dùng";
+    });
     return (
         <Row className="sidebar-profile bg-light pe-1 pt-2 rounded">
             <Col md={12} className="p-0">
@@ -62,7 +67,7 @@ export const UserSideBar = () => {
                     <Image src={authentication?.avatar || UserImage} roundedCircle height={50} />
                     <div className="ms-2">
                         <p className="m-0">Tài khoản của</p>
-                        <p className="m-0 fs-5">Nguyễn Văn Lênh</p>
+                        <p className="m-0 fs-5">{fullName}</p>
                     </div>
                 </div>
                 <div className="sidebar-content">

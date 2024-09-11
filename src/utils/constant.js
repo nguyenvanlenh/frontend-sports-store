@@ -3,6 +3,7 @@ const ACCESS_TOKEN = "ACCESS_TOKEN";
 const REFRESH_TOKEN = "REFRESH_TOKEN";
 const APP_BASE_URL = "http://localhost:8081";
 const USER_LS = "USER";
+const AUTH_TYPE = "AUTH-TYPE";
 const URL_LOCATION = "https://raw.githubusercontent.com/qtv100291/Vietnam-administrative-division-json-server/master/db.json";
 const COUNTRY = "Việt Nam";
 const orderStatus = {
@@ -61,6 +62,11 @@ const httpStatus = {
     UNAUTHORIZED: 401,
     NOT_FOUND: 404
 }
+const authType = {
+    FACEBOOK: "FACEBOOK",
+    GOOGLE: "GOOGLE",
+    GITHUB: "GITHUB"
+}
 
 export {
     CART_LS,
@@ -75,5 +81,7 @@ export {
     deliveryStatus,
     paymentStatus,
     paymentMethod,
-    httpStatus
+    httpStatus,
+    AUTH_TYPE,
+    authType
 }

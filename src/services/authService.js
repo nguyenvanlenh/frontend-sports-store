@@ -16,8 +16,8 @@ export const authService = {
                 token: token
             });
     },
-    outboundUserGG: (code) => {
-        const url = `${BASE_URL}/outbound/authentication?code=${code}`;
+    outboundUser: (code, type) => {
+        const url = `${BASE_URL}/outbound/authentication?code=${code}&type=${type}`;
         return httpRequest.post(url);
-    }
+    },
 }

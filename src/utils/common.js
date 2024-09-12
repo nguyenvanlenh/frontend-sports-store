@@ -23,17 +23,21 @@ export const slugify = (string) => {
         .replace(/-+$/, '')
 }
 
-export const maskEmail = (email) => {
-    const atIndex = email.indexOf("@");
-    if (atIndex === -1)
-        return "Invalid email";
+export const maskText = (text) => {
+    console.log(text);
 
-    const namePart = email.slice(0, atIndex);
-    const domainPart = email.slice(atIndex + 1);
+    if (!text)
+        return "anonymousUser";
+    const len = text.length;
+    if (len < 5)
+        return text;
+
+    const namePart = text.slice(0, Math.floor(len / 2));
+    const domainPart = text.slice(Math.floor(len / 2));
 
     const maskedName = namePart.slice(0, 2) + "*".repeat(namePart.length - 4) + namePart.slice(-2);
-    const maskedEmail = maskedName + "@" + domainPart;
+    const maskedText = maskedName + domainPart;
 
-    return maskedEmail;
+    return maskedText;
 }
 

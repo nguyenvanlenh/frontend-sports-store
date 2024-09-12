@@ -19,5 +19,11 @@ export const paymentService = {
     updatePaymentStatus: (paymentId, status) => {
         const url = `${BASE_URL}/${paymentId}`;
         return httpRequest.patch(url, status);
+    },
+    paypal: {
+        createPayment: (paymentRequest) => {
+            const url = `${BASE_URL}/paypal`;
+            return httpRequest.post(url, paymentRequest)
+        }
     }
 }

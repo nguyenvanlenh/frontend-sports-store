@@ -21,7 +21,7 @@ export const confirmAlert = (
         }
     });
 };
-export const errorAlert = (title = "Oops...", text, time = 1500) => {
+export const errorAlert = (title = "Oops...", text, time = 3500) => {
     return Swal.fire({
         icon: "error",
         title: title,

@@ -15,6 +15,7 @@ import { paymentService } from "../../../../services/paymentService";
 import { paymentRequest } from "../../../../models/paymentRequest";
 import { clearCart } from "../../../../redux/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { FaWindowMinimize } from "react-icons/fa";
 const validationSchema = Yup.object({
     fullName: Yup.string().required("Họ và tên không được để trống"),
     email: Yup.string().email("Email không hợp lệ").required("Email không được để trống"),
@@ -125,11 +126,17 @@ export const ShippingInfo = () => {
                     paymentStatus: paymentStatus.PENDING
                 });
 
-                await paymentService.createPayment(payment);
+                if (selectedMethod !== paymentMethod.PAYPAL) {
+                    await paymentService.createPayment(payment);
+                    dispatch(clearCart())
+                    successAlert("Thành công", "Tạo đơn hàng thành công", 2000,
+                        () => navigation("/profile/order/history"));
+                    return;
+                }
+                const paypalUrl = await paymentService.paypal.createPayment(payment);
+                console.log(paypalUrl);
 
-                dispatch(clearCart())
-
-                successAlert("Thành công", "Tạo đơn hàng thành công", 2000, () => navigation("/"));
+                window.location.href = paypalUrl.data.url;
 
             } catch (error) {
                 if (axios.isAxiosError(error)) {

@@ -16,6 +16,7 @@ import { UserOrders } from "../components/user/profile/UserOrders";
 import { Profile } from "../pages/user/Profile";
 import { Account } from "../components/user/profile/Account";
 import { Authenticate } from "../pages/auth/Authenticate";
+import { PaymentProcessing } from "../pages/user/PaymentProcessing";
 
 export const AppRoutes = createBrowserRouter([
     {
@@ -54,10 +55,14 @@ export const AppRoutes = createBrowserRouter([
             , {
                 path: "list-products",
                 element: <ListProducts />
-            }
-            , {
+            },
+            {
                 path: "checkout",
                 element: <Checkout />
+            },
+            {
+                path: "payment-processing",
+                element: <PaymentProcessing />
             },
             {
                 path: "profile",

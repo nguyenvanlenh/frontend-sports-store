@@ -35,7 +35,7 @@ export const UserOrders = () => {
     }, []);
 
     const handleScroll = React.useCallback(() => {
-        const navTop = navRef.current.getBoundingClientRect().top;
+        const navTop = navRef.current?.getBoundingClientRect()?.top;
         if (navTop >= headerHeight.current) return;
         if (navRef.current) {
             setIsSticky(navTop < headerHeight.current);

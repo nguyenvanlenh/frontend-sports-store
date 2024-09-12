@@ -16,7 +16,7 @@ export const PaymentMethod = ({ selectedMethod, onMethodChange }) => (
     <div style={paymentMethodStyles} className="mt-3">
         <Form.Check
             type="radio"
-            id="bankTransfer"
+            id={paymentMethod.BANKING}
             label="Chuyển khoản ngân hàng"
             name="paymentMethod"
             className="p-3"
@@ -31,7 +31,7 @@ export const PaymentMethod = ({ selectedMethod, onMethodChange }) => (
 
         <Form.Check
             type="radio"
-            id="cod"
+            id={paymentMethod.COD}
             label="Thanh Toán Tại Nhà (COD)"
             name="paymentMethod"
             className="p-3"
@@ -46,7 +46,7 @@ export const PaymentMethod = ({ selectedMethod, onMethodChange }) => (
 
         <Form.Check
             type="radio"
-            id="paypal"
+            id={paymentMethod.PAYPAL}
             label="Thanh toán với Paypal"
             name="paymentMethod"
             className="p-3 pb-3"

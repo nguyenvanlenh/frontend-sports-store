@@ -47,7 +47,9 @@ export const ProductDetail = () => {
                 <ProductPresentation product={product} />
             </Row>
 
-            <DisplayRatings productId={productId} />
+            <Row>
+                <DisplayRatings productId={productId} />
+            </Row>
         </>
     )
 }

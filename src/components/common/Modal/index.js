@@ -1,12 +1,14 @@
 import React from "react";
-import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { ratingService } from "../../../services/ratingService";
 import { ratingRequest } from "../../../models/ratingRequest";
-import { httpStatus } from "../../../utils/constant";
+import { httpStatus, paymentMethod, paymentStatus } from "../../../utils/constant";
 import { errorAlert, successAlert } from "../../../utils/sweetAlert";
 import * as Yup from "yup";
 import { Formik } from "formik";
+import { ItemOrderDetail } from "../../user/checkout/ItemOrderDetail";
+import { formatCurrencyVN } from "../../../utils/common";
 export const ConfirmModal = ({ show, confirm, onClose, handleOperations }) => {
     return (
         <Modal show={show} onHide={onClose}>
@@ -57,7 +59,7 @@ const ratingSchema = Yup.object().shape({
         .required("Vui lòng chọn số sao")
 });
 
-export const ProductReviewModal = ({
+export const ProductRatingModal = ({
     show,
     handleClose,
     productId,
@@ -143,3 +145,44 @@ export const ProductReviewModal = ({
         </Modal>
     );
 };
+
+export const OrderDetailModal = ({ show, onClose, data }) => {
+    return (
+        <Modal show={show} onHide={onClose} size="lg">
+            <Modal.Header closeButton>
+                <Modal.Title>Chi tiết đơn hàng (#{data.order.id})</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                {
+                    data.order.listOrderDetails.map((orderDetail, idx) =>
+                        <ItemOrderDetail key={idx} detail={orderDetail} />
+                    )
+                }
+                <Table bordered className="text-end">
+                    <tbody>
+                        <tr>
+                            <td>Tổng tiền hàng</td>
+                            <td>{formatCurrencyVN(data.order.totalPrice)}</td>
+                        </tr>
+                        <tr>
+                            <td>Phí vận chuyển</td>
+                            <td>{formatCurrencyVN(data.order.deliveryFee)}</td>
+                        </tr>
+                        <tr>
+                            <td>Thành tiền</td>
+                            <td className="fs-4 text-danger">{formatCurrencyVN(data.order.totalPrice)}</td>
+                        </tr>
+                        <tr>
+                            <td>Phương thức thanh toán</td>
+                            <td>{paymentMethod[data.paymentMethod]?.displayName}</td>
+                        </tr>
+                        <tr>
+                            <td>Trạng thái thanh toán</td>
+                            <td className="text-warning">{paymentStatus[data.paymentStatus]?.displayName}</td>
+                        </tr>
+                    </tbody>
+                </Table>
+            </Modal.Body>
+        </Modal>
+    )
+}

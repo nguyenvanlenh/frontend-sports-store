@@ -1,9 +1,14 @@
 import { Badge, Col, Image, Row } from "react-bootstrap";
 import { formatCurrencyVN } from "../../../../utils/common";
 
-export const ItemOrderDetail = ({ detail }) => {
+export const ItemOrderDetail = ({ detail, onClick = () => { } }) => {
     return (
-        <Row className="d-flex justify-content-between align-items-center mt-3 mb-3">
+        <Row className="d-flex justify-content-between align-items-center mt-3 mb-3"
+            onClick={onClick}
+            style={{
+                cursor: "pointer"
+            }}
+        >
             <Col lg={8} xs={8}>
                 <div className="d-flex" >
                     <div style={{

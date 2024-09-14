@@ -28,7 +28,7 @@ const validationSchema = Yup.object({
 });
 
 export const ShippingInfo = () => {
-    const [selectedMethod, setSelectedMethod] = React.useState(() => paymentMethod.BANKING);
+    const [selectedMethod, setSelectedMethod] = React.useState(() => paymentMethod.BANKING.key);
     const [data, setData] = React.useState({ province: [], district: [], commune: [] });
     const [provinces, setProvinces] = React.useState([]);
     const [districts, setDistricts] = React.useState([]);
@@ -126,7 +126,7 @@ export const ShippingInfo = () => {
                     paymentStatus: paymentStatus.PENDING
                 });
 
-                if (selectedMethod !== paymentMethod.PAYPAL) {
+                if (selectedMethod !== paymentMethod.PAYPAL.key) {
                     await paymentService.createPayment(payment);
                     dispatch(clearCart())
                     successAlert("Thành công", "Tạo đơn hàng thành công", 2000,
@@ -136,7 +136,7 @@ export const ShippingInfo = () => {
                 const paypalUrl = await paymentService.paypal.createPayment(payment);
                 console.log(paypalUrl);
 
-                window.location.href = paypalUrl.data.url;
+                window.location.href = `${paypalUrl.data.url}/`;
 
             } catch (error) {
                 if (axios.isAxiosError(error)) {

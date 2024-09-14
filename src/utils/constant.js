@@ -44,15 +44,35 @@ const deliveryStatus = {
 };
 
 const paymentMethod = {
-    COD: "COD",
-    BANKING: "BANKING",
-    PAYPAL: "PAYPAL"
-}
+    COD: {
+        key: "COD",
+        displayName: "COD (Thanh toán khi nhận hàng)"
+    },
+    BANKING: {
+        key: "BANKING",
+        displayName: "Chuyển khoản ngân hàng"
+    },
+    PAYPAL: {
+        key: "PAYPAL",
+        displayName: "Thanh toán qua PayPal"
+    }
+};
 const paymentStatus = {
-    PENDING: "PENDING",
-    COMPLETED: "COMPLETED",
-    CANCELLED: "CANCELLED"
-}
+    PENDING: {
+        key: "PENDING",
+        displayName: "Chờ thanh toán"
+    },
+    COMPLETED: {
+        key: "COMPLETED",
+        displayName: "Đã thanh toán"
+    },
+    CANCELLED: {
+        key: "CANCELLED",
+        displayName: "Đã hủy"
+    }
+};
+
+
 const httpStatus = {
     OK: 200,
     CREATED: 201,

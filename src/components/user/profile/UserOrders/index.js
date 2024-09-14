@@ -1,14 +1,13 @@
 import React from "react";
 import { Button, Form, InputGroup, Nav } from "react-bootstrap";
-import { deliveryStatus, USER_LS } from "../../../../utils/constant";
+import { deliveryStatus } from "../../../../utils/constant";
 import { formatCurrencyVN } from "../../../../utils/common";
 import { ScrollToTop } from "../../../../routes/ScrollToTop";
 import { useFetchData } from "../../../../hooks/useFetchData";
 import { paymentService } from "../../../../services/paymentService";
-import { localStorages } from "../../../../utils/localStorage";
 import { Loading } from "../../../common/Loading";
 import { ItemOrderDetail } from "../../checkout/ItemOrderDetail";
-import { ProductReviewModal } from "../../../common/Modal";
+import { OrderDetailModal, ProductRatingModal } from "../../../common/Modal";
 import { useSelector } from "react-redux";
 const tabContentStyle = { minHeight: "500px" };
 
@@ -27,7 +26,11 @@ export const UserOrders = () => {
         isError,
         error,
         refetch
-    } = useFetchData("payments", () => paymentService.getPaymentsByUserId(authentication?.userId));
+    } = useFetchData(`payments${authentication?.userId}`, () => paymentService.getPaymentsByUserId(authentication?.userId));
+
+    React.useEffect(() => {
+        refetch();
+    }, [refetch]);
 
     React.useEffect(() => {
         const header = document.querySelector("#header-user");
@@ -119,7 +122,7 @@ export const UserOrders = () => {
                 <Form.Control
                     placeholder="Nhập mã đơn hàng hoặc tên sản phẩm"
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)} // Cập nhật từ khóa khi nhập
+                    onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <InputGroup.Text onClick={handleSearch} className="text-primary">Tìm kiếm</InputGroup.Text>
             </InputGroup>
@@ -152,7 +155,7 @@ const ItemOrderList = ({ data, refetch }) => {
 
 
 const ItemOrder = ({ data, refetch }) => {
-
+    const [showModal, setShowModal] = React.useState(false);
     return (
         data.order.listOrderDetails.map((orderDetail, idx) =>
             <React.Fragment key={idx}>
@@ -161,7 +164,7 @@ const ItemOrder = ({ data, refetch }) => {
                         id={data.order.id}
                         status={data.order.deliveryStatus} />
                     <hr className="m-0 mt-1" />
-                    <ItemOrderDetail key={idx} detail={orderDetail} />
+                    <ItemOrderDetail key={idx} detail={orderDetail} onClick={() => setShowModal(true)} />
                 </div>
                 <OrderFooter
                     amount={data.amount}
@@ -170,6 +173,11 @@ const ItemOrder = ({ data, refetch }) => {
                     orderDetailId={orderDetail.id}
                     isRating={orderDetail.isRating}
                     refetch={refetch} />
+                <OrderDetailModal
+                    show={showModal}
+                    onClose={() => setShowModal(false)}
+                    data={data}
+                />
             </React.Fragment>
         )
     )
@@ -241,7 +249,7 @@ const OrderFooter = ({
                     </div>
                 </div>
             </div>
-            <ProductReviewModal
+            <ProductRatingModal
                 show={showModal}
                 handleClose={() => setShowModal(false)}
                 productId={productId}

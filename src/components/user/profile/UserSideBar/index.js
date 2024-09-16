@@ -16,12 +16,12 @@ import { useSelector } from "react-redux";
 
 const menuItems = [
     {
-        to: "/profile/customer/account",
+        to: "/profile/customer-account",
         icon: <FaUser />,
         title: "Thông tin tài khoản"
     },
     {
-        to: "/profile/order/history",
+        to: "/profile/order-history",
         icon: <FaRegNewspaper />,
         title: "Quản lý đơn hàng"
     },

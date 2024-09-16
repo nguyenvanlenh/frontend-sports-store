@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { brandFilter, categoryFilter, sizeFilter } from "../../../../redux/filterSlice";
 import { useFetchData } from "../../../../hooks/useFetchData";
 
-export const ListFilters = () => {
+export const ListFilters = React.memo(() => {
     const dispatch = useDispatch();
     const productFilter = useSelector(state => state.filter.productFilter);
     const {
@@ -61,4 +61,4 @@ export const ListFilters = () => {
             <BlockFilter name="Kích cỡ" items={sizes} onChange={handleSizeChange} selectedItems={productFilter.size} />
         </>
     );
-};
+});

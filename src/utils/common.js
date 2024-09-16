@@ -24,18 +24,16 @@ export const slugify = (string) => {
 }
 
 export const maskText = (text) => {
-    console.log(text);
-
     if (!text) return "anonymousUser";
 
     const len = text.length;
-
     if (len < 5) return text;
 
     const firstPart = text.slice(0, Math.floor(len / 2));
     const secondPart = text.slice(Math.floor(len / 2));
 
-    const maskedFirstPart = firstPart.slice(0, 2) + "*".repeat(Math.max(0, firstPart.length - 4)) + firstPart.slice(-2);
+    const maskedFirstPart = firstPart.slice(0, 2) +
+        "*".repeat(Math.max(0, firstPart.length - 4)) + firstPart.slice(-2);
 
     const maskedText = maskedFirstPart + secondPart;
 

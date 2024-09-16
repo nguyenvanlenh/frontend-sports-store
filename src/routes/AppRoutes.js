@@ -69,11 +69,15 @@ export const AppRoutes = createBrowserRouter([
                 element: <Profile />,
                 children: [
                     {
-                        path: "order/history",
+                        path: "/profile",
+                        element: <Navigate to="customer-account" replace />
+                    },
+                    {
+                        path: "order-history",
                         element: <UserOrders />
                     }
                     , {
-                        path: "customer/account",
+                        path: "customer-account",
                         element: <Account />
                     }
                 ]

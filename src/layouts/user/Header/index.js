@@ -104,8 +104,8 @@ export const Header = () => {
                                                 <FaUser size={SIZE_ICON_HEADER} />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu>
-                                                <Dropdown.Item as={Link} to="/profile/customer/account" className="text-secondary">Trang cá nhân</Dropdown.Item>
-                                                <Dropdown.Item as={Link} to="/profile/order/history" className="text-secondary">Đơn hàng của tôi</Dropdown.Item>
+                                                <Dropdown.Item as={Link} to="/profile/customer-account" className="text-secondary">Trang cá nhân</Dropdown.Item>
+                                                <Dropdown.Item as={Link} to="/profile/order-history" className="text-secondary">Đơn hàng của tôi</Dropdown.Item>
                                                 <Dropdown.Item as={Button} onClick={handleLogout} className="text-secondary">Đăng xuất</Dropdown.Item>
                                             </Dropdown.Menu>
                                         </Dropdown>
@@ -132,7 +132,7 @@ export const Header = () => {
                     style={{ cursor: "pointer" }}
                     onClick={() => {
                         toggleMenu()
-                        navigation("/profile/customer/account")
+                        navigation("/profile/customer-account")
                     }
                     }>
                     < Image src={authentication?.avatar || UserImage} roundedCircle height={40} />

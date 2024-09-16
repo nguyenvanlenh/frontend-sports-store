@@ -5,15 +5,13 @@ import { ListFilters } from "../ListFilters";
 import { PaginationComponent } from "../../../common/Pagination";
 import { OffcanvasComponent } from "../../../common/Offcanvas";
 import { usePagination } from "../../../../hooks/usePagination";
-import { useDispatch, useSelector } from "react-redux";
-import { setSortAttribute } from "../../../../redux/filterSlice";
+import { DropDownSorting } from "../DropDownSorting";
+import { useSelector } from "react-redux";
 
 export const ListProductsFilter = () => {
     const [show, setShow] = React.useState(false);
     const { products } = useSelector(state => state.filter);
     const { currentPage, totalPage, handleChangePage } = usePagination(products?.currentPage || 0, products?.totalPage);
-
-
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -69,70 +67,3 @@ export const ListProductsFilter = () => {
     )
 
 }
-const DropDownSorting = () => {
-    const dispatch = useDispatch();
-    const sortAttribute = useSelector(state => state.filter.sortAttribute);
-    const { products } = useSelector(state => state.filter);
-    const { handleChangePage } = usePagination(products?.currentPage || 0, products?.totalPage);
-    const sortObj = (field, direction, label) => {
-        return {
-            field,
-            direction,
-            label
-        }
-    }
-    const isChecked = (sort) => {
-        return sortAttribute.field === sort.field &&
-            sortAttribute.direction === sort.direction
-    }
-    const handleSortChange = (value) => {
-        dispatch(setSortAttribute(value));
-        handleChangePage(0);
-    };
-    return (
-        <Dropdown data-bs-theme="light">
-            <Dropdown.Toggle variant="light" className="w-100">
-                {sortAttribute?.label || "Sắp xếp sản phẩm"}
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-                <Dropdown.Item
-                    onClick={(e) => handleSortChange(sortObj("price", "asc", e.target.textContent))}
-                    active={isChecked(sortObj("price", "asc"))}
-                >
-                    Giá thấp - cao
-                </Dropdown.Item>
-                <Dropdown.Item
-                    onClick={(e) => handleSortChange(sortObj("price", "desc", e.target.textContent))}
-                    active={isChecked(sortObj("price", "desc"))}
-                >
-                    Giá cao - thấp
-                </Dropdown.Item>
-                <Dropdown.Item
-                    onClick={(e) => handleSortChange(sortObj("lastMofifiedOn", "desc", e.target.textContent))}
-                    active={isChecked(sortObj("lastMofifiedOn", "desc"))}
-                >
-                    Sản phẩm mới nhất
-                </Dropdown.Item>
-                <Dropdown.Item
-                    onClick={(e) => handleSortChange(sortObj("lastMofifiedOn", "asc", e.target.textContent))}
-                    active={isChecked(sortObj("lastMofifiedOn", "asc"))}
-                >
-                    Sản phẩm cũ nhất
-                </Dropdown.Item>
-                <Dropdown.Item
-                    onClick={(e) => handleSortChange(sortObj("name", "asc", e.target.textContent))}
-                    active={isChecked(sortObj("name", "asc"))}
-                >
-                    Tên: A - Z
-                </Dropdown.Item>
-                <Dropdown.Item
-                    onClick={(e) => handleSortChange(sortObj("name", "desc", e.target.textContent))}
-                    active={isChecked(sortObj("name", "desc"))}
-                >
-                    Tên: Z - A
-                </Dropdown.Item>
-            </Dropdown.Menu>
-        </Dropdown>
-    )
-} 

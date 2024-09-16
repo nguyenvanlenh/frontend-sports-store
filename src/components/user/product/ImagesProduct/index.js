@@ -2,12 +2,6 @@ import React from 'react';
 import { Carousel, Col, Image, Row } from 'react-bootstrap';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
-import ImageLiver1 from "../../../../data/img/liver5.jpg";
-import ImageLiver2 from "../../../../data/img/liver2.webp";
-import ImageLiver3 from "../../../../data/img/liver3.jpg";
-import ImageLiver4 from "../../../../data/img/liver4.jpg";
-import ImageLiver5 from "../../../../data/img/liver4.jpeg";
-
 const listItemStyle = {
     display: "flex",
     justifyContent: "center",
@@ -26,15 +20,7 @@ const carouselImageStyle = {
     width: '100%',
 };
 
-const listImages = [
-    { path: ImageLiver2, altText: 'image select size' },
-    { path: ImageLiver1, altText: 'image select size' },
-    { path: ImageLiver3, altText: 'image select size' },
-    { path: ImageLiver4, altText: 'image select size' },
-    { path: ImageLiver5, altText: 'image select size' },
-];
-
-export const ImagesProduct = ({ }) => {
+export const ImagesProduct = ({ listImages }) => {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     const handleSelect = (selectedIndex) => {
         setSelectedIndex(selectedIndex);

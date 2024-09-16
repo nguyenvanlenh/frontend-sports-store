@@ -1,7 +1,6 @@
 import { useQuery } from "react-query";
-import { CardPlaceholder } from "../../product/CardProduct";
 import { RecommendationList } from "../RecommendationList";
-import { Col } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 
 export const ProductRecommendation = ({ title, type, queryKey, fetchFunction }) => {
     const { data: products, isLoading, isError, error } = useQuery(
@@ -15,12 +14,8 @@ export const ProductRecommendation = ({ title, type, queryKey, fetchFunction }) 
 
     if (isLoading) {
         return (
-            <div className="d-flex flex-wrap justify-content-center">
-                {Array.from({ length: 8 }).map((_, index) => (
-                    <Col key={index} xs={12} sm={6} md={4} lg={3}>
-                        <CardPlaceholder key={index} />
-                    </Col>
-                ))}
+            <div className="d-flex flex-wrap justify-content-center align-items-center p-5">
+                <Spinner animation="border" variant="danger" />
             </div>
         );
     }

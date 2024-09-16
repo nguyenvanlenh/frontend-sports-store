@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Placeholder } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import PlaceholderImage from "../../../../data/img/placeholder.jpg";
 import { formatCurrencyVN } from "../../../../utils/common";
 import { Link } from "react-router-dom";
@@ -34,6 +34,7 @@ export const CardProduct = ({ product }) => {
                     <Card.Img
                         loading="lazy"
                         variant="top"
+                        data-src={PlaceholderImage}
                         src={product.listImages[0]?.path || PlaceholderImage}
                         style={isHovered ? imageThumnailHover : imageThumnail}
                         onMouseEnter={handleMouseEnter}
@@ -55,21 +56,3 @@ export const CardProduct = ({ product }) => {
         </div>
     );
 };
-
-export const CardPlaceholder = () => {
-    return (
-        <div className="d-flex justify-content-center">
-            <Card>
-                <Card.Img variant="top" src={PlaceholderImage} />
-                <Card.Body >
-                    <Placeholder as={Card.Title} animation="glow" className="d-flex justify-content-center">
-                        <Placeholder xs={6} />
-                    </Placeholder>
-                    <Placeholder as={Card.Text} animation="glow" className="d-flex justify-content-center align-items-center flex-wrap">
-                        <Placeholder xs={4} className="me-3" /> <Placeholder xs={6} />
-                    </Placeholder>
-                </Card.Body>
-            </Card>
-        </div>
-    )
-}

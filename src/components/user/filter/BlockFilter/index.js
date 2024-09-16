@@ -1,5 +1,7 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { setPage } from "../../../../redux/paginationSlice";
 
 export const BlockFilter = ({ name, items, onChange, selectedItems }) => {
     return (
@@ -15,8 +17,10 @@ export const BlockFilter = ({ name, items, onChange, selectedItems }) => {
 };
 
 const Item = ({ item, onChange, isChecked }) => {
+    const dispatch = useDispatch();
     const handleChange = () => {
         onChange(item.id);
+        dispatch(setPage(0))
     };
 
     return (

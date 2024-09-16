@@ -87,7 +87,22 @@ const authType = {
     GOOGLE: "GOOGLE",
     GITHUB: "GITHUB"
 }
-
+const routeNames = {
+    home: "Trang chủ",
+    search: "Tìm kiếm sản phẩm",
+    cart: "Giỏ hàng",
+    product: "Chi tiết sản phẩm",
+    "list-products": "Danh sách sản phẩm",
+    profile: "Hồ sơ cá nhân",
+    "customer-account": "Thông tin khách hàng",
+    order: "Đơn hàng",
+    checkout: "Thanh toán",
+    "payment-processing": "Xử lý thanh toán",
+    register: "Đăng ký tài khoản",
+    login: "Đăng nhập",
+    admin: "Trang quản trị",
+    "order-history": "Lịch sử đơn hàng",
+};
 export {
     CART_LS,
     APP_BASE_URL,
@@ -103,5 +118,6 @@ export {
     paymentMethod,
     httpStatus,
     AUTH_TYPE,
-    authType
+    authType,
+    routeNames
 }

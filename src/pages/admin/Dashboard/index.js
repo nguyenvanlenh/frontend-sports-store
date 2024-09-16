@@ -82,40 +82,26 @@ const pieData = {
     ],
 };
 
-// Sample data for tables
 const newUsers = [
     { id: 1, name: 'User 1', joined: '2024-01-15' },
     { id: 2, name: 'User 2', joined: '2024-01-16' },
     { id: 3, name: 'User 3', joined: '2024-01-17' },
 ];
-
-const newExams = [
-    { id: 1, title: 'Exam 1', created: '2024-01-15' },
-    { id: 2, title: 'Exam 2', created: '2024-01-16' },
-    { id: 3, title: 'Exam 3', created: '2024-01-17' },
-];
-
-const popularQuestions = [
-    { id: 1, question: 'What is the capital of France?', answers: 150 },
-    { id: 2, question: 'What is 2 + 2?', answers: 200 },
-    { id: 3, question: 'What is the square root of 16?', answers: 180 },
-];
-
 export const Dashboard = () => {
     return (
         <Container fluid>
             <h2 className="my-4">Tổng quát</h2>
             <Row className="mb-4">
-                <Col md={6} className="mb-4">
+                <Col md={6} className="mb-5 d-flex justify-content-center">
                     <Line data={lineData} />
                 </Col>
-                <Col md={6} className="mb-4">
+                <Col md={6} className="mb-5 d-flex justify-content-center">
                     <Bar data={barData} />
                 </Col>
-                <Col md={6} className="mb-4">
+                <Col md={6} className="mb-5 d-flex justify-content-center">
                     <Doughnut data={doughnutData} />
                 </Col>
-                <Col md={6} className="mb-4">
+                <Col md={6} className="mb-5 d-flex justify-content-center">
                     <Pie data={pieData} />
                 </Col>
             </Row>

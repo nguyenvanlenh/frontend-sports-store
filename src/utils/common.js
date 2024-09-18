@@ -1,7 +1,10 @@
 export const formatCurrencyVN = (number) => {
+    if (typeof number !== 'number' || isNaN(number))
+        return "0 đ";
     const formattedNumber = number.toLocaleString('vi-VN');
     return `${formattedNumber} đ`;
 };
+
 export const slugify = (string) => {
     const a = 'àáäâãåăæąçćčđďèéěėëêęğǵḧìíïîįłḿǹńňñòóöôœøṕŕřßşśšșťțùúüûǘůűūųẃẍÿýźžż·/_,:;'
     const b = 'aaaaaaaaacccddeeeeeeegghiiiiilmnnnnooooooprrsssssttuuuuuuuuuwxyyzzz------'

@@ -2,7 +2,6 @@ import React from 'react';
 import { Chart as ChartJS } from 'chart.js/auto';
 import { Line, Bar, Doughnut, Pie } from 'react-chartjs-2';
 import { Container, Row, Col, Table } from 'react-bootstrap';
-
 // Data for charts
 const lineData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June'],

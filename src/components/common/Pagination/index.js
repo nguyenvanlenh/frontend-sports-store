@@ -4,18 +4,17 @@ import "./style.scss"
 import { useSelector } from "react-redux";
 import { ScrollToTop } from "../../../routes/ScrollToTop";
 export const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
-    const pagination = useSelector(state => state.pagination)
+    // const pagination = useSelector(state => state.pagination)
     const createPaginationItems = () => {
         const paginationItems = [];
         const totalPagesToShow = 5;
-        const ellipsis = <Pagination.Ellipsis key={uuidv4()} disabled />;
 
         if (totalPages <= totalPagesToShow) {
             for (let i = 0; i < totalPages; i++) {
                 paginationItems.push(
                     <Pagination.Item
-                        key={uuidv4()}
-                        active={i === pagination}
+                        key={`page-item-${i}`}
+                        active={i === currentPage}
                         onClick={() => onPageChange(i)}
                     >
                         {i + 1}
@@ -23,42 +22,49 @@ export const PaginationComponent = ({ currentPage, totalPages, onPageChange }) =
                 );
             }
         } else {
-            const leftBoundary = Math.max(0, pagination - 2);
-            const rightBoundary = Math.min(totalPages - 1, pagination + 2);
-            if (pagination > 0) {
+            const leftBoundary = Math.max(0, currentPage - 2);
+            const rightBoundary = Math.min(totalPages - 1, currentPage + 2);
+
+            if (currentPage > 0) {
                 paginationItems.push(
-                    <Pagination.First key={uuidv4()} onClick={() => {
-                        onPageChange(0)
-                    }} />
+                    <Pagination.First key="first-page" onClick={() => onPageChange(0)} />
                 );
             }
+
             if (leftBoundary > 0) {
-                paginationItems.push(ellipsis);
+                paginationItems.push(
+                    <Pagination.Ellipsis key={`left-ellipsis-${leftBoundary}`} disabled />
+                );
             }
+
             for (let i = leftBoundary; i <= rightBoundary; i++) {
                 paginationItems.push(
                     <Pagination.Item
-                        key={uuidv4()}
-                        active={i === pagination}
+                        key={`page-item-${i}`}
+                        active={i === currentPage}
                         onClick={() => onPageChange(i)}
                     >
                         {i + 1}
                     </Pagination.Item>
                 );
             }
+
             if (rightBoundary < totalPages - 1) {
-                paginationItems.push(ellipsis);
+                paginationItems.push(
+                    <Pagination.Ellipsis key={`right-ellipsis-${rightBoundary}`} disabled />
+                );
             }
 
-            if (pagination < totalPages - 1) {
+            if (currentPage < totalPages - 1) {
                 paginationItems.push(
-                    <Pagination.Last key={uuidv4()} onClick={() => onPageChange(totalPages - 1)} />
+                    <Pagination.Last key="last-page" onClick={() => onPageChange(totalPages - 1)} />
                 );
             }
         }
 
         return paginationItems;
     };
+
 
     return (
         <>

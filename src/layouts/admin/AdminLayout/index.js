@@ -10,7 +10,9 @@ export const AdminLayout = () => {
                     <SideBar />
                 </Col>
                 <Col md={10} xs={10}>
-                    <Outlet />
+                    <div className="mt-5">
+                        <Outlet />
+                    </div>
                 </Col>
             </Row>
 

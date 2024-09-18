@@ -103,6 +103,8 @@ const routeNames = {
     admin: "Trang quản trị",
     "order-history": "Lịch sử đơn hàng",
 };
+const MAXIMUM_NUMBER_PRODUCTS = 1000;
+const MINIMUM_NUMBER_IMAGE = 5;
 export {
     CART_LS,
     APP_BASE_URL,
@@ -119,5 +121,7 @@ export {
     httpStatus,
     AUTH_TYPE,
     authType,
-    routeNames
+    routeNames,
+    MAXIMUM_NUMBER_PRODUCTS,
+    MINIMUM_NUMBER_IMAGE
 }

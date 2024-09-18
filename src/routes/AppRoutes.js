@@ -17,6 +17,8 @@ import { Profile } from "../pages/user/Profile";
 import { Account } from "../components/user/profile/Account";
 import { Authenticate } from "../pages/auth/Authenticate";
 import { PaymentProcessing } from "../pages/user/PaymentProcessing";
+import { CreateProduct } from "../pages/admin/products/CreateProduct";
+import { ProductsManagement } from "../pages/admin/products/ProductsManagement";
 
 export const AppRoutes = createBrowserRouter([
     {
@@ -92,6 +94,14 @@ export const AppRoutes = createBrowserRouter([
             {
                 path: "dashboard",
                 element: <Dashboard />
+            },
+            {
+                path: "products",
+                element: <ProductsManagement />
+            },
+            {
+                path: "create-product",
+                element: <CreateProduct />
             },
         ]
     },

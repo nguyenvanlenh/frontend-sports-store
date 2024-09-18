@@ -14,3 +14,6 @@ export const OAuthFBConfig = {
     redirectUri: "http://localhost:3000/authenticate",
     authUri: "https://www.facebook.com/v20.0/dialog/oauth",
 };
+export const TinyMCEConfig = {
+    apiKey: "l6m0sms8m1b81ops428n3p9pn1a5wgjsiddy11o8edl597bz"
+}

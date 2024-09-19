@@ -20,7 +20,12 @@ export const ProductsManagement = () => {
 const Header = () => {
 
     return (
-        <>
+        <div
+            className="position-sticky bg-white pb-1"
+            style={{
+                top: 0,
+                zIndex: 1000
+            }}>
             <h1 className="fs-3">Quản lý sản phẩm</h1>
             <Row className="align-items-center">
                 <Col><span>Tất cả (300)</span></Col>
@@ -29,16 +34,16 @@ const Header = () => {
                 <Col><span>Nháp (0)</span></Col>
             </Row>
             <Row className="mt-3">
-                <Col lg={2}>
+                <Col lg={2} xs={4}>
                     <Link className="btn btn-success" to="/admin/create-product" >+ Thêm sản phẩm</Link>
                 </Col>
-                <Col lg={2}>
+                <Col lg={2} xs={4}>
                     <Button variant="white">Export</Button>
                 </Col>
             </Row>
 
 
-        </>
+        </div>
     )
 }
 const ProductsData = () => {
@@ -75,19 +80,19 @@ const ProductsData = () => {
                 <Table>
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th className="col-1">#</th>
                             <th></th>
                             <th>Tên</th>
                             <th>Giá</th>
                             <th>Hãng</th>
                             <th>Trạng thái</th>
-                            <th>Sửa</th>
+                            <th className="col-1">Sửa</th>
                         </tr>
                     </thead>
                     <tbody>
                         {products?.content?.map((product, index) => (
                             <tr key={product.id} className="align-middle">
-                                <td>{index + 1}</td>
+                                <td className="col-1">{product.id}</td>
                                 <td>
                                     <Image
                                         src={product.thumbnailImage || ImageDemo}
@@ -104,7 +109,7 @@ const ProductsData = () => {
                                         {product.isActive ? 'Công khai' : 'Ẩn'}
                                     </span>
                                 </td>
-                                <td>
+                                <td className="col-1">
                                     <Dropdown drop="down-centered">
                                         <Dropdown.Toggle variant="Light">
                                             <span>...</span>

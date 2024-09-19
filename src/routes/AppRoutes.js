@@ -5,7 +5,6 @@ import { UserLayout } from "../layouts/user/UserLayout";
 import { Login } from "../pages/auth/Login";
 import NotFound from "../pages/error/NotFound";
 import { AdminLayout } from "../layouts/admin/AdminLayout";
-import { Dashboard } from "../pages/admin/Dashboard";
 import { Search } from "../pages/user/Search";
 import { Cart } from "../pages/user/Cart";
 import { ProductDetail } from "../pages/user/ProductDetail";
@@ -19,6 +18,11 @@ import { Authenticate } from "../pages/auth/Authenticate";
 import { PaymentProcessing } from "../pages/user/PaymentProcessing";
 import { CreateProduct } from "../pages/admin/products/CreateProduct";
 import { ProductsManagement } from "../pages/admin/products/ProductsManagement";
+import { Dashboard } from "../pages/admin/dashboard";
+import { UsersManagement } from "../pages/admin/users/UsersManagement";
+import { BrandsManagement } from "../pages/admin/brands/BrandsManagement";
+import { CategoriesManagement } from "../pages/admin/categories/CategoriesManagement";
+import { SizesManagement } from "../pages/admin/sizes/SizesManagement";
 
 export const AppRoutes = createBrowserRouter([
     {
@@ -103,6 +107,23 @@ export const AppRoutes = createBrowserRouter([
                 path: "create-product",
                 element: <CreateProduct />
             },
+            {
+                path: "users",
+                element: <UsersManagement />
+            },
+            {
+                path: "brands",
+                element: <BrandsManagement />
+            },
+            {
+                path: "categories",
+                element: <CategoriesManagement />
+            },
+            {
+                path: "sizes",
+                element: <SizesManagement />
+            },
+
         ]
     },
     {

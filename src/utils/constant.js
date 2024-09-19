@@ -105,6 +105,11 @@ const routeNames = {
 };
 const MAXIMUM_NUMBER_PRODUCTS = 1000;
 const MINIMUM_NUMBER_IMAGE = 5;
+
+const ROLE = {
+    ADMIN: "ROLE_ADMIN",
+    USER: "ROLE_USER",
+}
 export {
     CART_LS,
     APP_BASE_URL,
@@ -123,5 +128,6 @@ export {
     authType,
     routeNames,
     MAXIMUM_NUMBER_PRODUCTS,
-    MINIMUM_NUMBER_IMAGE
+    MINIMUM_NUMBER_IMAGE,
+    ROLE
 }

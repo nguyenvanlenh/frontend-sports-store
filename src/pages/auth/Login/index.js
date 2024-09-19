@@ -1,34 +1,34 @@
+import React from "react";
 import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import React from "react";
 import { authService } from "../../../services/authService";
 import { localStorages, setLogin } from "../../../utils/localStorage";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { OAuthFBConfig, OAuthGGConfig, OAuthGHConfig } from "../../../configurations/configuration";
 import LogoGithub from "../../../data/img/logo/logoGitBlack.png"
-import { AUTH_TYPE, authType } from "../../../utils/constant";
+import { AUTH_TYPE, authType, ROLE } from "../../../utils/constant";
 import { v4 as uuidv4 } from "uuid";
 const btnLoginStyle = {
     backgroundColor: "#d81f19"
 };
-
+const validationSchema = Yup.object({
+    username: Yup.string()
+        .required("Vui lòng nhập tên đăng nhập")
+        .min(8, "Tên đăng nhập phải từ 8 đến 20 ký tự")
+        .max(20, "Tên đăng nhập phải từ 8 đến 20 ký tự"),
+    password: Yup.string()
+        .required("Vui lòng nhập mật khẩu")
+        .min(8, "Mật khẩu phải từ 8 đến 50 ký tự")
+        .max(50, "Mật khẩu phải từ 8 đến 50 ký tự"),
+});
 export const Login = () => {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
     const [showPassword, setShowPassword] = React.useState(false);
-    const navigation = useNavigate();
-    const validationSchema = Yup.object({
-        username: Yup.string()
-            .required("Vui lòng nhập tên đăng nhập")
-            .min(8, "Tên đăng nhập phải từ 8 đến 20 ký tự")
-            .max(20, "Tên đăng nhập phải từ 8 đến 20 ký tự"),
-        password: Yup.string()
-            .required("Vui lòng nhập mật khẩu")
-            .min(8, "Mật khẩu phải từ 8 đến 50 ký tự")
-            .max(50, "Mật khẩu phải từ 8 đến 50 ký tự"),
-    });
+    const navigate = useNavigate();
+
     React.useEffect(() => {
         localStorages.setDataByKey(AUTH_TYPE, "")
     }, [])
@@ -78,7 +78,11 @@ export const Login = () => {
             try {
                 const response = await authService.login(values);
                 setLogin(response?.data);
-                navigation("/home");
+                if (response?.data.listRoles.includes(ROLE.ADMIN)) {
+                    navigate("/admin/dashboard");
+                    return;
+                }
+                navigate("/home");
             } catch (error) {
                 setError("Đăng nhập không thành công. Vui lòng kiểm tra thông tin đăng nhập và thử lại.");
             } finally {

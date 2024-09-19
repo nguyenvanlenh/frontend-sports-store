@@ -42,10 +42,6 @@ export const filterSlice = createSlice({
         isLoading: false,
         isError: false,
         error: null,
-        search: {
-            content: null,
-            showSuggest: false
-        }
     },
     reducers: {
         brandFilter: (state, action) => {
@@ -63,18 +59,6 @@ export const filterSlice = createSlice({
         },
         setSortAttribute: (state, action) => {
             state.sortAttribute = action.payload;
-        },
-        searchByName: (state, action) => {
-            state.search = action.payload;
-        },
-        hideSuggest: (state) => {
-            state.search.showSuggest = false
-        },
-        clearSearch: (state) => {
-            state.search = {
-                content: null,
-                showSuggest: false
-            };
         },
         resetFilter: (state) => {
             state.productFilter = { brand: [], size: [], category: [] };
@@ -109,7 +93,5 @@ export const {
     categoryFilter,
     clearFilters,
     setSortAttribute,
-    searchByName,
-    clearSearch,
-    hideSuggest } = filterSlice.actions;
+} = filterSlice.actions;
 export default filterSlice.reducer;

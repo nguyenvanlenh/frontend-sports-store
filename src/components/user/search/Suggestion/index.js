@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { hideSuggest } from '../../../../redux/filterSlice';
+import { hideSuggest } from '../../../../redux/searchSlice';
 
 const suggestStyle = {
     backgroundColor: "white",
@@ -39,9 +39,7 @@ export const Suggestion = ({ suggestions }) => {
 
 const SuggestionItem = ({ product }) => {
     const dispatch = useDispatch();
-    const handleClick = () => {
-        dispatch(hideSuggest())
-    }
+    const handleClick = () => dispatch(hideSuggest());
     return (
         <Link className="text-dark" to={`/product/${product?.id}`} onClick={handleClick} >
             <div className="d-flex justify-content-start align-items-center" style={suggestItemStyle}>

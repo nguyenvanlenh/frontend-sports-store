@@ -1,18 +1,19 @@
-import React from 'react';
-import { InputGroup, Form, Button } from 'react-bootstrap';
-import { Suggestion } from '../Suggestion';
-import { useDebounce } from '../../../../hooks/useDebounce';
-import { searchService } from '../../../../services/searchService';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearFilters, hideSuggest, searchByName } from '../../../../redux/filterSlice';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { InputGroup, Form, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Suggestion } from "../Suggestion";
+import { useDebounce } from "../../../../hooks/useDebounce";
+import { searchService } from "../../../../services/searchService";
+import { clearFilters } from "../../../../redux/filterSlice";
+import { displaySuggest, hideSuggest, searchByName } from "../../../../redux/searchSlice";
 
 export const SearchBar = React.forwardRef(({ className }, ref) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [query, setQuery] = React.useState("");
     const [suggestions, setSuggestions] = React.useState([]);
-    const showSuggest = useSelector(state => state.filter.search.showSuggest);
+    const showSuggest = useSelector(state => state.search.showSuggest);
     const containerRef = React.useRef(null);
     const searchButtonRef = React.useRef(null);
     const inputRef = React.useRef(null);
@@ -30,9 +31,9 @@ export const SearchBar = React.forwardRef(({ className }, ref) => {
     }, [dispatch]);
 
     React.useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside);
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [handleClickOutside]);
 
@@ -46,19 +47,22 @@ export const SearchBar = React.forwardRef(({ className }, ref) => {
         const fetchSuggestProduct = async (name) => {
             try {
                 const res = await searchService.searchProduct(name);
-                dispatch(searchByName({ content: debouncedQuery, showSuggest: true }));
-                setSuggestions(res.data.content);
+                const suggestData = res?.data?.content || [];
+                setSuggestions(suggestData);
+                if (suggestData.length > 0)
+                    dispatch(displaySuggest());
+                else
+                    dispatch(hideSuggest());
             } catch (error) {
-                console.error('Failed to fetch suggestions:', error);
+                console.error("Failed to fetch suggestions:", error);
             }
         };
         fetchSuggestProduct(debouncedQuery);
     }, [debouncedQuery, dispatch]);
 
     React.useEffect(() => {
-        if (ref) {
+        if (ref)
             ref.current = inputRef.current;
-        }
     }, [ref]);
 
     const handleSearch = () => {
@@ -70,9 +74,8 @@ export const SearchBar = React.forwardRef(({ className }, ref) => {
     };
 
     const handleKeyDown = (e) => {
-        if (e.key === "Enter") {
+        if (e.key === "Enter")
             searchButtonRef.current.click();
-        }
     };
 
     return (

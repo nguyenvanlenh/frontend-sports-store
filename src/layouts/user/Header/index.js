@@ -10,37 +10,28 @@ import { IconCart } from "../../../components/user/cart/IconCart";
 import { OffcanvasComponent } from "../../../components/common/Offcanvas";
 import { SearchBar } from "../../../components/user/search/SearchBar";
 import { useDispatch, useSelector } from "react-redux";
-import { clearSearch } from "../../../redux/filterSlice";
-import { localStorages } from "../../../utils/localStorage";
-import { USER_LS } from "../../../utils/constant";
+import { clearSearch } from "../../../redux/searchSlice";
 import { logout } from "../../../redux/authSlice";
 
 export const Header = () => {
     const authentication = useSelector((state) => state.auth);
-    React.useEffect(() => { }, [authentication])
     const dispatch = useDispatch();
-    const navigation = useNavigate();
+    const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = React.useState(false);
     const [searchOpen, setSearchOpen] = React.useState(false);
     const searchInputRef = React.useRef(null);
     const SIZE_ICON_HEADER = 20;
 
-    const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
-    };
-
+    const toggleMenu = () => setMenuOpen(!menuOpen);
 
     const handleOpenSearch = () => {
         setSearchOpen(!searchOpen);
-        if (searchOpen) {
-            dispatch(clearSearch());
-        }
+        if (searchOpen) dispatch(clearSearch());
     };
 
     React.useEffect(() => {
-        if (searchOpen && searchInputRef.current) {
+        if (searchOpen && searchInputRef.current)
             searchInputRef.current.focus();
-        }
     }, [searchOpen]);
 
     const menuItems = [
@@ -53,7 +44,7 @@ export const Header = () => {
     const handleLogout = () => {
         dispatch(logout());
         localStorage.clear();
-        navigation("/login")
+        navigate("/login")
         window.history.pushState(null, null, "/login");
     }
 
@@ -77,16 +68,14 @@ export const Header = () => {
                             </div>
                             : <SearchBar className="d-none d-md-block" ref={searchInputRef} />
                         }
-                        {searchOpen ? null : <SearchBar className="d-block d-md-none" />}
+                        {<SearchBar className="d-block d-md-none" />}
                         <div className="d-flex justify-content-between btn-header">
                             <Nav.Item className="d-none d-md-block">
                                 <Button variant="link" onClick={handleOpenSearch}>
-                                    {
-                                        searchOpen
-                                            ? <FaSearchMinus size={SIZE_ICON_HEADER} />
-                                            : <FaSearch size={SIZE_ICON_HEADER} />
+                                    {searchOpen
+                                        ? <FaSearchMinus size={SIZE_ICON_HEADER} />
+                                        : <FaSearch size={SIZE_ICON_HEADER} />
                                     }
-
                                 </Button>
                             </Nav.Item>
                             <Nav.Item>
@@ -111,7 +100,7 @@ export const Header = () => {
                                         </Dropdown>
 
                                         : <Button variant="link" onClick={() => {
-                                            navigation("/login")
+                                            navigate("/login")
                                         }}>
                                             <FaUser size={SIZE_ICON_HEADER} />
                                         </Button>
@@ -132,9 +121,8 @@ export const Header = () => {
                     style={{ cursor: "pointer" }}
                     onClick={() => {
                         toggleMenu()
-                        navigation("/profile/customer-account")
-                    }
-                    }>
+                        navigate("/profile/customer-account")
+                    }}>
                     < Image src={authentication?.avatar || UserImage} roundedCircle height={40} />
                     <h6>{authentication.firstName ||
                         authentication.lastName ||

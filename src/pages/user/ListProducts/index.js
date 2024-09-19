@@ -11,7 +11,8 @@ export const ListProducts = () => {
     const productFilter = useSelector(state => state.filter.productFilter);
     const pagination = useSelector(state => state.pagination)
     const pageSize = 4;
-    const searchName = useSelector(state => state.filter.search.content);
+    const searchName = useSelector(state => state.search.content);
+
     const sortBy = sortAttribute?.field || "name";
     const sortDirection = sortAttribute?.direction || "asc";
     React.useEffect(() => {
@@ -25,7 +26,7 @@ export const ListProducts = () => {
             sortBy,
             sortDirection
         }));
-    }, [dispatch, productFilter, sortAttribute, pagination, searchName]);
+    }, [dispatch, productFilter, sortAttribute, pagination, searchName, sortBy, sortDirection]);
 
     return (
         <Row>

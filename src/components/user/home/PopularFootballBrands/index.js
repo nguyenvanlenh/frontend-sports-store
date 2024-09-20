@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
-import { RecommendationList } from "../RecommendationList";
 import { brandService } from "../../../../services/brandService";
-import { Spinner } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
+import { CardImageProduct } from "../../product/CardImageProduct";
 
 export const PopularFootballBrands = () => {
 
@@ -32,10 +32,15 @@ export const PopularFootballBrands = () => {
 
 
     return (
-        <RecommendationList
-            title="Loại hãng phổ biến"
-            type="brand"
-            data={brands}
-        />
+        <>
+            <h2 className="text-center mt-5 mb-3 fw-bold text-uppercase">Hãng phổ biến</h2>
+            <Row className="g-3">
+                {brands?.map((item, idx) => (
+                    <Col key={idx} xs={12} sm={6} md={4} lg={3}>
+                        <CardImageProduct key={idx} brand={item} />
+                    </Col>
+                ))}
+            </Row>
+        </>
     );
 }

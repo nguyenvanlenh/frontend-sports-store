@@ -39,7 +39,7 @@ export const ImagesProduct = ({ listImages }) => {
                         onSelect={handleSelect}
                         interval={null}
                         data-bs-theme="light">
-                        {listImages.map((image, index) => (
+                        {listImages?.slice(0, 5)?.map((image, index) => (
                             <Carousel.Item key={index}>
                                 <Zoom zoomMargin={10}>
                                     <Image

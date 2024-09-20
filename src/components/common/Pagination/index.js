@@ -1,10 +1,7 @@
 import { Col, Pagination, Row } from "react-bootstrap";
-import { v4 as uuidv4 } from 'uuid';
 import "./style.scss"
-import { useSelector } from "react-redux";
 import { ScrollToTop } from "../../../routes/ScrollToTop";
 export const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
-    // const pagination = useSelector(state => state.pagination)
     const createPaginationItems = () => {
         const paginationItems = [];
         const totalPagesToShow = 5;

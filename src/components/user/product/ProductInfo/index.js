@@ -10,9 +10,7 @@ import { formatCurrencyVN } from "../../../../utils/common"
 
 
 export const ProductInfo = ({ product }) => {
-
     const dispatch = useDispatch();
-
     const [quantitySelected, setQuantitySelected] = React.useState(1)
     const [sizeSelected, setSizeSelected] = React.useState(() => product.listSize[0])
     const handleAddCart = () => {
@@ -59,15 +57,18 @@ const Info = ({ product }) => {
         <>
             <div>
                 <h1 className="text-uppercase fs-3">
-                    {product.name || "ÁO BÓNG ĐÁ CHÍNH HÃNG LIVERPOOL SÂN NHÀ 2024/25"}
+                    {product.name || "ÁO BÓNG ĐÁ CHÍNH HÃNG"}
                 </h1>
             </div>
             <div className="d-flex align-items-center">
-                <strong>
-                    <del className="text-secondary">{formatCurrencyVN(product.price)}</del>
-                </strong>
-                <strong className="text-danger ms-3 fs-5">
-                    {formatCurrencyVN(product.price)}
+                {
+                    (product.salePrice !== product.regularPrice) &&
+                    <strong>
+                        <del className="text-secondary fs-6 me-3">{formatCurrencyVN(product.regularPrice)} </del>
+                    </strong>
+                }
+                <strong className="text-danger fs-5">
+                    {formatCurrencyVN(product.salePrice)}
                 </strong>
             </div>
             <div className="product-vairant">

@@ -7,14 +7,14 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { updateProductQuantityInCart } from "../../../../redux/cartSlice";
 const imageStyle = {
-    width: '100px',
-    height: '100px',
+    width: '80px',
+    height: '80px',
     objectFit: 'cover',
 };
 export const CartItem = ({ item, onDelete }) => {
     const dispatch = useDispatch();
     const [quantitySelected, setQuantitySelected] = React.useState(() => item.quantity);
-    const price = item.product.price;
+    const price = item.product.salePrice;
     const handleQuantityChange = (quantity) => {
         setQuantitySelected(quantity);
         dispatch(updateProductQuantityInCart({
@@ -30,24 +30,24 @@ export const CartItem = ({ item, onDelete }) => {
     };
     return (
         <tr className="d-flex align-items-center justify-content-between p-2">
-            <td className="text-center"
+            <td className="text-center col-1"
                 style={{
                     cursor: 'pointer',
                 }}
             ><RxCross2 onClick={handleDelete} /></td>
-            <td>
-                <Image src={item.product.listImages[0]?.path} rounded style={imageStyle} />
+            <td className="col-2">
+                <Image src={item.product.thumbnailImage || item.product.listImages[0]?.path} rounded style={imageStyle} />
             </td>
-            <td>
+            <td className="col-3">
                 <strong className="text-uppercase">{item.product.name}</strong>
                 <p>Size: {item.size.name}</p>
             </td>
-            <td className="text-secondary"><strong>{formatCurrencyVN(price)}</strong></td>
-            <td><QuantityAdjuster
+            <td className="text-secondary text-center col-2"><strong>{formatCurrencyVN(price)}</strong></td>
+            <td className="col-2 d-flex justify-content-end"><QuantityAdjuster
                 initialQuantity={quantitySelected}
                 onQuantityChange={handleQuantityChange}
             /></td>
-            <td className="text-secondary"><strong>{formatCurrencyVN(totalPrice())}</strong></td>
+            <td className="text-secondary col-2 text-end"><strong>{formatCurrencyVN(totalPrice())}</strong></td>
         </tr>
     )
 }

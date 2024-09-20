@@ -3,14 +3,14 @@ import { ProductRecommendation } from "../ProductRecommendation";
 
 export const PopularFootballJerseys = () => {
     const fetchFunction = () =>
-        productService.getAllProducts(0, 8, "lastMofifiedOn", "desc")
+        productService.getAllProducts(0, 8, "salePrice", "desc")
             .then(res => res?.data?.content);
 
     return (
         <ProductRecommendation
-            title="Sản phẩm mới"
-            type="apparel"
-            queryKey="newFootballApparel"
+            title="popular"
+            type="jersey"
+            queryKey="popularFootballJerseys"
             fetchFunction={fetchFunction}
         />
     );

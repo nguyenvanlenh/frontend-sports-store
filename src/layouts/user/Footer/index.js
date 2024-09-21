@@ -1,7 +1,8 @@
-import { Col, Container, Row, Stack } from "react-bootstrap"
+import { Col, Container, Image, Row, Stack } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import "./style.scss"
 import { IoLogoInstagram, IoLogoFacebook, IoLogoYoutube, IoLogoTiktok } from "react-icons/io5";
+import SecondaryLogo from "../../../data/img/logo/secondary_logo.png"
 export const Footer = () => {
     return (
         <div id="footer-user" className="pt-5 pb-3 mt-5">
@@ -9,7 +10,7 @@ export const Footer = () => {
                 <Row xs={12} lg={12} className='ml-row'>
                     <Col sm={12} md={3} className="p-0">
                         <Stack gap={9}>
-                            <div className="title-footer">Sporter</div>
+                            <Image src={SecondaryLogo} width="110px" />
                             <div className="year">© 2024</div>
                             <Stack className='icons' direction="horizontal">
                                 <Link><IoLogoInstagram /></Link>

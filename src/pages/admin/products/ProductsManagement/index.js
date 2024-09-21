@@ -1,6 +1,5 @@
 import { Button, Col, Dropdown, Image, Row, Table } from "react-bootstrap"
 import { formatCurrencyVN } from "../../../../utils/common"
-import ImageDemo from "../../../../data/img/liver.webp"
 import { PaginationComponent } from "../../../../components/common/Pagination"
 import { Link } from "react-router-dom"
 import { useFetchData } from "../../../../hooks/useFetchData"
@@ -95,7 +94,7 @@ const ProductsData = () => {
                                 <td className="col-1">{product.id}</td>
                                 <td>
                                     <Image
-                                        src={product.thumbnailImage || ImageDemo}
+                                        src={product.thumbnailImage}
                                         loading="lazy"
                                         thumbnail
                                         width="60"

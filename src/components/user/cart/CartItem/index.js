@@ -1,5 +1,4 @@
 import { Image } from "react-bootstrap";
-import ImageLiver from "../../../../data/img/liver.webp";
 import { formatCurrencyVN } from "../../../../utils/common";
 import { QuantityAdjuster } from "../../../common/QuantityAdjuster";
 import { RxCross2 } from "react-icons/rx";

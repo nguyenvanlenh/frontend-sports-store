@@ -1,9 +1,8 @@
 import React from "react";
 import { Badge, Card } from "react-bootstrap";
-import PlaceholderImage from "../../../../data/img/placeholder.jpg";
 import { formatCurrencyVN } from "../../../../utils/common";
 import { Link } from "react-router-dom";
-
+import PlaceholderImage from "../../../../data/img/main_thumbnail.png"
 const cardProduct = {
     width: "250px",
     height: "310px",

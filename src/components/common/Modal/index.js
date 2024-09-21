@@ -6,10 +6,19 @@ import { ratingRequest } from "../../../models/ratingRequest";
 import { httpStatus, paymentMethod, paymentStatus } from "../../../utils/constant";
 import { errorAlert, successAlert } from "../../../utils/sweetAlert";
 import * as Yup from "yup";
-import { Formik } from "formik";
 import { ItemOrderDetail } from "../../user/checkout/ItemOrderDetail";
 import { formatCurrencyVN } from "../../../utils/common";
-export const ConfirmModal = ({ show, confirm, onClose, handleOperations }) => {
+import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
+const confirmSchema = Yup.object().shape({
+    cause: Yup.string()
+        .required("Vui lòng nhập lý do"),
+});
+
+export const ConfirmModal = ({ show, confirm, onClose, handleOperations, input }) => {
+    const handleSubmit = (values) => {
+        handleOperations(values.cause); // Gửi lý do hủy đơn
+    };
+
     return (
         <Modal show={show} onHide={onClose}>
             <Modal.Header closeButton>
@@ -17,18 +26,51 @@ export const ConfirmModal = ({ show, confirm, onClose, handleOperations }) => {
             </Modal.Header>
             <Modal.Body>
                 <p>{confirm}</p>
+                {input && (
+                    <Formik
+                        initialValues={{ cause: "" }}
+                        validationSchema={confirmSchema}
+                        onSubmit={handleSubmit}
+                    >
+                        {({ handleSubmit }) => (
+                            <FormikForm onSubmit={handleSubmit}>
+                                <Form.Group className="mb-3" controlId="cause">
+                                    <Field
+                                        as="textarea"
+                                        name="cause"
+                                        rows={3}
+                                        placeholder="Tại sao bạn muốn hủy đơn?"
+                                        className="form-control"
+                                    />
+                                    <ErrorMessage name="cause" component="div" className="text-danger" />
+                                </Form.Group>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={onClose}>
+                                        Không
+                                    </Button>
+                                    <Button variant="danger" type="submit">
+                                        Có
+                                    </Button>
+                                </Modal.Footer>
+                            </FormikForm>
+                        )}
+                    </Formik>
+                )}
+                {!input && (
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={onClose}>
+                            Không
+                        </Button>
+                        <Button variant="danger" onClick={handleOperations}>
+                            Có
+                        </Button>
+                    </Modal.Footer>
+                )}
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={onClose}>
-                    Không
-                </Button>
-                <Button variant="danger" onClick={handleOperations}>
-                    Có
-                </Button>
-            </Modal.Footer>
         </Modal>
     );
 };
+
 const RatingStars = ({ rating, onRate }) => {
     const stars = [1, 2, 3, 4, 5];
 

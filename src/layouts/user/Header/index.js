@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Container, Dropdown, Image, Nav } from "react-bootstrap";
 import UserImage from "../../../data/img/user_icon.webp";
 import "./styles.scss";
-import { BsAmd } from "react-icons/bs";
 import { FaSearch, FaUser, FaSearchMinus } from "react-icons/fa";
 import { IoMenuSharp } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,6 +11,7 @@ import { SearchBar } from "../../../components/user/search/SearchBar";
 import { useDispatch, useSelector } from "react-redux";
 import { clearSearch } from "../../../redux/searchSlice";
 import { logout } from "../../../redux/authSlice";
+import Logo from "../../../data/img/logo/main_logo.png"
 
 export const Header = () => {
     const authentication = useSelector((state) => state.auth);
@@ -36,7 +36,7 @@ export const Header = () => {
 
     const menuItems = [
         { path: "/home", label: "Trang chủ" },
-        { path: "/home", label: "Giảm giá" },
+        { path: "#", label: "Giảm giá" },
         { path: "/list-products", label: "Sản phẩm" },
         { path: "#", label: "Blog" },
         { path: "#", label: "Sự kiện" }
@@ -54,13 +54,14 @@ export const Header = () => {
                 <Container>
                     <Nav className="d-flex justify-content-between pt-3 pb-3 align-items-center flex-nowrap" activeKey="/home">
                         <Nav.Item>
-                            <Link to="/home"><BsAmd size={30} /></Link>
+                            <Link to="/home">
+                                <Image src={Logo} width="115px" /> </Link>
                         </Nav.Item>
                         {!searchOpen
                             ? <div className="d-flex flex-fill justify-content-around main-tab">
                                 {menuItems.map((item, index) => (
                                     <Nav.Item key={index}>
-                                        <Link to={item.path} className={item.disabled ? "disabled" : ""}>
+                                        <Link to={item.path} className="fs-5">
                                             {item.label}
                                         </Link>
                                     </Nav.Item>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const promotionContent = {
     paddingTop: '10px',
@@ -37,10 +38,10 @@ const promotions = [
         altText: 'icon',
         text: (
             <>
-                Nhận Combo quà tặng khi mua giày{' '}
-                <a href="https://www.neymarsport.com/pages/chinh-sach-quy-doi-qua-tang">
+                Nhận Combo quà tặng khi mua 2 bộ{' '}
+                <Link>
                     <strong className="text-warning">XEM CHI TIẾT</strong>
-                </a>
+                </Link>
             </>
         ),
     },
@@ -50,9 +51,9 @@ const promotions = [
         text: (
             <>
                 Giao hàng siêu tốc TP.HCM, Biên Hoà trong 1-&gt;2h.{' '}
-                <a href="https://neymarsport.com/pages/chinh-sach-van-chuyen">
+                <Link>
                     <strong className="text-warning">XEM CHI TIẾT</strong>
-                </a>
+                </Link>
             </>
         ),
     },
@@ -61,10 +62,10 @@ const promotions = [
         altText: 'icon',
         text: (
             <>
-                Thanh toán tiện lợi bằng tiền mặt, chuyển khoản, cà thẻ...{' '}
-                <a href="https://neymarsport.com/pages/thong-tin-tai-khoan">
+                Thanh toán tiện lợi bằng tiền mặt (COD), chuyển khoản, Paypal...{' '}
+                <Link>
                     <strong className="text-warning">XEM CHI TIẾT</strong>
-                </a>
+                </Link>
             </>
         ),
     },
@@ -73,11 +74,10 @@ const promotions = [
         altText: 'icon',
         text: (
             <>
-                Miễn phí vận chuyển cho đơn hàng từ 1.000.000vnd trở lên{' '}
-                <a href="https://www.neymarsport.com/pages/chinh-sach-van-chuyen">
-                    {' '}
+                Miễn phí vận chuyển cho tất cả các đơn hàng từ 1.000d trở lên{' '}
+                <Link>
                     <strong className="text-warning">XEM CHI TIẾT</strong>
-                </a>
+                </Link>
             </>
         ),
     },
@@ -86,10 +86,10 @@ const promotions = [
         altText: 'icon',
         text: (
             <>
-                Đổi hàng trong vòng 7-&gt;14 ngày với sản phẩm chưa sử dụng.{' '}
-                <a href="https://www.neymarsport.com/pages/huong-dan-doi-hang">
+                Đổi hàng trong vòng 20-&gt;30 ngày với sản phẩm chưa sử dụng.{' '}
+                <Link>
                     <strong className="text-warning">XEM CHI TIẾT</strong>
-                </a>
+                </Link>
             </>
         ),
     },

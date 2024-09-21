@@ -1,12 +1,12 @@
 import React from "react"
 import { ListSizes } from "../ListSizes"
 import { Promotion } from "../Promotion"
-import { ButtonAction } from "../../../common/ButtonAction"
 import { QuantityAdjuster } from "../../../common/QuantityAdjuster"
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux"
 import { addProductToCart } from "../../../../redux/cartSlice"
 import { formatCurrencyVN } from "../../../../utils/common"
+import { ButtonCustom, CustomButton } from "../../../common/Button"
 
 
 export const ProductInfo = ({ product }) => {
@@ -36,16 +36,15 @@ export const ProductInfo = ({ product }) => {
                     setQuantitySelected(quantity)}
             />
             <div className="d-flex mt-3">
-                <ButtonAction
-                    content="Mua ngay"
-                    color="dark"
-                    handleOperations={() => console.log("Mua")}
-                />
-                <ButtonAction
-                    content="Thêm vào giỏ hàng"
-                    color="danger"
-                    handleOperations={handleAddCart}
-                />
+                <CustomButton
+                    variant="dark"
+                    className="me-3"
+                >Mua ngay</CustomButton>
+                <CustomButton
+                    variant="danger"
+                    onClick={handleAddCart}
+                >Thêm vào giỏ hàng
+                </CustomButton>
             </div>
             <Promotion />
 

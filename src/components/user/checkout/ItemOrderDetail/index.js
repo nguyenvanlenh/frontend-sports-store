@@ -16,7 +16,7 @@ export const ItemOrderDetail = ({ detail, onClick = () => { } }) => {
                         display: "inline-block",
                     }}>
                         <Image
-                            src={detail.product.listImages[0].path}
+                            src={detail.product.thumbnailImage || detail.product.listImages[0].path}
                             thumbnail
                             style={{
                                 width: "70px",
@@ -42,7 +42,7 @@ export const ItemOrderDetail = ({ detail, onClick = () => { } }) => {
                 </div>
             </Col>
             <Col lg={4} xs={4}>
-                <span className="d-flex justify-content-end">{formatCurrencyVN(detail.quantity * detail.product.price)}</span>
+                <span className="d-flex justify-content-end">{formatCurrencyVN(detail.quantity * detail.product.salePrice)}</span>
             </Col>
         </Row>
 

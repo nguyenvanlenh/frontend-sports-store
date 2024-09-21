@@ -11,7 +11,7 @@ import { ConfirmModal, OrderDetailModal, ProductRatingModal } from "../../../com
 import { useSelector } from "react-redux";
 import { orderService } from "../../../../services/orderService";
 import { errorAlert, successAlert } from "../../../../utils/sweetAlert";
-import { ButtonCustom } from "../../../common/Button";
+import { CustomButton } from "../../../common/Button";
 const tabContentStyle = { minHeight: "500px" };
 
 
@@ -249,7 +249,7 @@ const OrderFooter = ({
             return renderDeliveredActions();
         }
         if (order.orderStatus === orderStatus.CANCELLED) {
-            return <ButtonCustom variant="danger" className="px-5">Mua lại</ButtonCustom>;
+            return <CustomButton variant="danger" className="px-5">Mua lại</CustomButton>;
         }
         return (
             <Button
@@ -269,7 +269,7 @@ const OrderFooter = ({
                     className="px-5 me-2"
                     onClick={() => setShowModal(true)}
                 >Đánh giá</Button>}
-            <ButtonCustom variant="danger" className="px-5">Mua lại</ButtonCustom>
+            <CustomButton variant="danger" className="px-5">Mua lại</CustomButton>
         </>
     );
     return (
@@ -282,7 +282,7 @@ const OrderFooter = ({
                     </div>
                     <div>
                         {renderActions()}
-                        <ButtonCustom variant="outline-secondary" className="px-5 ms-2">Liên hệ shop</ButtonCustom>
+                        <CustomButton variant="outline-secondary" className="px-5 ms-2">Liên hệ shop</CustomButton>
                     </div>
                 </div>
             </div>

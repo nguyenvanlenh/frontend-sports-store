@@ -24,7 +24,8 @@ export const ProductPresentation = ({ product }) => {
                             <li><strong>Thêm vào giỏ hàng:</strong> Nhấn vào nút "Thêm vào giỏ hàng" để lưu sản phẩm cho lần thanh toán.</li>
                             <li><strong>Thanh toán:</strong> Điền thông tin giao hàng, lựa chọn phương thức thanh toán và hoàn tất đơn hàng.</li>
                         </ul>
-                        <p className="mt-3">Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ đội ngũ hỗ trợ của chúng tôi. Chúc bạn có trải nghiệm mua sắm tuyệt vời!</p>
+                        <p className="mt-3">Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ đội ngũ hỗ trợ của chúng tôi.</p>
+                        <p> Chúc bạn có trải nghiệm mua sắm tuyệt vời!</p>
                     </div>
                 );
             case "policy":
@@ -54,21 +55,21 @@ export const ProductPresentation = ({ product }) => {
                 <Nav.Item>
                     <Nav.Link
                         eventKey="description"
-                        className="text-secondary">
+                        className="text-secondary fs-5">
                         Mô tả sản phẩm
                     </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link
                         eventKey="purchase-guide"
-                        className="text-secondary">
+                        className="text-secondary fs-5">
                         Hướng dẫn mua hàng
                     </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link
                         eventKey="policy"
-                        className="text-secondary">
+                        className="text-secondary fs-5">
                         Chính sách bảo hành
                     </Nav.Link>
                 </Nav.Item>

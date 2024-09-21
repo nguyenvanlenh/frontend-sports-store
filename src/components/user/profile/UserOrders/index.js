@@ -1,20 +1,22 @@
 import React from "react";
 import { Button, Form, InputGroup, Nav } from "react-bootstrap";
-import { deliveryStatus } from "../../../../utils/constant";
+import { deliveryStatus, orderStatus } from "../../../../utils/constant";
 import { formatCurrencyVN } from "../../../../utils/common";
 import { ScrollToTop } from "../../../../routes/ScrollToTop";
 import { useFetchData } from "../../../../hooks/useFetchData";
 import { paymentService } from "../../../../services/paymentService";
 import { Loading } from "../../../common/Loading";
 import { ItemOrderDetail } from "../../checkout/ItemOrderDetail";
-import { OrderDetailModal, ProductRatingModal } from "../../../common/Modal";
+import { ConfirmModal, OrderDetailModal, ProductRatingModal } from "../../../common/Modal";
 import { useSelector } from "react-redux";
+import { orderService } from "../../../../services/orderService";
+import { errorAlert, successAlert } from "../../../../utils/sweetAlert";
+import { ButtonCustom } from "../../../common/Button";
 const tabContentStyle = { minHeight: "500px" };
 
 
 export const UserOrders = () => {
     const authentication = useSelector((state) => state.auth);
-    React.useEffect(() => { }, [authentication])
     const [activeTab, setActiveTab] = React.useState(deliveryStatus.ALL.key);
     const [isSticky, setIsSticky] = React.useState(false);
     const [searchTerm, setSearchTerm] = React.useState("");
@@ -27,10 +29,6 @@ export const UserOrders = () => {
         error,
         refetch
     } = useFetchData(`payments${authentication?.userId}`, () => paymentService.getPaymentsByUserId(authentication?.userId));
-
-    React.useEffect(() => {
-        refetch();
-    }, [refetch]);
 
     React.useEffect(() => {
         const header = document.querySelector("#header-user");
@@ -60,9 +58,9 @@ export const UserOrders = () => {
             : payments?.content?.filter(payment => payment.order.deliveryStatus === status);
 
         return filteredData?.filter(payment =>
-            payment.order.id === searchTerm ||
+            String(payment.order.id).includes(searchTerm.toLowerCase()) ||
             payment.order.listOrderDetails.some(orderDetail =>
-                orderDetail.product.name.toLowerCase().includes(searchTerm)
+                orderDetail.product.name.toLowerCase().includes(searchTerm.toLowerCase())
             )
         );
     };
@@ -124,7 +122,11 @@ export const UserOrders = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <InputGroup.Text onClick={handleSearch} className="text-primary">Tìm kiếm</InputGroup.Text>
+                <InputGroup.Text onClick={handleSearch}
+                    className="text-primary"
+                    style={{
+                        cursor: "pointer"
+                    }}>Tìm kiếm</InputGroup.Text>
             </InputGroup>
 
             <div className="mt-3">
@@ -155,7 +157,7 @@ const ItemOrderList = ({ data, refetch }) => {
 
 
 const ItemOrder = ({ data, refetch }) => {
-    const [showModal, setShowModal] = React.useState(false);
+    const [showModalRating, setShowModal] = React.useState(false);
     return (
         data.order.listOrderDetails.map((orderDetail, idx) =>
             <React.Fragment key={idx}>
@@ -169,12 +171,13 @@ const ItemOrder = ({ data, refetch }) => {
                 <OrderFooter
                     amount={data.amount}
                     status={data.order.deliveryStatus}
+                    order={data.order}
                     productId={orderDetail.product.id}
                     orderDetailId={orderDetail.id}
                     isRating={orderDetail.isRating}
                     refetch={refetch} />
                 <OrderDetailModal
-                    show={showModal}
+                    show={showModalRating}
                     onClose={() => setShowModal(false)}
                     data={data}
                 />
@@ -211,13 +214,53 @@ const OrderHeader = ({ id, status }) => (
 const OrderFooter = ({
     amount,
     status,
+    order,
     productId,
     orderDetailId,
     isRating = true,
     refetch }) => {
-    const [showModal, setShowModal] = React.useState(false);
+    const [showModalRating, setShowModal] = React.useState(false);
+    const [showModalCancel, setShowModalCancel] = React.useState(false);
     const authentication = useSelector((state) => state.auth);
-    React.useEffect(() => { }, [authentication])
+
+    const handleCancelOrder = async (rejectReason) => {
+        try {
+            await orderService.updateOrderStatus(order.id,
+                {
+                    status: orderStatus.CANCELLED,
+                    rejectReason: rejectReason
+                });
+            successAlert(
+                "Thành công",
+                "Hủy đơn hàng thành công",
+                3000,
+                () => {
+                    refetch()
+                    setShowModalCancel(false)
+                })
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message;
+            errorAlert("Lỗi", `Yêu cầu thất bại: ${errorMessage}`, 3500);
+        }
+
+    }
+    const renderActions = () => {
+        if (status === deliveryStatus.DELIVERED.key) {
+            return renderDeliveredActions();
+        }
+        if (order.orderStatus === orderStatus.CANCELLED) {
+            return <ButtonCustom variant="danger" className="px-5">Mua lại</ButtonCustom>;
+        }
+        return (
+            <Button
+                onClick={() => setShowModalCancel(true)}
+                variant="danger" className="px-5"
+            >
+                Hủy đơn hàng
+            </Button>
+        );
+    };
+
     const renderDeliveredActions = () => (
         <>
             {!isRating &&
@@ -226,12 +269,8 @@ const OrderFooter = ({
                     className="px-5 me-2"
                     onClick={() => setShowModal(true)}
                 >Đánh giá</Button>}
-            <Button variant="danger" className="px-5">Mua lại</Button>
+            <ButtonCustom variant="danger" className="px-5">Mua lại</ButtonCustom>
         </>
-    );
-
-    const renderCancelOrderButton = () => (
-        <Button variant="danger" className="px-5">Hủy đơn hàng</Button>
     );
     return (
         <>
@@ -242,20 +281,25 @@ const OrderFooter = ({
                         <span className="fs-4 ms-2">{formatCurrencyVN(amount)}</span>
                     </div>
                     <div>
-                        {status === deliveryStatus.DELIVERED.key
-                            ? renderDeliveredActions()
-                            : renderCancelOrderButton()}
-                        <Button variant="outline-secondary" className="px-5 ms-2">Liên hệ shop</Button>
+                        {renderActions()}
+                        <ButtonCustom variant="outline-secondary" className="px-5 ms-2">Liên hệ shop</ButtonCustom>
                     </div>
                 </div>
             </div>
             <ProductRatingModal
-                show={showModal}
+                show={showModalRating}
                 handleClose={() => setShowModal(false)}
                 productId={productId}
                 userId={authentication?.userId}
                 orderDetailId={orderDetailId}
                 refetch={refetch}
+            />
+            <ConfirmModal
+                show={showModalCancel}
+                confirm="Bạn có muốn hủy đơn hàng này không?"
+                onClose={() => setShowModalCancel(false)}
+                handleOperations={handleCancelOrder}
+                input="cause"
             />
         </>
     )

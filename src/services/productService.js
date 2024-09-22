@@ -6,12 +6,12 @@ export const productService = {
         return httpRequest.get(url);
 
     },
-    getAllProducts: (currentPage = 0, sizePage = 20, sortBy = "name", direction = "asc") => {
+    getAllProducts: (page = 0, size = 20, sortBy = "name", sortOrder = "asc") => {
         return httpRequest.get(BASE_URL, {
             params: {
-                page: currentPage,
-                size: sizePage,
-                sort: `${sortBy},${direction}`
+                page,
+                size,
+                sort: `${sortBy},${sortOrder}`
             }
         });
     },

@@ -5,13 +5,13 @@ export const paymentService = {
     createPayment: (paymentRequest) => {
         return httpRequest.post(BASE_URL, paymentRequest);
     },
-    getPayments: (page, size = "", sortField = "", sortDirection = "") => {
+    getPayments: (page, size = "", sortBy = "", sortOrder = "") => {
         return httpRequest.get(BASE_URL,
             {
                 params: {
                     page,
                     size,
-                    sort: `${sortField},${sortDirection}`
+                    sort: `${sortBy},${sortOrder}`
                 }
             }
         );

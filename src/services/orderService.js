@@ -14,13 +14,13 @@ export const orderService = {
         const url = `${BASE_URL}/${orderId}`;
         return httpRequest.get(url);
     },
-    getOrders: (page, size = "", sortField = "", sortDirection = "") => {
+    getOrders: (page, size = "", sortBy = "", sortOrder = "") => {
         return httpRequest.get(BASE_URL,
             {
                 params: {
                     page,
                     size,
-                    sort: `${sortField},${sortDirection}`
+                    sort: `${sortBy},${sortOrder}`
                 }
             }
         );

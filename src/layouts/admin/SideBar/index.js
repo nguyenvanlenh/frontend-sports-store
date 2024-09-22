@@ -4,7 +4,6 @@ import UserImage from "../../../data/img/user_icon.webp"
 import './style.scss'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { MdDashboardCustomize } from "react-icons/md";
-import { AiFillProduct } from "react-icons/ai";
 import { FaUserGroup } from "react-icons/fa6";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { MdCategory } from "react-icons/md";
@@ -12,41 +11,47 @@ import { TbBrandSnowflake } from "react-icons/tb";
 import { ConfirmModal } from '../../../components/common/Modal';
 import { IoMdResize } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
-
+import { BsCartCheckFill, BsBoxSeamFill } from "react-icons/bs";
+const ICON_SIZE = 20;
 const menuItems = [
     {
         to: "/admin/dashboard",
-        icon: <MdDashboardCustomize />,
+        icon: <MdDashboardCustomize color="yellow" size={ICON_SIZE} />,
         title: "Dashboard"
     },
     {
         to: "/admin/products",
-        icon: <AiFillProduct />,
+        icon: <BsBoxSeamFill color="green" size={ICON_SIZE} />,
         title: "Quản lý sản phẩm"
     },
     {
+        to: "/admin/orders",
+        icon: <BsCartCheckFill size={ICON_SIZE} />,
+        title: "Quản lý đơn hàng"
+    },
+    {
         to: "/admin/users",
-        icon: <FaUserGroup />,
+        icon: <FaUserGroup size={ICON_SIZE} color="violet" />,
         title: "Quản lý người dùng"
     },
     {
         to: "/admin/categories",
-        icon: <MdCategory />,
+        icon: <MdCategory size={ICON_SIZE} />,
         title: "Quản lý danh mục"
     },
     {
         to: "/admin/brands",
-        icon: <TbBrandSnowflake />,
+        icon: <TbBrandSnowflake size={ICON_SIZE} />,
         title: "Quản lý nhãn hàng"
     },
     {
         to: "/admin/sizes",
-        icon: <IoMdResize />,
+        icon: <IoMdResize size={ICON_SIZE} />,
         title: "Quản lý kích cỡ"
     },
     {
         to: "/admin/profiles",
-        icon: <FaUser />,
+        icon: <FaUser size={ICON_SIZE} />,
         title: "Cá nhân"
     },
 ]

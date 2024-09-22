@@ -14,11 +14,19 @@ export const orderService = {
         const url = `${BASE_URL}/${orderId}`;
         return httpRequest.get(url);
     },
-    getOrders: () => {
-        return httpRequest.get(BASE_URL);
+    getOrders: (page, size = "", sortField = "", sortDirection = "") => {
+        return httpRequest.get(BASE_URL,
+            {
+                params: {
+                    page,
+                    size,
+                    sort: `${sortField},${sortDirection}`
+                }
+            }
+        );
     },
     getOrdersByUserId: (userId) => {
-        const url = `${BASE_URL}/user/${userId}`;
+        const url = `${BASE_URL}/users/${userId}`;
         return httpRequest.get(url);
     }
 };

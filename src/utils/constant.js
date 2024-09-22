@@ -8,7 +8,6 @@ const URL_LOCATION = "https://raw.githubusercontent.com/qtv100291/Vietnam-admini
 const COUNTRY = "Việt Nam";
 const orderStatus = {
     PENDING: "PENDING",
-    ACCEPTED: "ACCEPTED",
     PAID: "PAID",
     UNPAID: "UNPAID",
     CANCELLED: "CANCELLED"

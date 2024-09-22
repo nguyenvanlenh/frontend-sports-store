@@ -6,7 +6,7 @@ import { useFetchData } from "../../../../hooks/useFetchData"
 import { productService } from "../../../../services/productService"
 import React from "react"
 import { Loading } from "../../../../components/common/Loading"
-
+import ThumbnailImage from "../../../../data/img/main_thumbnail.png"
 export const ProductsManagement = () => {
 
     return (
@@ -94,7 +94,7 @@ const ProductsData = () => {
                                 <td className="col-1">{product.id}</td>
                                 <td>
                                     <Image
-                                        src={product.thumbnailImage}
+                                        src={product.thumbnailImage || ThumbnailImage}
                                         loading="lazy"
                                         thumbnail
                                         width="60"

@@ -5,8 +5,16 @@ export const paymentService = {
     createPayment: (paymentRequest) => {
         return httpRequest.post(BASE_URL, paymentRequest);
     },
-    getPayments: () => {
-        return httpRequest.get(BASE_URL);
+    getPayments: (page, size = "", sortField = "", sortDirection = "") => {
+        return httpRequest.get(BASE_URL,
+            {
+                params: {
+                    page,
+                    size,
+                    sort: `${sortField},${sortDirection}`
+                }
+            }
+        );
     },
     getPayment: (paymentId) => {
         const url = `${BASE_URL}/${paymentId}`;

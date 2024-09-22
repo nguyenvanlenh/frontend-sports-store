@@ -23,6 +23,7 @@ import { UsersManagement } from "../pages/admin/users/UsersManagement";
 import { BrandsManagement } from "../pages/admin/brands/BrandsManagement";
 import { CategoriesManagement } from "../pages/admin/categories/CategoriesManagement";
 import { SizesManagement } from "../pages/admin/sizes/SizesManagement";
+import { OrdersManagement } from "../pages/admin/orders/OrdersManagement";
 
 export const AppRoutes = createBrowserRouter([
     {
@@ -122,6 +123,10 @@ export const AppRoutes = createBrowserRouter([
             {
                 path: "sizes",
                 element: <SizesManagement />
+            },
+            {
+                path: "orders",
+                element: <OrdersManagement />
             },
 
         ]

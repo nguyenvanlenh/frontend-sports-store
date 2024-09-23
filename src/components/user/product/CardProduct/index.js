@@ -55,7 +55,7 @@ export const CardProduct = ({ product, isNew = false, isPopular = false }) => {
                             }}
                         >{product.name}
                         </Card.Title>
-                        <Card.Text className="d-flex justify-content-center align-items-end flex-wrap">
+                        <Card.Text className="d-flex justify-content-center align-items-center flex-wrap">
                             {
                                 (product.salePrice !== product.regularPrice) &&
                                 <strong>

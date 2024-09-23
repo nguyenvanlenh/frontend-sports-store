@@ -4,7 +4,7 @@ import UserImage from "../../../data/img/user_icon.webp";
 import "./styles.scss";
 import { FaSearch, FaUser, FaSearchMinus } from "react-icons/fa";
 import { IoMenuSharp } from "react-icons/io5";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IconCart } from "../../../components/user/cart/IconCart";
 import { OffcanvasComponent } from "../../../components/common/Offcanvas";
 import { SearchBar } from "../../../components/user/search/SearchBar";
@@ -12,6 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearSearch } from "../../../redux/searchSlice";
 import { logout } from "../../../redux/authSlice";
 import Logo from "../../../data/img/logo/main_logo.png"
+
+const active = {
+    backgroundColor: "rgba(245, 245, 245,.2)",
+}
 
 export const Header = () => {
     const authentication = useSelector((state) => state.auth);
@@ -21,6 +25,9 @@ export const Header = () => {
     const [searchOpen, setSearchOpen] = React.useState(false);
     const searchInputRef = React.useRef(null);
     const SIZE_ICON_HEADER = 20;
+    const location = useLocation();
+    const pathName = location.pathname;
+
 
     const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -61,7 +68,10 @@ export const Header = () => {
                             ? <div className="d-flex flex-fill justify-content-around main-tab">
                                 {menuItems.map((item, index) => (
                                     <Nav.Item key={index}>
-                                        <Link to={item.path} className="fs-5">
+                                        <Link
+                                            to={item.path}
+                                            className="fs-5 py-5 px-2"
+                                            style={(pathName === item.path) ? active : {}}>
                                             {item.label}
                                         </Link>
                                     </Nav.Item>

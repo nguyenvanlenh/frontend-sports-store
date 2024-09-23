@@ -55,7 +55,7 @@ export const PaymentMethod = ({ selectedMethod, onMethodChange }) => (
         />
         {selectedMethod === paymentMethod.PAYPAL.key && (
             <PaymentMethodInfo>
-                Thông tin thanh toán với Paypal
+                Bạn sẽ được chuyển hướng đến PayPal để hoàn tất thanh toán một cách an toàn. Sau khi giao dịch thành công, bạn sẽ được chuyển trở lại trang web của chúng tôi để xác nhận đơn hàng. Vui lòng đảm bảo tất cả thông tin thanh toán chính xác trước khi tiếp tục.
             </PaymentMethodInfo>
         )}
     </div>

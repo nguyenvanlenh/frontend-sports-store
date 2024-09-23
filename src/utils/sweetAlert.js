@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 export const confirmAlert = (
     callBack,
     text,
+    callBackCancel,
     icon = "question",
     showCancelButton = true,
     confirmButtonText = "Đồng ý",
@@ -18,6 +19,9 @@ export const confirmAlert = (
     }).then((result) => {
         if (result.isConfirmed) {
             callBack();
+        }
+        if (typeof callBackCancel === "function") {
+            callBackCancel();
         }
     });
 };

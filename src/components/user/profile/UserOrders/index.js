@@ -4,7 +4,6 @@ import { deliveryStatus, orderStatus } from "../../../../utils/constant";
 import { formatCurrencyVN } from "../../../../utils/common";
 import { ScrollToTop } from "../../../../routes/ScrollToTop";
 import { useFetchData } from "../../../../hooks/useFetchData";
-import { paymentService } from "../../../../services/paymentService";
 import { Loading } from "../../../common/Loading";
 import { ItemOrderDetail } from "../../checkout/ItemOrderDetail";
 import { ConfirmModal, OrderDetailModal, ProductRatingModal } from "../../../common/Modal";
@@ -23,12 +22,12 @@ export const UserOrders = () => {
     const navRef = React.useRef(null);
     const headerHeight = React.useRef(0);
     const {
-        data: payments,
+        data: orders,
         isLoading,
         isError,
         error,
         refetch
-    } = useFetchData(`payments${authentication?.userId}`, () => paymentService.getPaymentsByUserId(authentication?.userId));
+    } = useFetchData(`orders${authentication?.userId}`, () => orderService.getOrdersByUserId(authentication?.userId));
 
     React.useEffect(() => {
         const header = document.querySelector("#header-user");
@@ -42,6 +41,7 @@ export const UserOrders = () => {
             setIsSticky(navTop < headerHeight.current);
         }
     }, []);
+    console.log(orders);
 
     React.useEffect(() => {
         window.addEventListener("scroll", handleScroll);
@@ -54,12 +54,12 @@ export const UserOrders = () => {
 
     const filterDataByStatusAndSearch = (status) => {
         const filteredData = status === deliveryStatus.ALL.key
-            ? payments?.content
-            : payments?.content?.filter(payment => payment.order.deliveryStatus === status);
+            ? orders?.content
+            : orders?.content?.filter(order => order.deliveryStatus === status);
 
-        return filteredData?.filter(payment =>
-            String(payment.order.id).includes(searchTerm.toLowerCase()) ||
-            payment.order.listOrderDetails.some(orderDetail =>
+        return filteredData?.filter(order =>
+            String(order.id).includes(searchTerm.toLowerCase()) ||
+            order.listOrderDetails.some(orderDetail =>
                 orderDetail.product.name.toLowerCase().includes(searchTerm.toLowerCase())
             )
         );
@@ -88,7 +88,7 @@ export const UserOrders = () => {
     if (isError) {
         return (
             <div>
-                {isError && <div>Error loading list payments: {error.message}</div>}
+                {isError && <div>Error loading list orders: {error.message}</div>}
             </div>
         );
     }
@@ -123,9 +123,9 @@ export const UserOrders = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <InputGroup.Text onClick={handleSearch}
-                    className="text-primary"
                     style={{
-                        cursor: "pointer"
+                        cursor: "pointer",
+                        color: "#d81f19"
                     }}>Tìm kiếm</InputGroup.Text>
             </InputGroup>
 
@@ -143,8 +143,8 @@ const ItemOrderList = ({ data, refetch }) => {
     return (
         <div style={tabContentStyle}>
             {hasData ? (
-                data.map((payment, idx) => (
-                    <ItemOrder key={idx} data={payment} refetch={refetch} />
+                data.map((order, idx) => (
+                    <ItemOrder key={idx} data={order} refetch={refetch} />
                 ))
             ) : (
                 <div className="d-flex align-items-center justify-content-center">
@@ -159,19 +159,19 @@ const ItemOrderList = ({ data, refetch }) => {
 const ItemOrder = ({ data, refetch }) => {
     const [showModalRating, setShowModal] = React.useState(false);
     return (
-        data.order.listOrderDetails.map((orderDetail, idx) =>
+        data.listOrderDetails.map((orderDetail, idx) =>
             <React.Fragment key={idx}>
                 <div className="bg-light p-3 rounded">
                     <OrderHeader
-                        id={data.order.id}
-                        status={data.order.deliveryStatus} />
+                        id={data.id}
+                        status={data.deliveryStatus} />
                     <hr className="m-0 mt-1" />
                     <ItemOrderDetail key={idx} detail={orderDetail} onClick={() => setShowModal(true)} />
                 </div>
                 <OrderFooter
-                    amount={data.amount}
-                    status={data.order.deliveryStatus}
-                    order={data.order}
+                    amount={data.payment.amount}
+                    status={data.deliveryStatus}
+                    order={data}
                     productId={orderDetail.product.id}
                     orderDetailId={orderDetail.id}
                     isRating={orderDetail.isRating}
@@ -249,15 +249,21 @@ const OrderFooter = ({
             return renderDeliveredActions();
         }
         if (order.orderStatus === orderStatus.CANCELLED) {
-            return <CustomButton variant="danger" className="px-5">Mua lại</CustomButton>;
+            return <CustomButton
+                variant="danger" style={{
+                    backgroundColor: "#d81f19"
+                }} className="px-5">Mua lại</CustomButton>;
         }
         return (
-            <Button
+            <CustomButton
+                variant="danger"
                 onClick={() => setShowModalCancel(true)}
-                variant="danger" className="px-5"
+                style={{
+                    backgroundColor: "#d81f19"
+                }} className="px-5"
             >
                 Hủy đơn hàng
-            </Button>
+            </CustomButton>
         );
     };
 
@@ -269,7 +275,11 @@ const OrderFooter = ({
                     className="px-5 me-2"
                     onClick={() => setShowModal(true)}
                 >Đánh giá</Button>}
-            <CustomButton variant="danger" className="px-5">Mua lại</CustomButton>
+            <CustomButton variant="danger"
+                style={{
+                    backgroundColor: "#d81f19"
+                }}
+                className="px-5">Mua lại</CustomButton>
         </>
     );
     return (

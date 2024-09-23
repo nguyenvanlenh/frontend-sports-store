@@ -1,15 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { ORDER_LS } from "../utils/constant";
+const initialState = JSON.parse(localStorage.getItem(ORDER_LS)) ||
+{
+    productsIdSelected: [],
+    orderIdSaved: null
+};
 export const orderSlice = createSlice({
     name: "order",
-    initialState: {},
+    initialState,
     reducers: {
-        createOrder: (state, action) => {
-            return action.payload;
+        toggleProductInOrder: (state, action) => {
+            const id = action.payload;
+            const exists = state.productsIdSelected.some(item => item === id);
+            if (!exists)
+                state.productsIdSelected.push(action.payload);
+            else
+                state.productsIdSelected = state.productsIdSelected
+                    .filter(item => item !== id);
         },
-        updateOrder: (state, action) => {
-            const { id } = action.payload;
-
+        clearProductsIdSelected: (state) => {
+            state.productsIdSelected = [];
+        },
+        setOrderIdSaved: (state, action) => {
+            state.orderIdSaved = action.payload;
+        },
+        clearOrderIdSaved: (state) => {
+            state.orderIdSaved = null;
         }
+
     }
 })
+export const {
+    toggleProductInOrder,
+    clearProductsIdSelected,
+    setOrderIdSaved,
+    clearOrderIdSaved } = orderSlice.actions;
+
+export default orderSlice.reducer;

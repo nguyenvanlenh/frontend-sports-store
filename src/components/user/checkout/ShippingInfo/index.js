@@ -13,9 +13,12 @@ import { orderService } from "../../../../services/orderService";
 import { errorAlert, successAlert } from "../../../../utils/sweetAlert";
 import { paymentService } from "../../../../services/paymentService";
 import { paymentRequest } from "../../../../models/paymentRequest";
-import { clearCart } from "../../../../redux/cartSlice";
 import { useNavigate } from "react-router-dom";
 import { FaWindowMinimize } from "react-icons/fa";
+import {
+    setOrderIdSaved
+} from "../../../../redux/orderSlice";
+import { useClearOrder } from "../../../../hooks/useClearOrder";
 const validationSchema = Yup.object({
     fullName: Yup.string().required("Họ và tên không được để trống"),
     email: Yup.string().email("Email không hợp lệ").required("Email không được để trống"),
@@ -33,14 +36,28 @@ export const ShippingInfo = () => {
     const [provinces, setProvinces] = React.useState([]);
     const [districts, setDistricts] = React.useState([]);
     const [communes, setCommunes] = React.useState([]);
-    const cartItems = useSelector(state => state.cart);
+    const [progress, setProgress] = React.useState("Hoàn tất đơn hàng");
+
     const dispatch = useDispatch();
-    const navigation = useNavigate();
+    const navigate = useNavigate();
+
+    const cartItems = useSelector(state => state.cart);
+    const productsIdSelected = useSelector(state => state.order.productsIdSelected);
+    const clearOrder = useClearOrder(productsIdSelected);
+    React.useEffect(() => {
+        if (!productsIdSelected.length)
+            navigate("/cart")
+    }, [navigate, productsIdSelected])
+
+    const orderProducts = React.useMemo(() => {
+        return cartItems?.filter(item => productsIdSelected.includes(item.id)) || [];
+    }, [cartItems, productsIdSelected]);
+
     const totalPrice = React.useMemo(() => {
-        return cartItems.reduce((total, item) => {
-            return total + item.quantity * item.product.price;
+        return orderProducts.reduce((acc, item) => {
+            return acc + item.quantity * item.product.salePrice;
         }, 0);
-    }, [cartItems]);
+    }, [orderProducts]);
 
     React.useEffect(() => {
         axios.get(URL_LOCATION)
@@ -87,6 +104,7 @@ export const ShippingInfo = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
+            setProgress("Đang đặt hàng")
             const orderAddress = orderAddressRequest({
                 addressLine: values.address,
                 commune: values.commune,
@@ -94,11 +112,11 @@ export const ShippingInfo = () => {
                 province: values.province,
                 country: COUNTRY,
             });
-            const orderDetails = cartItems?.map((item) => {
+            const orderDetails = orderProducts?.map((item) => {
                 return orderDetailRequest({
                     idProduct: item.productId,
                     quantity: item.quantity,
-                    price: item.quantity * item.product.price,
+                    price: item.quantity * item.product.salePrice,
                     size: item.size.id,
                     category: item.product.category.id,
                     brand: item.product.brand.id
@@ -117,24 +135,24 @@ export const ShippingInfo = () => {
             })
             try {
                 const orderResult = await orderService.createOrder(order);
+                dispatch(setOrderIdSaved(orderResult.data.id));
 
                 const payment = paymentRequest({
                     orderId: orderResult.data.id,
                     amount: orderResult.data.totalPrice,
                     paymentFee: orderResult.data.deliveryFee,
                     paymentMethod: selectedMethod,
-                    paymentStatus: paymentStatus.PENDING
+                    paymentStatus: paymentStatus.PENDING.key
                 });
-
+                setProgress("Đang thanh toán")
                 if (selectedMethod !== paymentMethod.PAYPAL.key) {
                     await paymentService.createPayment(payment);
-                    dispatch(clearCart())
+                    clearOrder();
                     successAlert("Thành công", "Tạo đơn hàng thành công", 2000,
-                        () => navigation("/profile/order/history"));
+                        () => navigate("/profile/order-history"));
                     return;
                 }
                 const paypalUrl = await paymentService.paypal.createPayment(payment);
-                console.log(paypalUrl);
 
                 window.location.href = `${paypalUrl.data.url}/`;
 
@@ -148,6 +166,8 @@ export const ShippingInfo = () => {
                     errorAlert("Xin lỗi", "Hệ thống hiện đang bảo trì. Vui lòng quay lại và đặt hàng sau.");
                 }
                 console.error(error.response?.data?.message || error.message);
+            } finally {
+                setProgress("Hoàn tất đơn hàng")
             }
 
         }
@@ -264,8 +284,9 @@ export const ShippingInfo = () => {
                 />
             </div>
             <div className="d-flex justify-content-between mt-3">
-                <Button onClick={() => navigation("/cart")} variant="light">Giỏ hàng</Button>
-                <Button variant="secondary" type="submit">Hoàn tất đơn hàng</Button>
+                <Button onClick={() => navigate("/cart")} variant="light">Giỏ hàng</Button>
+                <Button variant="secondary" type="submit">
+                    {progress}</Button>
             </div>
         </Form>
     );

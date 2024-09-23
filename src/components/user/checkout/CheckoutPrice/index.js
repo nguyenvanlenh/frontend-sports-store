@@ -6,16 +6,21 @@ import React from "react";
 import { ItemOrderDetail } from "../ItemOrderDetail";
 export const CheckoutPrice = () => {
     const cartItems = useSelector(state => state.cart);
-    const [totalPriceCart] = React.useState(() => {
-        return cartItems.reduce((acc, item) => {
-            return acc + item.quantity * item.product.price;
+    const productsIdSelected = useSelector(state => state.order.productsIdSelected);
+    const orderProducts = React.useMemo(() => {
+        return cartItems?.filter(item => productsIdSelected.includes(item.id)) || [];
+    }, [cartItems, productsIdSelected]);
+
+    const totalPriceCart = React.useMemo(() => {
+        return orderProducts.reduce((acc, item) => {
+            return acc + item.quantity * item.product.salePrice;
         }, 0);
-    });
+    }, [orderProducts]);
     const [coupon, setCoupon] = React.useState("");
     const shippingFee = 0;
     return (
         <div className="mt-4">
-            {cartItems.map((item) => {
+            {orderProducts?.map((item) => {
                 return (
                     <ItemOrderDetail key={uuidv4()} detail={item} />
                 )

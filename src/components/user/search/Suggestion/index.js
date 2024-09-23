@@ -43,7 +43,7 @@ const SuggestionItem = ({ product }) => {
     return (
         <Link className="text-dark" to={`/product/${product?.id}`} onClick={handleClick} >
             <div className="d-flex justify-content-start align-items-center" style={suggestItemStyle}>
-                <Image src={product.listImages[0]?.path} thumbnail style={suggestItemImageStyle} />
+                <Image src={product.thumbnailImage || product.listImages[0]?.path} thumbnail style={suggestItemImageStyle} />
                 <span className="text-uppercase">{product?.name || "Áo đấu chính hãng"}</span>
             </div>
         </Link>

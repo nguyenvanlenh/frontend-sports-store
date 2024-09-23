@@ -192,11 +192,11 @@ export const OrderDetailModal = ({ show, onClose, data }) => {
     return (
         <Modal show={show} onHide={onClose} size="lg">
             <Modal.Header closeButton>
-                <Modal.Title>Chi tiết đơn hàng (#{data.order.id})</Modal.Title>
+                <Modal.Title>Chi tiết đơn hàng (#{data.id})</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {
-                    data.order.listOrderDetails.map((orderDetail, idx) =>
+                    data.listOrderDetails.map((orderDetail, idx) =>
                         <ItemOrderDetail key={idx} detail={orderDetail} />
                     )
                 }
@@ -204,23 +204,23 @@ export const OrderDetailModal = ({ show, onClose, data }) => {
                     <tbody>
                         <tr>
                             <td>Tổng tiền hàng</td>
-                            <td>{formatCurrencyVN(data.order.totalPrice)}</td>
+                            <td>{formatCurrencyVN(data.totalPrice)}</td>
                         </tr>
                         <tr>
                             <td>Phí vận chuyển</td>
-                            <td>{formatCurrencyVN(data.order.deliveryFee)}</td>
+                            <td>{formatCurrencyVN(data.deliveryFee)}</td>
                         </tr>
                         <tr>
                             <td>Thành tiền</td>
-                            <td className="fs-4 text-danger">{formatCurrencyVN(data.order.totalPrice)}</td>
+                            <td className="fs-4 text-danger">{formatCurrencyVN(data.totalPrice)}</td>
                         </tr>
                         <tr>
                             <td>Phương thức thanh toán</td>
-                            <td>{paymentMethod[data.paymentMethod]?.displayName}</td>
+                            <td>{paymentMethod[data.payment.paymentMethod]?.displayName}</td>
                         </tr>
                         <tr>
                             <td>Trạng thái thanh toán</td>
-                            <td className="text-warning">{paymentStatus[data.paymentStatus]?.displayName}</td>
+                            <td className="text-warning">{paymentStatus[data.payment.paymentStatus]?.displayName}</td>
                         </tr>
                     </tbody>
                 </Table>

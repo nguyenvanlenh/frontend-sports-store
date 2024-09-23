@@ -28,5 +28,9 @@ export const orderService = {
     getOrdersByUserId: (userId) => {
         const url = `${BASE_URL}/users/${userId}`;
         return httpRequest.get(url);
+    },
+    deleteOrder: (orderId) => {
+        const url = `${BASE_URL}/${orderId}`;
+        return httpRequest.delete(url, orderId);
     }
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { authService } from "../../../services/authService";
@@ -10,6 +10,8 @@ import { OAuthFBConfig, OAuthGGConfig, OAuthGHConfig } from "../../../configurat
 import LogoGithub from "../../../data/img/logo/logoGitBlack.png"
 import { AUTH_TYPE, authType, ROLE } from "../../../utils/constant";
 import { v4 as uuidv4 } from "uuid";
+import { useDispatch } from "react-redux";
+import { saveAuthentication } from "../../../redux/authSlice";
 const btnLoginStyle = {
     backgroundColor: "#d81f19"
 };
@@ -28,6 +30,10 @@ export const Login = () => {
     const [error, setError] = React.useState("");
     const [showPassword, setShowPassword] = React.useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
+    const dispatch = useDispatch();
+
+    const from = location.state?.from || "/";
 
     React.useEffect(() => {
         localStorages.setDataByKey(AUTH_TYPE, "")
@@ -77,9 +83,14 @@ export const Login = () => {
             setError("");
             try {
                 const response = await authService.login(values);
-                setLogin(response?.data);
+                setLogin(response?.data)
+                dispatch(saveAuthentication(response?.data));
                 if (response?.data.listRoles.includes(ROLE.ADMIN)) {
                     navigate("/admin/dashboard");
+                    return;
+                }
+                if (!!from) {
+                    navigate(from)
                     return;
                 }
                 navigate("/home");

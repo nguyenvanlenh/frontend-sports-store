@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 
 export const confirmAlert = (
-    func,
+    callBack,
     text,
     icon = "question",
     showCancelButton = true,
@@ -17,7 +17,7 @@ export const confirmAlert = (
         confirmButtonText: confirmButtonText,
     }).then((result) => {
         if (result.isConfirmed) {
-            func();
+            callBack();
         }
     });
 };

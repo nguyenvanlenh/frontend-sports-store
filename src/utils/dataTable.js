@@ -112,11 +112,11 @@ const productColumns = (onEdit, onLock) => [
             <Image
                 src={row.thumbnailImage || ThumbnailImage}
                 loading="lazy"
-                thumbnail
                 width="60"
+                rounded
             />
         ),
-        width: "10%",
+        width: "13%",
     },
     {
         name: "Tên",
@@ -175,7 +175,7 @@ const userColumns = (onEdit, onLock) => [
         selector: row => <Link to="" className="text-primary">#{row.id}</Link>,
         sortField: "id",
         sortable: true,
-        width: "7%",
+        width: "10%",
     },
     {
         name: "",

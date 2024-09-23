@@ -26,10 +26,10 @@ const setAuthorizationHeader = (request) => {
         request.headers['Authorization'] = `Bearer ${accessToken}`;
 };
 const handleSessionExpired = () => {
-    localStorage.removeItem(ACCESS_TOKEN);
-    localStorage.removeItem(REFRESH_TOKEN);
-    errorAlert("Thông báo hết hạn", "Hết phiên đăng nhập. Vui lòng đăng nhập lại.", 2000)
-    window.location.href = "/login";
+    // localStorage.removeItem(ACCESS_TOKEN);
+    // localStorage.removeItem(REFRESH_TOKEN);
+    // errorAlert("Thông báo hết hạn", "Hết phiên đăng nhập. Vui lòng đăng nhập lại.", 2000)
+    // window.location.href = "/login";
 };
 const refreshAccessToken = async () => {
     let rfToken = localStorages.getDataByKey(REFRESH_TOKEN);

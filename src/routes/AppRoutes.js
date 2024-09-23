@@ -5,7 +5,6 @@ import { UserLayout } from "../layouts/user/UserLayout";
 import { Login } from "../pages/auth/Login";
 import NotFound from "../pages/error/NotFound";
 import { AdminLayout } from "../layouts/admin/AdminLayout";
-import { Search } from "../pages/user/Search";
 import { Cart } from "../pages/user/Cart";
 import { ProductDetail } from "../pages/user/ProductDetail";
 import { ListProducts } from "../pages/user/ListProducts";
@@ -40,7 +39,7 @@ export const AppRoutes = createBrowserRouter([
     },
     {
         path: "/",
-        element: <ProtectedRoute roles={["ROLE_USER"]}><UserLayout /></ProtectedRoute>,
+        element: <UserLayout />,
         children: [
             {
                 path: "/",
@@ -49,9 +48,6 @@ export const AppRoutes = createBrowserRouter([
             {
                 path: "home",
                 element: <Home />
-            }, {
-                path: "search",
-                element: <Search />
             }, {
                 path: "cart",
                 element: <Cart />
@@ -65,15 +61,15 @@ export const AppRoutes = createBrowserRouter([
             },
             {
                 path: "checkout",
-                element: <Checkout />
+                element: <ProtectedRoute roles={["ROLE_USER"]}><Checkout /></ProtectedRoute>
             },
             {
                 path: "payment-processing",
-                element: <PaymentProcessing />
+                element: <ProtectedRoute roles={["ROLE_USER"]}><PaymentProcessing /></ProtectedRoute>
             },
             {
                 path: "profile",
-                element: <Profile />,
+                element: <ProtectedRoute roles={["ROLE_USER"]}><Profile /></ProtectedRoute>,
                 children: [
                     {
                         path: "/profile",
@@ -106,7 +102,7 @@ export const AppRoutes = createBrowserRouter([
             },
             {
                 path: "create-product",
-                element: <CreateProduct />
+                element: <ProtectedRoute roles={["MANAGE", "ROLE_ADMIN"]}><CreateProduct /></ProtectedRoute>
             },
             {
                 path: "users",
@@ -128,7 +124,6 @@ export const AppRoutes = createBrowserRouter([
                 path: "orders",
                 element: <OrdersManagement />
             },
-
         ]
     },
     {
@@ -136,7 +131,6 @@ export const AppRoutes = createBrowserRouter([
         element: <NotFound />
     }
 ]);
-
 if (import.meta.hot) {
     import.meta.hot.dispose(() => AppRoutes.dispose());
 }

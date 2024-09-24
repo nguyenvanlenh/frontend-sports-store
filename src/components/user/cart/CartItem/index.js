@@ -4,40 +4,51 @@ import { QuantityAdjuster } from "../../../common/QuantityAdjuster";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeProductFromCart, updateProductQuantityInCart } from "../../../../redux/cartSlice";
-import { toggleProductInOrder } from "../../../../redux/orderSlice";
+import { removeProductFromOrder, toggleProductInOrder, updateProductQuantityInOrder } from "../../../../redux/orderSlice";
 import { confirmAlert } from "../../../../utils/sweetAlert";
+import { selectProductsSelected, useToggleProductInOrder } from "../../../../redux/orderSelector";
 const imageStyle = {
     width: '80px',
     height: '80px',
     objectFit: 'cover',
 };
-export const CartItem = ({ item }) => {
-    const productsIdSelected = useSelector(state => state.order.productsIdSelected);
+export const CartItem = ({ cartItem }) => {
     const dispatch = useDispatch();
-    const [quantitySelected, setQuantitySelected] = React.useState(() => item.quantity);
-    const price = item.product.salePrice;
+    const productsSelected = useSelector(selectProductsSelected);
+    const [quantitySelected, setQuantitySelected] = React.useState(() => cartItem.quantity);
+
+    const price = cartItem.product.salePrice;
+
     const handleQuantityChange = React.useCallback((quantity) => {
         setQuantitySelected(quantity);
-        dispatch(updateProductQuantityInCart({ id: item.id, quantity: quantity }));
-    }, [dispatch, item.id]);
+        dispatch(updateProductQuantityInCart({ id: cartItem.id, quantity: quantity }));
+        dispatch(updateProductQuantityInOrder({ id: cartItem.id, quantity: quantity }));
+
+    }, [dispatch, cartItem.id]);
     React.useEffect(() => {
         if (quantitySelected === 0) {
-            confirmAlert(() =>
-                dispatch(removeProductFromCart({ id: item.id })),
+            confirmAlert(() => {
+                dispatch(removeProductFromCart({ id: cartItem.id }));
+                dispatch(removeProductFromOrder(cartItem));
+            }
+                ,
                 "Bạn có muốn xóa sản phẩm này không ?",
                 handleQuantityChange(1)
             )
         }
 
-    }, [dispatch, handleQuantityChange, item.id, quantitySelected])
+    }, [dispatch, handleQuantityChange, quantitySelected, cartItem])
     const totalPrice = () => {
         return quantitySelected * price;
     }
+    const toggleProduct = useToggleProductInOrder(cartItem);
     const handleChangeCheckbox = () => {
-        dispatch(toggleProductInOrder(item.id))
+        toggleProduct();
     }
 
-    const isChecked = productsIdSelected?.some(id => id === item.id);
+    const isChecked = productsSelected?.some((item) =>
+        (item?.product.id === cartItem?.product.id) &&
+        (item?.size.id === cartItem?.size.id));
     return (
         <tr className="d-flex align-items-center justify-content-between p-2">
             <td className="col-1">
@@ -51,11 +62,11 @@ export const CartItem = ({ item }) => {
                 </Form>
             </td>
             <td className="col-2">
-                <Image src={item.product.thumbnailImage || item.product.listImages[0]?.path} rounded style={imageStyle} />
+                <Image src={cartItem.product.thumbnailImage || cartItem.product.listImages[0]?.path} rounded style={imageStyle} />
             </td>
             <td className="col-3">
-                <strong className="text-uppercase">{item.product.name}</strong>
-                <p>Size: {item.size.name}</p>
+                <strong className="text-uppercase">{cartItem.product.name}</strong>
+                <p>Size: {cartItem.size.name}</p>
             </td>
             <td className="text-secondary text-center col-2"><strong>{formatCurrencyVN(price)}</strong></td>
             <td className="col-2 d-flex justify-content-end">

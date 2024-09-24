@@ -5,13 +5,16 @@ import { errorAlert, successAlert } from "../../../utils/sweetAlert";
 import { useDispatch, useSelector } from "react-redux";
 import { orderService } from "../../../services/orderService";
 import { useClearOrder } from "../../../hooks/useClearOrder";
+import { selectProductsSelected } from "../../../redux/orderSelector";
+import { clearOrderIdSaved } from "../../../redux/orderSlice";
 
 export const PaymentProcessing = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const orderIdSaved = useSelector(state => state.order.orderIdSaved);
-    const productsIdSelected = useSelector(state => state.order.productsIdSelected);
-    const clearOrder = useClearOrder(productsIdSelected);
+    const productsSelected = useSelector(selectProductsSelected);
+    const clearOrder = useClearOrder(productsSelected);
+
     React.useEffect(() => {
         const handlePaymentStatus = async () => {
             const status = new URLSearchParams(window.location.search).get("status") || "error";
@@ -23,6 +26,7 @@ export const PaymentProcessing = () => {
             } else {
                 try {
                     await orderService.deleteOrder(orderIdSaved);
+                    dispatch(clearOrderIdSaved())
                 } catch (error) {
                     console.error("An error occurred while deleting order: ", error);
                 }
@@ -31,7 +35,7 @@ export const PaymentProcessing = () => {
             }
         };
         handlePaymentStatus();
-    }, [dispatch, navigate, orderIdSaved, productsIdSelected])
+    }, [clearOrder, dispatch, navigate, orderIdSaved])
     return (
         <Loading />
     )

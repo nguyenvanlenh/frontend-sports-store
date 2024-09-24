@@ -2,24 +2,35 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ORDER_LS } from "../utils/constant";
 const initialState = JSON.parse(localStorage.getItem(ORDER_LS)) ||
 {
-    productsIdSelected: [],
+    productsSelected: [],
     orderIdSaved: null
 };
 export const orderSlice = createSlice({
     name: "order",
     initialState,
     reducers: {
-        toggleProductInOrder: (state, action) => {
-            const id = action.payload;
-            const exists = state.productsIdSelected.some(item => item === id);
-            if (!exists)
-                state.productsIdSelected.push(action.payload);
-            else
-                state.productsIdSelected = state.productsIdSelected
-                    .filter(item => item !== id);
+        addProductToOrder: (state, action) => {
+            state.productsSelected.push(action.payload);
         },
-        clearProductsIdSelected: (state) => {
-            state.productsIdSelected = [];
+        setOneProductToOrder: (state, action) => {
+            state.productsSelected = action.payload;
+        },
+        removeProductFromOrder: (state, action) => {
+            const cartItem = action.payload;
+            state.productsSelected = state.productsSelected
+                .filter((item) =>
+                    !(item?.product.id === cartItem?.product.id &&
+                        item?.size.id === cartItem?.size.id));
+        },
+        updateProductQuantityInOrder: (state, action) => {
+            const { id, quantity } = action.payload;
+            const product = state.productsSelected.find(item => item.id === id);
+            if (product) {
+                product.quantity = quantity;
+            }
+        },
+        clearProductsSelected: (state) => {
+            state.productsSelected = [];
         },
         setOrderIdSaved: (state, action) => {
             state.orderIdSaved = action.payload;
@@ -31,8 +42,11 @@ export const orderSlice = createSlice({
     }
 })
 export const {
-    toggleProductInOrder,
-    clearProductsIdSelected,
+    addProductToOrder,
+    setOneProductToOrder,
+    removeProductFromOrder,
+    updateProductQuantityInOrder,
+    clearProductsSelected,
     setOrderIdSaved,
     clearOrderIdSaved } = orderSlice.actions;
 

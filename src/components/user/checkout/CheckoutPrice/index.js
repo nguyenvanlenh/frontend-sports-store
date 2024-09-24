@@ -1,26 +1,24 @@
-import { Button, Col, Form, InputGroup, Row } from "react-bootstrap"
+import { Col, Form, InputGroup, Row } from "react-bootstrap"
 import { formatCurrencyVN } from "../../../../utils/common"
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import React from "react";
 import { ItemOrderDetail } from "../ItemOrderDetail";
+import { selectProductsSelected } from "../../../../redux/orderSelector";
+import { CustomButton } from "../../../common/Button";
 export const CheckoutPrice = () => {
-    const cartItems = useSelector(state => state.cart);
-    const productsIdSelected = useSelector(state => state.order.productsIdSelected);
-    const orderProducts = React.useMemo(() => {
-        return cartItems?.filter(item => productsIdSelected.includes(item.id)) || [];
-    }, [cartItems, productsIdSelected]);
+    const productsSelected = useSelector(selectProductsSelected);
 
     const totalPriceCart = React.useMemo(() => {
-        return orderProducts.reduce((acc, item) => {
+        return productsSelected?.reduce((acc, item) => {
             return acc + item.quantity * item.product.salePrice;
         }, 0);
-    }, [orderProducts]);
+    }, [productsSelected]);
     const [coupon, setCoupon] = React.useState("");
     const shippingFee = 0;
     return (
         <div className="mt-4">
-            {orderProducts?.map((item) => {
+            {productsSelected?.map((item) => {
                 return (
                     <ItemOrderDetail key={uuidv4()} detail={item} />
                 )
@@ -37,7 +35,7 @@ export const CheckoutPrice = () => {
                     </InputGroup>
                 </Col>
                 <Col lg={4} xs={4}>
-                    <Button variant="secondary">Áp dụng</Button>
+                    <CustomButton variant="secondary">Áp dụng</CustomButton>
                 </Col>
             </Row>
             <hr />

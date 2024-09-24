@@ -4,7 +4,15 @@ import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PaymentMethod } from "../PaymentMethod";
-import { COUNTRY, deliveryMethod, deliveryStatus, orderStatus, paymentMethod, paymentStatus, URL_LOCATION } from "../../../../utils/constant";
+import {
+    COUNTRY,
+    deliveryMethod,
+    deliveryStatus,
+    orderStatus,
+    paymentMethod,
+    paymentStatus,
+    URL_LOCATION
+} from "../../../../utils/constant";
 import { orderAddressRequest } from "../../../../models/orderAddressRequest";
 import { orderRequest } from "../../../../models/orderRequest";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,11 +22,11 @@ import { errorAlert, successAlert } from "../../../../utils/sweetAlert";
 import { paymentService } from "../../../../services/paymentService";
 import { paymentRequest } from "../../../../models/paymentRequest";
 import { useNavigate } from "react-router-dom";
-import { FaWindowMinimize } from "react-icons/fa";
 import {
     setOrderIdSaved
 } from "../../../../redux/orderSlice";
 import { useClearOrder } from "../../../../hooks/useClearOrder";
+import { selectProductsSelected } from "../../../../redux/orderSelector";
 const validationSchema = Yup.object({
     fullName: Yup.string().required("Họ và tên không được để trống"),
     email: Yup.string().email("Email không hợp lệ").required("Email không được để trống"),
@@ -41,23 +49,19 @@ export const ShippingInfo = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const cartItems = useSelector(state => state.cart);
-    const productsIdSelected = useSelector(state => state.order.productsIdSelected);
-    const clearOrder = useClearOrder(productsIdSelected);
+    const productsSelected = useSelector(selectProductsSelected);
+    const clearOrder = useClearOrder(productsSelected);
     React.useEffect(() => {
-        if (!productsIdSelected.length)
+        if (!productsSelected.length)
             navigate("/cart")
-    }, [navigate, productsIdSelected])
+    }, [navigate, productsSelected])
 
-    const orderProducts = React.useMemo(() => {
-        return cartItems?.filter(item => productsIdSelected.includes(item.id)) || [];
-    }, [cartItems, productsIdSelected]);
 
     const totalPrice = React.useMemo(() => {
-        return orderProducts.reduce((acc, item) => {
+        return productsSelected.reduce((acc, item) => {
             return acc + item.quantity * item.product.salePrice;
         }, 0);
-    }, [orderProducts]);
+    }, [productsSelected]);
 
     React.useEffect(() => {
         axios.get(URL_LOCATION)
@@ -112,7 +116,7 @@ export const ShippingInfo = () => {
                 province: values.province,
                 country: COUNTRY,
             });
-            const orderDetails = orderProducts?.map((item) => {
+            const orderDetails = productsSelected?.map((item) => {
                 return orderDetailRequest({
                     idProduct: item.productId,
                     quantity: item.quantity,
@@ -157,6 +161,7 @@ export const ShippingInfo = () => {
                 window.location.href = `${paypalUrl.data.url}/`;
 
             } catch (error) {
+                clearOrder();
                 if (axios.isAxiosError(error)) {
                     const errorMessage = error.response?.data?.message || error.message;
                     errorAlert("Lỗi", `Yêu cầu thất bại: ${errorMessage}`);

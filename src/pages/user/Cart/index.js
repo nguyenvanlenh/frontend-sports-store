@@ -2,13 +2,15 @@ import { Col, Row } from "react-bootstrap"
 import { CartItem } from "../../../components/user/cart/CartItem"
 import { CartPrice } from "../../../components/user/cart/CartPrice";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaReply, FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "../../../utils/sweetAlert";
 import { v4 as uuidv4 } from "uuid";
 import { CustomButton } from "../../../components/common/Button";
 import { useClearOrder } from "../../../hooks/useClearOrder";
+import { selectProductsSelected } from "../../../redux/orderSelector";
+import { clearProductsSelected } from "../../../redux/orderSlice";
 const tableStyle = {
     borderCollapse: 'collapse',
     width: '100%',
@@ -17,19 +19,21 @@ const cartStyle = {
     boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
 }
 export const Cart = () => {
+
+    const dispatch = useDispatch();
     const cartItems = useSelector(state => state.cart);
-    const productsIdSelected = useSelector(state => state.order.productsIdSelected);
-    const clearOrder = useClearOrder(productsIdSelected);
+    const productsSelected = useSelector(selectProductsSelected);
+    const clearOrder = useClearOrder(productsSelected);
+    React.useEffect(() => { dispatch(clearProductsSelected()) }, [dispatch]);
+
     const totalPrice = React.useMemo(() => {
-        return cartItems
-            ?.filter(item => productsIdSelected.includes(item.id))
-            .reduce((total, item) => {
-                return total + item.quantity * item.product.salePrice;
-            }, 0);
-    }, [cartItems, productsIdSelected]);
+        return productsSelected.reduce((total, item) => {
+            return total + item.quantity * item.product.salePrice;
+        }, 0);
+    }, [productsSelected]);
 
     const handleDelete = () => {
-        if (!!productsIdSelected.length)
+        if (!!productsSelected.length)
             confirmAlert(() => clearOrder(),
                 "Bạn có muốn xóa sản phẩm đã chọn không ?"
             )
@@ -58,7 +62,7 @@ export const Cart = () => {
                                     {cartItems.map((item, index) => (
                                         <CartItem
                                             key={uuidv4()}
-                                            item={item}
+                                            cartItem={item}
                                         />
                                     ))}
                                 </tbody>

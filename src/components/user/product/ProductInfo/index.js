@@ -6,13 +6,18 @@ import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux"
 import { addProductToCart } from "../../../../redux/cartSlice"
 import { formatCurrencyVN } from "../../../../utils/common"
-import { ButtonCustom, CustomButton } from "../../../common/Button"
+import { CustomButton } from "../../../common/Button"
+import { setOneProductToOrder } from "../../../../redux/orderSlice";
+import { useNavigate } from "react-router-dom";
 
 
 export const ProductInfo = ({ product }) => {
     const dispatch = useDispatch();
-    const [quantitySelected, setQuantitySelected] = React.useState(1)
-    const [sizeSelected, setSizeSelected] = React.useState(() => product.listSize[0])
+    const navigate = useNavigate();
+
+    const [quantitySelected, setQuantitySelected] = React.useState(1);
+    const [sizeSelected, setSizeSelected] = React.useState(product.listSize[0]);
+
     const handleAddCart = () => {
         dispatch(addProductToCart({
             id: uuidv4(),
@@ -20,8 +25,19 @@ export const ProductInfo = ({ product }) => {
             size: sizeSelected,
             quantity: quantitySelected,
             product: product
-        }))
-    }
+        }));
+    };
+
+    const handleBuyNow = () => {
+        dispatch(setOneProductToOrder([{
+            id: uuidv4(),
+            productId: product.id,
+            size: sizeSelected,
+            quantity: quantitySelected,
+            product: product
+        }]));
+        navigate("/checkout");
+    };
     return (
         <>
             <Info product={product} />
@@ -39,6 +55,7 @@ export const ProductInfo = ({ product }) => {
                 <CustomButton
                     variant="dark"
                     className="me-3"
+                    onClick={handleBuyNow}
                 >Mua ngay</CustomButton>
                 <CustomButton
                     variant="danger"

@@ -10,11 +10,11 @@ export const ListProducts = () => {
     const sortAttribute = useSelector(state => state.filter.sortAttribute);
     const productFilter = useSelector(state => state.filter.productFilter);
     const pagination = useSelector(state => state.pagination)
-    const pageSize = 4;
+    const pageSize = 12;
     const searchName = useSelector(state => state.search.content);
 
-    const sortBy = sortAttribute?.field || "name";
-    const sortDirection = sortAttribute?.direction || "asc";
+    const sortBy = sortAttribute?.field || "lastModifiedOn";
+    const sortDirection = sortAttribute?.direction || "desc";
     React.useEffect(() => {
         dispatch(fetchProducts({
             name: searchName,

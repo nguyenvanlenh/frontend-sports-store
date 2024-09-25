@@ -3,17 +3,20 @@ import { ListSizes } from "../ListSizes"
 import { Promotion } from "../Promotion"
 import { QuantityAdjuster } from "../../../common/QuantityAdjuster"
 import { v4 as uuidv4 } from "uuid";
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { addProductToCart } from "../../../../redux/cartSlice"
 import { formatCurrencyVN } from "../../../../utils/common"
 import { CustomButton } from "../../../common/Button"
 import { setOneProductToOrder } from "../../../../redux/orderSlice";
 import { useNavigate } from "react-router-dom";
+import { confirmAlert } from "../../../../utils/sweetAlert";
 
 
 export const ProductInfo = ({ product }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const isLogin = useSelector(state => state.auth)?.userId;
 
     const [quantitySelected, setQuantitySelected] = React.useState(1);
     const [sizeSelected, setSizeSelected] = React.useState(product.listSize[0]);
@@ -29,6 +32,8 @@ export const ProductInfo = ({ product }) => {
     };
 
     const handleBuyNow = () => {
+
+
         dispatch(setOneProductToOrder([{
             id: uuidv4(),
             productId: product.id,
@@ -36,6 +41,10 @@ export const ProductInfo = ({ product }) => {
             quantity: quantitySelected,
             product: product
         }]));
+        if (!isLogin) {
+            confirmAlert(() => navigate("/login", { state: { from: `/product/${product.id}` } }), "Bạn phải đăng nhập trước khi thanh toán")
+            return;
+        }
         navigate("/checkout");
     };
     return (

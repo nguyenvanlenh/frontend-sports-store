@@ -11,15 +11,15 @@ const cardProduct = {
     border: "none"
 };
 
-const imageThumnail = {
+const imageThumbnail = {
     width: "100%",
     height: "200px",
     transition: "transform 0.4s ease-in-out",
 };
 
-const imageThumnailHover = {
-    ...imageThumnail,
-    transform: "scale(1.1)",
+const imageThumbnailHover = {
+    ...imageThumbnail,
+    transform: "scale(1.15)",
 };
 
 export const CardProduct = ({ product, isNew = false, isPopular = false }) => {
@@ -37,12 +37,14 @@ export const CardProduct = ({ product, isNew = false, isPopular = false }) => {
                         variant="top"
                         data-src={PlaceholderImage}
                         src={product.thumbnailImage || PlaceholderImage}
-                        style={isHovered ? imageThumnailHover : imageThumnail}
+                        style={isHovered ? imageThumbnailHover : imageThumbnail}
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
                     />
                     <Card.Body>
-                        <Card.Title className="text-center text-uppercase fs-6 fw-bold text-secondary"
+                        <Card.Title
+                            className="text-center text-uppercase fs-6 fw-bold text-secondary"
+                            title={product?.name}
                             style={{
                                 height: "45px",
                                 overflow: "hidden",

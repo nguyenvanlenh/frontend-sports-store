@@ -41,10 +41,23 @@ const SuggestionItem = ({ product }) => {
     const dispatch = useDispatch();
     const handleClick = () => dispatch(hideSuggest());
     return (
-        <Link className="text-dark" to={`/product/${product?.id}`} onClick={handleClick} >
+        <Link
+            to={`/product/${product?.id}`}
+            className="text-dark"
+            onClick={handleClick}
+            title={product?.name} >
             <div className="d-flex justify-content-start align-items-center" style={suggestItemStyle}>
                 <Image src={product.thumbnailImage || product.listImages[0]?.path} thumbnail style={suggestItemImageStyle} />
-                <span className="text-uppercase">{product?.name || "Áo đấu chính hãng"}</span>
+                <span className="text-uppercase"
+                    style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        lineHeight: "1.2em"
+                    }}
+                >{product?.name || "Áo đấu chính hãng"}</span>
             </div>
         </Link>
     )

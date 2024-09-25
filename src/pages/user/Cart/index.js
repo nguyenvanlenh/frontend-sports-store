@@ -27,7 +27,7 @@ export const Cart = () => {
     React.useEffect(() => { dispatch(clearProductsSelected()) }, [dispatch]);
 
     const totalPrice = React.useMemo(() => {
-        return productsSelected.reduce((total, item) => {
+        return productsSelected?.reduce((total, item) => {
             return total + item.quantity * item.product.salePrice;
         }, 0);
     }, [productsSelected]);

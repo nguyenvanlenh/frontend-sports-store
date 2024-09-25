@@ -79,7 +79,7 @@ export const Header = () => {
                             </div>
                             : <SearchBar className="d-none d-md-block" ref={searchInputRef} />
                         }
-                        {<SearchBar className="d-block d-md-none" />}
+                        {<SearchBar className="d-block d-md-none" isPhone={true} />}
                         <div className="d-flex justify-content-between btn-header">
                             <Nav.Item className="d-none d-md-block">
                                 <Button variant="link" onClick={handleOpenSearch}>

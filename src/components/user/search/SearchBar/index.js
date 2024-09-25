@@ -6,18 +6,19 @@ import { Suggestion } from "../Suggestion";
 import { useDebounce } from "../../../../hooks/useDebounce";
 import { searchService } from "../../../../services/searchService";
 import { clearFilters } from "../../../../redux/filterSlice";
-import { displaySuggest, hideSuggest, searchByName } from "../../../../redux/searchSlice";
+import { clearSearch, displaySuggest, hideSuggest, searchByName } from "../../../../redux/searchSlice";
 
-export const SearchBar = React.forwardRef(({ className }, ref) => {
+export const SearchBar = React.forwardRef(({ className, isPhone = false }, ref) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [query, setQuery] = React.useState("");
     const [suggestions, setSuggestions] = React.useState([]);
+    const [hasSearch, setHasSearch] = React.useState(false);
     const showSuggest = useSelector(state => state.search.showSuggest);
     const containerRef = React.useRef(null);
     const searchButtonRef = React.useRef(null);
     const inputRef = React.useRef(null);
-    const debouncedQuery = useDebounce(query, 1000);
+    const debouncedQuery = useDebounce(query, 500);
 
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -67,6 +68,8 @@ export const SearchBar = React.forwardRef(({ className }, ref) => {
 
     const handleSearch = () => {
         if (!debouncedQuery.trim()) return;
+        if (isPhone)
+            setHasSearch(true)
         dispatch(clearFilters());
         dispatch(searchByName({ content: debouncedQuery, showSuggest: true }));
         dispatch(hideSuggest());
@@ -74,9 +77,21 @@ export const SearchBar = React.forwardRef(({ className }, ref) => {
     };
 
     const handleKeyDown = (e) => {
-        if (e.key === "Enter")
+
+        if (isPhone && hasSearch && e.key === "Enter") {
+            handleSearch();
+            return;
+        }
+        if (e.key === "Enter") {
             searchButtonRef.current.click();
+            return;
+        }
     };
+    const handleClearSearch = () => {
+        setHasSearch(false);
+        setQuery("");
+        dispatch(clearSearch());
+    }
 
     return (
         <div ref={containerRef} className={`position-relative d-flex justify-content-center align-items-center flex-fill ms-5 me-4 ${className}`}>
@@ -88,13 +103,19 @@ export const SearchBar = React.forwardRef(({ className }, ref) => {
                     onKeyDown={handleKeyDown}
                     placeholder="Nhập từ khoá bạn muốn tìm kiếm: tên áo đấu ..."
                 />
-                <Button
+                {isPhone && hasSearch ? <Button
                     className="bg-light btn-outline-light text-secondary"
-                    ref={searchButtonRef}
-                    onClick={handleSearch}
+                    onClick={handleClearSearch}
                 >
-                    Tìm kiếm
-                </Button>
+                    Hủy
+                </Button> :
+                    <Button
+                        className="bg-light btn-outline-light text-secondary"
+                        ref={searchButtonRef}
+                        onClick={handleSearch}
+                    >
+                        Tìm kiếm
+                    </Button>}
             </InputGroup>
             {showSuggest && <Suggestion suggestions={suggestions} />}
         </div>

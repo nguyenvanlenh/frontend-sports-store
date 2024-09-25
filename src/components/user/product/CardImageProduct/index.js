@@ -1,6 +1,6 @@
 import React from "react";
 import { Card } from "react-bootstrap";
-import ImageSlide1 from "../../../../data/img/slideshow.webp";
+import ImageSlide1 from "../../../../data/img/banner5.webp";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { brandFilter, clearFilters } from "../../../../redux/filterSlice";

@@ -30,26 +30,26 @@ export const DropDownSorting = React.memo(() => {
 
             <Dropdown.Menu>
                 <Dropdown.Item
-                    onClick={(e) => handleSortChange(sortObj("price", "asc", e.target.textContent))}
-                    active={isChecked(sortObj("price", "asc"))}
+                    onClick={(e) => handleSortChange(sortObj("salePrice", "asc", e.target.textContent))}
+                    active={isChecked(sortObj("salePrice", "asc"))}
                 >
                     Giá thấp - cao
                 </Dropdown.Item>
                 <Dropdown.Item
-                    onClick={(e) => handleSortChange(sortObj("price", "desc", e.target.textContent))}
-                    active={isChecked(sortObj("price", "desc"))}
+                    onClick={(e) => handleSortChange(sortObj("salePrice", "desc", e.target.textContent))}
+                    active={isChecked(sortObj("salePrice", "desc"))}
                 >
                     Giá cao - thấp
                 </Dropdown.Item>
                 <Dropdown.Item
-                    onClick={(e) => handleSortChange(sortObj("lastMofifiedOn", "desc", e.target.textContent))}
-                    active={isChecked(sortObj("lastMofifiedOn", "desc"))}
+                    onClick={(e) => handleSortChange(sortObj("lastModifiedOn", "desc", e.target.textContent))}
+                    active={isChecked(sortObj("lastModifiedOn", "desc"))}
                 >
                     Sản phẩm mới nhất
                 </Dropdown.Item>
                 <Dropdown.Item
-                    onClick={(e) => handleSortChange(sortObj("lastMofifiedOn", "asc", e.target.textContent))}
-                    active={isChecked(sortObj("lastMofifiedOn", "asc"))}
+                    onClick={(e) => handleSortChange(sortObj("lastModifiedOn", "asc", e.target.textContent))}
+                    active={isChecked(sortObj("lastModifiedOn", "asc"))}
                 >
                     Sản phẩm cũ nhất
                 </Dropdown.Item>

@@ -37,20 +37,15 @@ export const UserOrders = () => {
     const handleScroll = React.useCallback(() => {
         const navTop = navRef.current?.getBoundingClientRect()?.top;
         if (navTop >= headerHeight.current) return;
-        if (navRef.current) {
-            setIsSticky(navTop < headerHeight.current);
-        }
+        if (navRef.current) setIsSticky(navTop < headerHeight.current);
     }, []);
-    console.log(orders);
-
     React.useEffect(() => {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, [handleScroll]);
 
-    const handleSearch = () => {
-        setSearchTerm(searchTerm.trim().toLowerCase());
-    };
+    const handleSearch = () => setSearchTerm(searchTerm.trim().toLowerCase());
+
 
     const filterDataByStatusAndSearch = (status) => {
         const filteredData = status === deliveryStatus.ALL.key

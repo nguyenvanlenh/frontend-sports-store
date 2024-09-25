@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 const ProtectedRoute = ({ children, roles }) => {
     const userRoles = useSelector(state => state.auth)?.listRoles;
 
-    const hasAccess = roles.every(role => userRoles.includes(role));
+    const hasAccess = roles.every(role => userRoles?.includes(role));
 
     return hasAccess ? children : <Navigate to="*" replace />;
 };

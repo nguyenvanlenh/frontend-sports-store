@@ -31,7 +31,8 @@ export const CheckoutPrice = () => {
                             placeholder="Mã giảm giá"
                             aria-label="couponCode"
                             value={coupon}
-                            onChange={(e) => setCoupon(e.value.target)} />
+                            onChange={(e) => setCoupon(e.target.value)}
+                        />
                     </InputGroup>
                 </Col>
                 <Col lg={4} xs={4}>

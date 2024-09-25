@@ -18,6 +18,8 @@ export const PaymentProcessing = () => {
     React.useEffect(() => {
         const handlePaymentStatus = async () => {
             const status = new URLSearchParams(window.location.search).get("status") || "error";
+            const orderId = new URLSearchParams(window.location.search).get("orderId") || 0
+
             if (status === "success") {
                 clearOrder();
                 successAlert("Thành công", "Tạo đơn hàng thành công", 2000, () => {
@@ -25,8 +27,10 @@ export const PaymentProcessing = () => {
                 });
             } else {
                 try {
-                    await orderService.deleteOrder(orderIdSaved);
-                    dispatch(clearOrderIdSaved())
+                    if (orderIdSaved === Number(orderId)) {
+                        await orderService.deleteOrder(orderIdSaved);
+                        dispatch(clearOrderIdSaved())
+                    }
                 } catch (error) {
                     console.error("An error occurred while deleting order: ", error);
                 }

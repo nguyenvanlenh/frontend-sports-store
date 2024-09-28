@@ -48,4 +48,8 @@ export const productService = {
             }
         });
     },
+    updateProductStatus: (productId, status) => {
+        const url = `${BASE_URL}/${productId}`;
+        return httpRequest.patch(url, status);
+    }
 }

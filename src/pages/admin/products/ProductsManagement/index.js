@@ -1,12 +1,18 @@
 import React from "react";
+import DataTable from "react-data-table-component";
 import { Col, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useFetchData } from "../../../../hooks/useFetchData";
-import { productService } from "../../../../services/productService";
 import { Loading } from "../../../../components/common/Loading";
 import { CustomButton } from "../../../../components/common/Button";
-import DataTable from "react-data-table-component";
-import { customStyles, paginationOptions, productColumns } from "../../../../utils/dataTable";
+import { ConfirmModal } from "../../../../components/common/Modal";
+import { useFetchData } from "../../../../hooks/useFetchData";
+import { productService } from "../../../../services/productService";
+import { errorAlert, successAlert } from "../../../../utils/sweetAlert";
+import {
+    customStyles,
+    paginationOptions,
+    productColumns
+} from "../../../../utils/dataTable";
 export const ProductsManagement = () => {
     return (
         <>
@@ -43,7 +49,10 @@ const ProductsManagementData = () => {
     const [perPage, setPerPage] = React.useState(10);
     const [sortBy, setSortBy] = React.useState("lastModifiedOn");
     const [sortOrder, setSortOrder] = React.useState("desc");
+    const [showModalStatus, setShowModalStatus] = React.useState(false);
     const navigate = useNavigate();
+    const [productIdUpdate, setProductIdUpdate] = React.useState(null);
+    const [productStatusUpdate, setProductStatusUpdate] = React.useState(null);
     const {
         data: products,
         isLoading,
@@ -59,6 +68,27 @@ const ProductsManagementData = () => {
         refetch();
     }, [currentPage, perPage, sortBy, sortOrder, refetch]);
 
+    const handleEditProduct = (id) => navigate("/admin/update-product", { state: { productId: id } });
+
+    const handleGetStatusProduct = (productId, currentStatus) => {
+        setShowModalStatus(true);
+        setProductIdUpdate(productId);
+        setProductStatusUpdate(!currentStatus);
+    }
+
+    const handleUpdateStatusProduct = async () => {
+        try {
+            await productService.updateProductStatus(productIdUpdate, productStatusUpdate);
+            successAlert("Thành công", "Cập nhật trạng thái sản phẩm thành công", 3500)
+            refetch();
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message;
+            errorAlert("Lỗi", "Đã xảy ra lỗi khi cập nhật", 3500);
+            console.error(errorMessage);
+        } finally {
+            setShowModalStatus(false);
+        }
+    }
     const handleChangePage = (page) => {
         setCurrentPage(page - 1);
     };
@@ -81,20 +111,28 @@ const ProductsManagementData = () => {
             ) : isError ? (
                 <div>Error: {error.message}</div>
             ) : (
-                <DataTable
-                    columns={productColumns(() => "", () => "", navigate)}
-                    data={products.content || []}
-                    pagination
-                    paginationServer
-                    paginationTotalRows={totalPage * perPage}
-                    paginationPerPage={perPage}
-                    paginationComponentOptions={paginationOptions}
-                    onChangePage={handleChangePage}
-                    onSort={handleSort}
-                    onChangeRowsPerPage={handleRowsPerPageChange}
-                    sortServer
-                    customStyles={customStyles}
-                />
+                <>
+                    <DataTable
+                        columns={productColumns(handleEditProduct, handleGetStatusProduct)}
+                        data={products.content || []}
+                        pagination
+                        paginationServer
+                        paginationTotalRows={totalPage * perPage}
+                        paginationPerPage={perPage}
+                        paginationComponentOptions={paginationOptions}
+                        onChangePage={handleChangePage}
+                        onSort={handleSort}
+                        onChangeRowsPerPage={handleRowsPerPageChange}
+                        sortServer
+                        customStyles={customStyles}
+                    />
+                    <ConfirmModal
+                        show={showModalStatus}
+                        confirm={`Bạn có muốn ${!productStatusUpdate ? "khóa" : "mở khóa"} sản phẩm này không?`}
+                        onClose={() => setShowModalStatus(false)}
+                        handleOperations={handleUpdateStatusProduct}
+                    />
+                </>
             )}
         </>
     );

@@ -97,7 +97,7 @@ const orderColumns = [
         width: "15%",
     }
 ];
-const productColumns = (onEdit, onLock, navigate) => [
+const productColumns = (onEdit, onLock) => [
     {
         name: "#",
         selector: row => <Link to="" className="text-primary">#{row.id}</Link>,
@@ -124,7 +124,7 @@ const productColumns = (onEdit, onLock, navigate) => [
         sortField: "name",
         sortable: true,
         width: "30%",
-        cell: row => <span className="fw-bold text-secondary">{row.name}</span>,
+        cell: row => <span className="fw-bold text-secondary text-uppercase" title={row.name}>{row.name}</span>,
     },
     {
         name: "Giá",
@@ -138,20 +138,20 @@ const productColumns = (onEdit, onLock, navigate) => [
         name: "Hãng",
         selector: row => row.brand.name,
         width: "15%",
-        cell: row => <span className="fw-bold text-warning">{row.brand.name}</span>,
+        cell: row => <span className="fw-bold text-secondary text-uppercase">{row.brand.name}</span>,
     },
     {
         name: "Trạng thái",
         selector: row => row.isActive,
         width: "15%",
         cell: row => (
-            <span className={`bg-${row.isActive ? 'success' : 'danger'} text-white p-2 rounded`}>
-                {row.isActive ? 'Công khai' : 'Ẩn'}
+            <span className={`bg-${row.isActive ? "success" : "danger"} text-white p-2 rounded`}>
+                {row.isActive ? "Công khai" : "Khóa"}
             </span>
         ),
     },
     {
-        name: "Sửa",
+        name: "Cập nhật",
         width: "10%",
         cell: row => (
             <Dropdown drop="down-centered">
@@ -161,10 +161,10 @@ const productColumns = (onEdit, onLock, navigate) => [
                 <Dropdown.Menu>
                     <Dropdown.Item
                         className="text-secondary"
-                        onClick={() => row.id ? navigate("/admin/update-product", { state: { productId: row.id } }) : null}
+                        onClick={() => onEdit(row.id)}
                     >Sửa
                     </Dropdown.Item>
-                    <Dropdown.Item className="text-secondary" onClick={() => onLock(row)}>Khóa</Dropdown.Item>
+                    <Dropdown.Item className="text-secondary" onClick={() => onLock(row.id, row.isActive)}>{row.isActive ? "Khóa" : "Mở khóa"}</Dropdown.Item>
                     <Dropdown.Item className="text-secondary" onClick={() => onLock(row)}>Xóa</Dropdown.Item>
 
                 </Dropdown.Menu>

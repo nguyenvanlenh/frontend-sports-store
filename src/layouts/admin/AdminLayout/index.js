@@ -1,9 +1,11 @@
 import { Col, Container, Row } from "react-bootstrap"
 import { SideBar } from "../SideBar"
 import { Outlet } from "react-router-dom"
+import { ScrollToTop } from "../../../routes/ScrollToTop"
 
 export const AdminLayout = () => {
-    return (
+    return (<>
+        <ScrollToTop />
         <Container fluid>
             <Row>
                 <Col md={2} xs={2}>
@@ -17,5 +19,6 @@ export const AdminLayout = () => {
             </Row>
 
         </Container>
+    </>
     )
 }

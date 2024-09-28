@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFetchData } from "../../../../hooks/useFetchData";
 import { productService } from "../../../../services/productService";
 import { Loading } from "../../../../components/common/Loading";
@@ -43,7 +43,7 @@ const ProductsManagementData = () => {
     const [perPage, setPerPage] = React.useState(10);
     const [sortBy, setSortBy] = React.useState("lastModifiedOn");
     const [sortOrder, setSortOrder] = React.useState("desc");
-
+    const navigate = useNavigate();
     const {
         data: products,
         isLoading,
@@ -82,7 +82,7 @@ const ProductsManagementData = () => {
                 <div>Error: {error.message}</div>
             ) : (
                 <DataTable
-                    columns={productColumns(() => "", () => "")}
+                    columns={productColumns(() => "", () => "", navigate)}
                     data={products.content || []}
                     pagination
                     paginationServer

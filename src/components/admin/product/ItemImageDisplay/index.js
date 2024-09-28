@@ -3,11 +3,11 @@ import { MdOutlineCancel } from "react-icons/md";
 export const ItemImageDisplay = ({ image, index, removeImage }) => (
     <Col xs={2} sm={2} md={2}>
         <div className="position-relative mb-2"
-            style={{ width: "70px", height: "110px" }}>
+            style={{ width: "85px", height: "110px" }}>
             <Image
                 thumbnail
                 src={image}
-                style={{ width: "70px", height: "110px", marginBottom: "10px" }}
+                style={{ width: "85px", height: "110px", marginBottom: "10px" }}
             />
             <Badge
                 className="p-0"
@@ -18,7 +18,8 @@ export const ItemImageDisplay = ({ image, index, removeImage }) => (
                     position: "absolute",
                     top: "-7px",
                     right: "-7px",
-                    cursor: "pointer"
+                    cursor: "pointer",
+                    zIndex: "1"
                 }}
                 onClick={() => removeImage(index)}
             >

@@ -30,5 +30,22 @@ export const productService = {
                 "Content-Type": "multipart/form-data"
             }
         });
-    }
+    },
+    updateProduct: (productId, productRequest, files) => {
+        const url = `${BASE_URL}/${productId}`;
+        const formData = new FormData();
+
+        formData.append("product", new Blob([JSON.stringify(productRequest)],
+            { type: "application/json" }));
+
+        files.forEach((file) => {
+            formData.append("files", file);
+        });
+
+        return httpRequest.put(url, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        });
+    },
 }

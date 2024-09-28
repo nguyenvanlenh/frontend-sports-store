@@ -16,13 +16,14 @@ import { Account } from "../components/user/profile/Account";
 import { Authenticate } from "../pages/auth/Authenticate";
 import { PaymentProcessing } from "../pages/user/PaymentProcessing";
 import { CreateProduct } from "../pages/admin/products/CreateProduct";
-import { ProductsManagement } from "../pages/admin/products/ProductsManagement";
 import { Dashboard } from "../pages/admin/dashboard";
 import { UsersManagement } from "../pages/admin/users/UsersManagement";
 import { BrandsManagement } from "../pages/admin/brands/BrandsManagement";
 import { CategoriesManagement } from "../pages/admin/categories/CategoriesManagement";
 import { SizesManagement } from "../pages/admin/sizes/SizesManagement";
 import { OrdersManagement } from "../pages/admin/orders/OrdersManagement";
+import { UpdateProduct } from "../pages/admin/products/UpdateProduct";
+import { ProductsManagement } from "../pages/admin/products/ProductsManagement";
 
 export const AppRoutes = createBrowserRouter([
     {
@@ -103,6 +104,10 @@ export const AppRoutes = createBrowserRouter([
             {
                 path: "create-product",
                 element: <ProtectedRoute roles={["MANAGE", "ROLE_ADMIN"]}><CreateProduct /></ProtectedRoute>
+            },
+            {
+                path: "update-product",
+                element: <ProtectedRoute roles={["MANAGE", "ROLE_ADMIN"]}><UpdateProduct /></ProtectedRoute>
             },
             {
                 path: "users",

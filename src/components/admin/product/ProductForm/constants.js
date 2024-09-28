@@ -12,8 +12,8 @@ export const validationProduct = Yup.object({
         .min(1000, "Giá sản phẩm phải lớn hơn 1000 và nhỏ hơn 1 tỷ")
         .max(1000000000, "Giá sản phẩm phải nhỏ hơn 1 tỷ")
         .required("Giá sản phẩm không được để trống"),
-    brand: Yup.number().required("Hãng sản phẩm không được để trống"),
-    category: Yup.number().required("Loại sản phẩm không được để trống"),
+    brand: Yup.string().required("Hãng sản phẩm không được để trống"),
+    category: Yup.string().required("Loại sản phẩm không được để trống"),
     listImages: Yup.array().nullable(),
     listSizes: Yup.array()
         .of(

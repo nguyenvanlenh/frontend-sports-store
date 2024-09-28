@@ -97,7 +97,7 @@ const orderColumns = [
         width: "15%",
     }
 ];
-const productColumns = (onEdit, onLock) => [
+const productColumns = (onEdit, onLock, navigate) => [
     {
         name: "#",
         selector: row => <Link to="" className="text-primary">#{row.id}</Link>,
@@ -159,8 +159,14 @@ const productColumns = (onEdit, onLock) => [
                     <span>...</span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                    <Dropdown.Item className="text-secondary" onClick={() => onEdit(row)}>Sửa</Dropdown.Item>
+                    <Dropdown.Item
+                        className="text-secondary"
+                        onClick={() => row.id ? navigate("/admin/update-product", { state: { productId: row.id } }) : null}
+                    >Sửa
+                    </Dropdown.Item>
                     <Dropdown.Item className="text-secondary" onClick={() => onLock(row)}>Khóa</Dropdown.Item>
+                    <Dropdown.Item className="text-secondary" onClick={() => onLock(row)}>Xóa</Dropdown.Item>
+
                 </Dropdown.Menu>
             </Dropdown>
         ),

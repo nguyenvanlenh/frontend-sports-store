@@ -97,7 +97,7 @@ const orderColumns = [
         width: "15%",
     }
 ];
-const productColumns = (onEdit, onLock) => [
+const productColumns = (onEdit, onLock, onDelete) => [
     {
         name: "#",
         selector: row => <Link to="" className="text-primary">#{row.id}</Link>,
@@ -165,7 +165,7 @@ const productColumns = (onEdit, onLock) => [
                     >Sửa
                     </Dropdown.Item>
                     <Dropdown.Item className="text-secondary" onClick={() => onLock(row.id, row.isActive)}>{row.isActive ? "Khóa" : "Mở khóa"}</Dropdown.Item>
-                    <Dropdown.Item className="text-secondary" onClick={() => onLock(row)}>Xóa</Dropdown.Item>
+                    <Dropdown.Item className="text-secondary" onClick={() => onDelete(row.id)}>Xóa</Dropdown.Item>
 
                 </Dropdown.Menu>
             </Dropdown>

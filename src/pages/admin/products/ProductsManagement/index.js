@@ -50,8 +50,10 @@ const ProductsManagementData = () => {
     const [sortBy, setSortBy] = React.useState("lastModifiedOn");
     const [sortOrder, setSortOrder] = React.useState("desc");
     const [showModalStatus, setShowModalStatus] = React.useState(false);
+    const [showModalDelete, setShowModalDelete] = React.useState(false);
     const navigate = useNavigate();
     const [productIdUpdate, setProductIdUpdate] = React.useState(null);
+    const [productIdDelele, setProductIdDelete] = React.useState(null);
     const [productStatusUpdate, setProductStatusUpdate] = React.useState(null);
     const {
         data: products,
@@ -89,6 +91,26 @@ const ProductsManagementData = () => {
             setShowModalStatus(false);
         }
     }
+
+    const handleGetProductId = (productId) => {
+        setProductIdDelete(productId);
+        setShowModalDelete(true);
+    }
+    const handleDeleteProduct = async () => {
+        try {
+            await productService.deleteProductById(productIdUpdate);
+            successAlert("Thành công", "Xóa sản phẩm thành công", 3500)
+            refetch();
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message;
+            errorAlert("Lỗi", "Đã xảy ra lỗi khi xóa", 3500);
+            console.error(errorMessage);
+        } finally {
+            setShowModalDelete(false);
+        }
+    }
+
+
     const handleChangePage = (page) => {
         setCurrentPage(page - 1);
     };
@@ -113,7 +135,10 @@ const ProductsManagementData = () => {
             ) : (
                 <>
                     <DataTable
-                        columns={productColumns(handleEditProduct, handleGetStatusProduct)}
+                        columns={productColumns(
+                            handleEditProduct,
+                            handleGetStatusProduct,
+                            handleGetProductId)}
                         data={products.content || []}
                         pagination
                         paginationServer
@@ -131,6 +156,12 @@ const ProductsManagementData = () => {
                         confirm={`Bạn có muốn ${!productStatusUpdate ? "khóa" : "mở khóa"} sản phẩm này không?`}
                         onClose={() => setShowModalStatus(false)}
                         handleOperations={handleUpdateStatusProduct}
+                    />
+                    <ConfirmModal
+                        show={showModalDelete}
+                        confirm={`Bạn có muốn xóa sản phẩm này không?`}
+                        onClose={() => setShowModalDelete(false)}
+                        handleOperations={handleDeleteProduct}
                     />
                 </>
             )}

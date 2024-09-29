@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearSearch } from "../../../redux/searchSlice";
 import { logout } from "../../../redux/authSlice";
 import Logo from "../../../data/img/logo/main_logo.png"
+import { ROLE } from "../../../utils/constant";
 
 const active = {
     backgroundColor: "rgba(245, 245, 245,.2)",
@@ -99,14 +100,21 @@ export const Header = () => {
                             <Nav.Item className="d-none d-md-block">
                                 {
                                     !!(authentication?.userId)
-                                        ? <Dropdown drop="down-centered">
+                                        ?
+
+                                        <Dropdown drop="down-centered">
                                             <Dropdown.Toggle as={Button} variant="link">
                                                 <FaUser size={SIZE_ICON_HEADER} />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu>
-                                                <Dropdown.Item as={Link} to="/profile/customer-account" className="text-secondary">Trang cá nhân</Dropdown.Item>
-                                                <Dropdown.Item as={Link} to="/profile/order-history" className="text-secondary">Đơn hàng của tôi</Dropdown.Item>
-                                                <Dropdown.Item as={Button} onClick={handleLogout} className="text-secondary">Đăng xuất</Dropdown.Item>
+                                                {authentication?.listRoles.includes(ROLE.ADMIN)
+                                                    ?
+                                                    <Dropdown.Item as={Link} to="/admin/dashboard" className="text-secondary">Đi đến Dashboard</Dropdown.Item>
+                                                    : <>
+                                                        <Dropdown.Item as={Link} to="/profile/customer-account" className="text-secondary">Trang cá nhân</Dropdown.Item>
+                                                        <Dropdown.Item as={Link} to="/profile/order-history" className="text-secondary">Đơn hàng của tôi</Dropdown.Item>
+                                                        <Dropdown.Item as={Button} onClick={handleLogout} className="text-secondary">Đăng xuất</Dropdown.Item>
+                                                    </>}
                                             </Dropdown.Menu>
                                         </Dropdown>
 

@@ -51,5 +51,9 @@ export const productService = {
     updateProductStatus: (productId, status) => {
         const url = `${BASE_URL}/${productId}`;
         return httpRequest.patch(url, status);
+    },
+    deleteProductById: (productId) => {
+        const url = `${BASE_URL}/${productId}`;
+        return httpRequest.delete(url);
     }
 }

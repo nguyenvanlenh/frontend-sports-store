@@ -218,7 +218,7 @@ const productColumns = (onEdit, onLock, onDelete) => [
 const handleFullname = (firstName = "", lastName = "", username) => {
     return firstName || lastName ? `${firstName} ${lastName}` : username;
 };
-const userColumns = (onEdit, onLock) => [
+const userColumns = (onLock, onEdit = () => "") => [
     {
         name: "#",
         selector: row => <Link to="" className="text-primary">#{row.id}</Link>,
@@ -253,8 +253,8 @@ const userColumns = (onEdit, onLock) => [
         name: "Quyền",
         cell: row => (
             <>
-                {row.listRoles?.map((role) => (
-                    <Badge bg="warning" className="me-1" key={role.id}>{role.name}</Badge>
+                {row.listRoles?.map((role, index) => (
+                    <Badge bg="warning" className="me-1" key={index}>{role.name}</Badge>
                 ))}
             </>
         ),
@@ -263,8 +263,8 @@ const userColumns = (onEdit, onLock) => [
     {
         name: "Trạng thái",
         cell: row => (
-            <span className={`bg-${true ? "success" : "danger"} text-white p-2 rounded`}>
-                {true ? "Công khai" : "Ẩn"}
+            <span className={`bg-${row.isActive ? "success" : "danger"} text-white p-2 rounded`}>
+                {row.isActive ? "Công khai" : "Ẩn"}
             </span>
         ),
         width: "15%",
@@ -277,8 +277,12 @@ const userColumns = (onEdit, onLock) => [
                     <span>...</span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                    <Dropdown.Item className="text-secondary" onClick={() => onEdit(row)}>Sửa</Dropdown.Item>
-                    <Dropdown.Item className="text-secondary" onClick={() => onLock(row)}>Khóa</Dropdown.Item>
+                    {/* <Dropdown.Item className="text-secondary" onClick={() => onEdit(row)}>Sửa</Dropdown.Item> */}
+                    <Dropdown.Item
+                        className="text-secondary"
+                        onClick={() => onLock(row.id, row.isActive)}>
+                        {row.isActive ? "Khóa" : "Mở khóa"}
+                    </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
         ),

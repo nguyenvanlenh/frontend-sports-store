@@ -98,7 +98,7 @@ const ProductsManagementData = () => {
     }
     const handleDeleteProduct = async () => {
         try {
-            await productService.deleteProductById(productIdUpdate);
+            await productService.deleteProductById(productIdDelele);
             successAlert("Thành công", "Xóa sản phẩm thành công", 3500)
             refetch();
         } catch (error) {

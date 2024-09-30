@@ -1,11 +1,13 @@
-import { Badge, Dropdown, Image, Row, Col } from "react-bootstrap";
-import { useFetchData } from "../../../../hooks/useFetchData";
-import { userService } from "../../../../services/userService";
 import React from "react";
-import { Loading } from "../../../../components/common/Loading";
+import { Row, Col } from "react-bootstrap";
 import { CustomButton } from "../../../../components/common/Button";
 import DataTable from "react-data-table-component";
+import { ConfirmModal } from "../../../../components/common/Modal";
+import { useFetchData } from "../../../../hooks/useFetchData";
+import { userService } from "../../../../services/userService";
+import { Loading } from "../../../../components/common/Loading";
 import { customStyles, paginationOptions, userColumns } from "../../../../utils/dataTable";
+import { errorAlert, successAlert } from "../../../../utils/sweetAlert";
 
 
 export const UsersManagement = () => {
@@ -42,6 +44,10 @@ const UsersManagementData = () => {
     const [perPage, setPerPage] = React.useState(10);
     const [sortBy, setSortBy] = React.useState("lastModifiedOn");
     const [sortOrder, setSortOrder] = React.useState("desc");
+    const [showModalStatus, setShowModalStatus] = React.useState(false);
+    const [userIdUpdate, setUserIdUpdate] = React.useState(null);
+    const [userStatusUpdate, setUserStatusUpdate] = React.useState(null);
+
     const {
         data: users,
         isLoading,
@@ -53,6 +59,28 @@ const UsersManagementData = () => {
     React.useEffect(() => {
         refetch();
     }, [refetch, currentPage, sortBy, sortOrder, perPage]);
+
+    const handleGetProductIdStatus = (userId, status) => {
+        setShowModalStatus(true);
+        setUserIdUpdate(userId);
+        setUserStatusUpdate(!status);
+
+    }
+
+    const handleUpdateStatusUser = async () => {
+        try {
+            await userService.updateUserStatus(userIdUpdate, userStatusUpdate);
+            successAlert("Thành công", "Cập nhật trạng thái người dùng thành công", 3500)
+            refetch();
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message;
+            errorAlert("Lỗi", "Đã xảy ra lỗi khi cập nhật", 3500);
+            console.error(errorMessage);
+        } finally {
+            setShowModalStatus(false);
+        }
+    }
+
     const handleChangePage = (page) => {
         setCurrentPage(page - 1);
     };
@@ -74,20 +102,30 @@ const UsersManagementData = () => {
             ) : isError ? (
                 <div>Error: {error.message}</div>
             ) : (
-                <DataTable
-                    columns={userColumns(() => "", () => "")}
-                    data={users.content || []}
-                    pagination
-                    paginationServer
-                    paginationTotalRows={users.totalElements || 0}
-                    paginationPerPage={perPage}
-                    paginationComponentOptions={paginationOptions}
-                    onChangePage={handleChangePage}
-                    onSort={handleSort}
-                    onChangeRowsPerPage={handleRowsPerPageChange}
-                    sortServer
-                    customStyles={customStyles}
-                />
+                <>
+
+                    <DataTable
+                        columns={userColumns(handleGetProductIdStatus)}
+                        data={users.content || []}
+                        pagination
+                        paginationServer
+                        paginationTotalRows={users.totalElements || 0}
+                        paginationPerPage={perPage}
+                        paginationComponentOptions={paginationOptions}
+                        onChangePage={handleChangePage}
+                        onSort={handleSort}
+                        onChangeRowsPerPage={handleRowsPerPageChange}
+                        sortServer
+                        customStyles={customStyles}
+                    />
+                    <ConfirmModal
+                        show={showModalStatus}
+                        confirm={`Bạn có muốn ${userStatusUpdate ? "mở khóa" : "khóa"} người dùng này không?`}
+                        onClose={() => setShowModalStatus(false)}
+                        handleOperations={handleUpdateStatusUser}
+
+                    />
+                </>
             )}
         </>
     );

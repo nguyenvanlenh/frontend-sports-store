@@ -2,7 +2,7 @@ import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+// import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import React from "react";
 import { authService } from "../../../services/authService";
 import { successAlert } from "../../../utils/sweetAlert";
@@ -147,7 +147,7 @@ export const Register = () => {
                                         cursor: "pointer",
                                     }}
                                 >
-                                    {!formik.errors.password && (showPassword ? <FaRegEyeSlash /> : <FaRegEye />)}
+                                    {/* {!formik.errors.password && (showPassword ? <FaRegEyeSlash /> : <FaRegEye />)} */}
 
                                 </div>
                             </Form.Group>

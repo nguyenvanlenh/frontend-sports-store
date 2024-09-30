@@ -1,17 +1,18 @@
 import React from "react";
+import * as Yup from "yup";
+import LogoGithub from "../../../data/img/logo/logoGitBlack.png"
 import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
+import { OAuthFBConfig, OAuthGGConfig, OAuthGHConfig } from "../../../configurations/configuration";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { authService } from "../../../services/authService";
 import { localStorages, setLogin } from "../../../utils/localStorage";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { OAuthFBConfig, OAuthGGConfig, OAuthGHConfig } from "../../../configurations/configuration";
-import LogoGithub from "../../../data/img/logo/logoGitBlack.png"
-import { AUTH_TYPE, authType, ROLE } from "../../../utils/constant";
+// import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { AUTH_TYPE, authType, httpStatus, ROLE } from "../../../utils/constant";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { saveAuthentication } from "../../../redux/authSlice";
+
 const btnLoginStyle = {
     backgroundColor: "#d81f19"
 };
@@ -95,7 +96,11 @@ export const Login = () => {
                 }
                 navigate("/home");
             } catch (error) {
-                setError("Đăng nhập không thành công. Vui lòng kiểm tra thông tin đăng nhập và thử lại.");
+                console.log(error);
+                if (error.response && error.response.status === httpStatus.LOCKED)
+                    setError("Tài khoản của bạn đã bị khóa, vui lòng liên hệ quản trị viên qua email  adminsporter@gmail.com để biết thêm thông tin.");
+                else
+                    setError("Đăng nhập không thành công. Vui lòng kiểm tra thông tin đăng nhập và thử lại.");
             } finally {
                 setLoading(false);
             }
@@ -152,7 +157,7 @@ export const Login = () => {
                                         cursor: "pointer",
                                     }}
                                 >
-                                    {!formik.errors.password && (showPassword ? <FaRegEyeSlash /> : <FaRegEye />)}
+                                    {/* {!formik.errors.password && (showPassword ? <FaRegEyeSlash /> : <FaRegEye />)} */}
 
                                 </div>
                             </Form.Group>

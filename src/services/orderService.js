@@ -10,6 +10,10 @@ export const orderService = {
         const url = `${BASE_URL}/${orderId}`;
         return httpRequest.patch(url, status);
     },
+    updateDeliveryStatus: (orderId, status) => {
+        const url = `${BASE_URL}/${orderId}/delivery-status`;
+        return httpRequest.patch(url, status);
+    },
     getOrder: (orderId) => {
         const url = `${BASE_URL}/${orderId}`;
         return httpRequest.get(url);
@@ -32,5 +36,5 @@ export const orderService = {
     deleteOrder: (orderId) => {
         const url = `${BASE_URL}/${orderId}`;
         return httpRequest.delete(url, orderId);
-    }
+    },
 };

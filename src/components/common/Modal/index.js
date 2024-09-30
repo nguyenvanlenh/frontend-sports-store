@@ -3,12 +3,13 @@ import { Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { ratingService } from "../../../services/ratingService";
 import { ratingRequest } from "../../../models/ratingRequest";
-import { httpStatus, paymentMethod, paymentStatus } from "../../../utils/constant";
+import { deliveryStatus, deliveryStatusUpdate, httpStatus, orderStatus, paymentMethod, paymentStatus, paymentStatusUpdate, STATUS_TYPES } from "../../../utils/constant";
 import { errorAlert, successAlert } from "../../../utils/sweetAlert";
 import * as Yup from "yup";
 import { ItemOrderDetail } from "../../user/checkout/ItemOrderDetail";
 import { formatCurrencyVN } from "../../../utils/common";
 import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
+import { CustomButton } from "../Button";
 const confirmSchema = Yup.object().shape({
     cause: Yup.string()
         .required("Vui lòng nhập lý do"),
@@ -192,11 +193,11 @@ export const OrderDetailModal = ({ show, onClose, data }) => {
     return (
         <Modal show={show} onHide={onClose} size="lg">
             <Modal.Header closeButton>
-                <Modal.Title>Chi tiết đơn hàng (#{data.id})</Modal.Title>
+                <Modal.Title>Chi tiết đơn hàng (#{data?.id})</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {
-                    data.listOrderDetails.map((orderDetail, idx) =>
+                    data?.listOrderDetails.map((orderDetail, idx) =>
                         <ItemOrderDetail key={idx} detail={orderDetail} />
                     )
                 }
@@ -222,9 +223,87 @@ export const OrderDetailModal = ({ show, onClose, data }) => {
                             <td>Trạng thái thanh toán</td>
                             <td className="text-warning">{paymentStatus[data.payment.paymentStatus]?.displayName}</td>
                         </tr>
+                        <tr>
+                            <td>Trạng thái đơn hàng</td>
+                            <td className="text-secondary">{data.orderStatus}</td>
+                        </tr>
+                        <tr>
+                            <td>Trạng thái vận chuyển</td>
+                            <td className="text-secondary">
+                                {deliveryStatus[data.deliveryStatus].displayName}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Đơn vị vận chuyển</td>
+                            <td className="text-secondary">{data.deliveryMethod}</td>
+                        </tr>
                     </tbody>
                 </Table>
             </Modal.Body>
+        </Modal>
+    )
+}
+export const OrderEditModal = ({
+    show,
+    onClose,
+    title,
+    typeEdit,
+    currentValue,
+    handleOperations,
+}) => {
+
+    const [selectedValue, setSelectedValue] = React.useState(currentValue);
+    const [data, setData] = React.useState({});
+
+    React.useEffect(() => {
+        switch (typeEdit) {
+            case STATUS_TYPES.ORDER:
+                setData(orderStatus);
+                break;
+            case STATUS_TYPES.PAYMENT:
+                setData(paymentStatusUpdate);
+                break;
+            case STATUS_TYPES.DELIVERY:
+                setData(deliveryStatusUpdate);
+                break;
+            default:
+                setData({});
+                break;
+        }
+    }, [typeEdit]);
+
+    React.useEffect(() => {
+        setSelectedValue(currentValue);
+    }, [currentValue]);
+
+    const handleChange = (e) => {
+        setSelectedValue(e.target.value);
+    }
+
+    const handleSubmit = () => {
+        handleOperations(selectedValue);
+        onClose();
+    }
+
+    return (
+        <Modal show={show} onHide={onClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>{title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form.Select
+                    value={selectedValue}
+                    onChange={handleChange}>
+                    {
+                        data && Object.values(data).map((item, index) => (
+                            <option key={index} value={item}>{item}</option>
+                        ))
+                    }
+                </Form.Select>
+            </Modal.Body>
+            <Modal.Footer>
+                <CustomButton className="w-100" onClick={handleSubmit}>Cập nhật</CustomButton>
+            </Modal.Footer>
         </Modal>
     )
 }

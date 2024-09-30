@@ -4,6 +4,7 @@ import { PopularFootballJerseys } from "../../../components/user/home/PopularFoo
 import { SlideShow } from "../../../components/user/home/SlideShow"
 
 export const Home = () => {
+
     return <>
         <SlideShow />
         <NewFootballApparel />

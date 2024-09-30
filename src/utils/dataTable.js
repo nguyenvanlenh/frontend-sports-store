@@ -4,6 +4,7 @@ import UserAvatar from "../data/img/user_icon.webp";
 import ThumbnailImage from "../data/img/main_thumbnail.png";
 import { FaCheckCircle, FaClock, FaTimesCircle } from "react-icons/fa";
 import { formatCurrencyVN, formatDateTimeVN } from "./common";
+import { STATUS_TYPES } from "./constant";
 const paginationOptions = {
     rowsPerPageText: "Số phần tử mỗi trang",
     rangeSeparatorText: "của",
@@ -35,10 +36,11 @@ const paymentMethodMap = {
     BANKING: { className: "bg-success" },
     PAYPAL: { className: "bg-primary" },
 }
-const orderColumns = [
+
+const orderColumns = (onShow, onEdit) => [
     {
         name: "#",
-        selector: row => <Link to="" className="text-primary">#{row.id}</Link>,
+        selector: row => <Link to="" className="text-primary" onClick={() => onShow(row.id)}>#{row.id}</Link>,
         sortField: "id",
         sortable: true,
         width: "7%",
@@ -48,7 +50,7 @@ const orderColumns = [
         selector: row => <span className="fw-bold text-secondary">{row.nameCustomer}</span>,
         sortField: "nameCustomer",
         sortable: true,
-        width: "20%",
+        width: "17%",
     },
     {
         name: "Tổng tiền",
@@ -87,7 +89,7 @@ const orderColumns = [
     {
         name: "Trạng thái vận chuyển",
         selector: row => <span className="fw-bold text-secondary">{row.deliveryStatus}</span>,
-        width: "15%",
+        width: "12%",
     },
     {
         name: "Ngày",
@@ -95,6 +97,47 @@ const orderColumns = [
         sortField: "createdOn",
         sortable: true,
         width: "15%",
+    },
+    {
+        name: "Cập nhật",
+        cell: row => (
+            <Dropdown drop="start">
+                <Dropdown.Toggle variant="Light">
+                    <span>...</span>
+                </Dropdown.Toggle>
+                <Dropdown.Menu style={{ zIndex: 8888 }}>
+                    <Dropdown.Item
+                        onClick={(e) => onEdit(
+                            row.id,
+                            e.target.textContent,
+                            STATUS_TYPES.ORDER,
+                            row.orderStatus
+                        )}
+                        className="text-secondary"
+                    >Cập nhật trạng thái đơn hàng
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                        onClick={(e) => onEdit(
+                            row.payment.paymentId,
+                            e.target.textContent,
+                            STATUS_TYPES.PAYMENT,
+                            row.payment.paymentStatus)}
+                        className="text-secondary"
+                    >Cập nhật trạng thái thanh toán
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                        onClick={(e) => onEdit(
+                            row.id,
+                            e.target.textContent,
+                            STATUS_TYPES.DELIVERY,
+                            row.deliveryStatus
+                        )}
+                        className="text-secondary"
+                    >Cập nhật trạng thái vận chuyển
+                    </Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>),
+        width: "10%",
     }
 ];
 const productColumns = (onEdit, onLock, onDelete) => [

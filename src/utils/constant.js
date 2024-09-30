@@ -10,7 +10,6 @@ const COUNTRY = "Việt Nam";
 const orderStatus = {
     PENDING: "PENDING",
     PAID: "PAID",
-    UNPAID: "UNPAID",
     CANCELLED: "CANCELLED"
 }
 const deliveryMethod = {
@@ -18,6 +17,17 @@ const deliveryMethod = {
     LALAMOVE: "LALAMOVE",
     SPORTER_EXPRESS: "SPORTER_EXPRESS",
     GHN: "GHN"
+};
+const deliveryStatusUpdate = {
+    PREPARING: "PREPARING",
+    DELIVERING: "DELIVERING",
+    DELIVERED: "DELIVERED",
+    CANCELLED: "CANCELLED",
+};
+const paymentStatusUpdate = {
+    PENDING: "PENDING",
+    COMPLETED: "COMPLETED",
+    CANCELLED: "CANCELLED",
 };
 
 const deliveryStatus = {
@@ -110,6 +120,11 @@ const ROLE = {
     ADMIN: "ROLE_ADMIN",
     USER: "ROLE_USER",
 }
+const STATUS_TYPES = {
+    ORDER: "orderStatus",
+    PAYMENT: "paymentStatus",
+    DELIVERY: "deliveryStatus"
+};
 export {
     CART_LS,
     APP_BASE_URL,
@@ -130,5 +145,8 @@ export {
     routeNames,
     MAXIMUM_NUMBER_PRODUCTS,
     MINIMUM_NUMBER_IMAGE,
-    ROLE
+    ROLE,
+    deliveryStatusUpdate,
+    paymentStatusUpdate,
+    STATUS_TYPES
 }

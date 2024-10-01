@@ -10,6 +10,7 @@ import { ItemOrderDetail } from "../../user/checkout/ItemOrderDetail";
 import { formatCurrencyVN } from "../../../utils/common";
 import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
 import { CustomButton } from "../Button";
+import { Prev } from "react-bootstrap/esm/PageItem";
 const confirmSchema = Yup.object().shape({
     cause: Yup.string()
         .required("Vui lòng nhập lý do"),
@@ -305,5 +306,99 @@ export const OrderEditModal = ({
                 <CustomButton className="w-100" onClick={handleSubmit}>Cập nhật</CustomButton>
             </Modal.Footer>
         </Modal>
+    )
+}
+export const ProductAttributesModal = ({
+    show,
+    onClose,
+    title,
+    type,
+    action,
+    currentProductAttribute,
+    handleOperations }) => {
+    const [productAttribute, setProductActive] = React.useState({
+        id: "",
+        name: "",
+        description: "",
+        isActive: false,
+    });
+
+    React.useEffect(() => {
+        if (currentProductAttribute) {
+            setProductActive({
+                id: currentProductAttribute?.id || "",
+                name: currentProductAttribute?.name || "",
+                description: currentProductAttribute?.description || "",
+                isActive: currentProductAttribute?.isActive || false,
+            });
+        }
+    }, [currentProductAttribute]);
+
+    const handleChangeNameAttribute = (e) => {
+        setProductActive(prev => ({ ...prev, name: e.target.value }))
+    }
+    const handleChangeDescriptionAttribute = (e) => {
+        setProductActive(prev => ({ ...prev, description: e.target.value }))
+    }
+    const handleChangeActiveAttribute = (e) => {
+        setProductActive(prev => ({ ...prev, isActive: e.target.checked }))
+    }
+    const handleEditAttribute = () => {
+        handleOperations(productAttribute)
+        setProductActive({
+            id: "",
+            name: "",
+            description: "",
+            isActive: false,
+        })
+    }
+    return (
+        <Modal
+            show={show}
+            onHide={onClose}
+        >
+            <Modal.Header closeButton>
+                <Modal.Title>{title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form.Group>
+                    <Form.Label>Tên</Form.Label>
+                    <Form.Control
+                        readOnly={action === "view"}
+                        type="text"
+                        name="name"
+                        value={productAttribute.name}
+                        onChange={handleChangeNameAttribute}
+                        placeholder="Nhập tên"
+                    />
+                    <Form.Label>Mô tả</Form.Label>
+                    <Form.Control
+                        as="textarea"
+                        rows={3}
+                        readOnly={action === "view"}
+                        name="description"
+                        value={productAttribute.description}
+                        onChange={handleChangeDescriptionAttribute}
+                        placeholder="Nhập mô tả"
+                    />
+                    <Form.Check
+                        type="switch"
+                        disabled={action === "view"}
+                        checked={productAttribute.isActive}
+                        onChange={handleChangeActiveAttribute}
+                        id="active-switch"
+                        label={productAttribute.isActive ? "Hoạt động" : "Khóa"}
+                    />
+                </Form.Group>
+            </Modal.Body>
+            {action !== "view" &&
+                <Modal.Footer>
+                    <CustomButton
+                        className="w-100"
+                        variant="secondary"
+                        onClick={handleEditAttribute}>{action === "create" ? "Thêm" : "Cập nhật"}</CustomButton>
+                </Modal.Footer>
+            }
+        </Modal >
     )
 }

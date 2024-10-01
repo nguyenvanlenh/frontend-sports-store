@@ -289,10 +289,10 @@ const userColumns = (onLock, onEdit = () => "") => [
         width: "10%",
     },
 ];
-const commonColumns = (onEdit, onLock) => [
+const commonColumns = (onEdit, onDelete, onShow) => [
     {
         name: "#",
-        selector: row => <Link to="" className="text-primary">#{row.id}</Link>,
+        selector: row => <Link to="" className="text-primary" onClick={() => onShow(row.id)}>#{row.id}</Link>,
         sortable: true,
         width: "10%",
     },
@@ -321,7 +321,7 @@ const commonColumns = (onEdit, onLock) => [
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Dropdown.Item className="text-secondary" onClick={() => onEdit(row)}>Sửa</Dropdown.Item>
-                    <Dropdown.Item className="text-secondary" onClick={() => onLock(row)}>Khóa</Dropdown.Item>
+                    <Dropdown.Item className="text-secondary" onClick={() => onDelete(row.id)}>Xóa</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
         ),

@@ -1,7 +1,9 @@
 export const sizeRequest = ({
-    id,
-    quantity
+    name,
+    description,
+    active
 } = {}) => ({
-    id,
-    quantity
+    name,
+    description,
+    active
 })

@@ -368,7 +368,7 @@ export const ProductAttributesModal = ({
                         name="name"
                         value={productAttribute.name}
                         onChange={handleChangeNameAttribute}
-                        placeholder="Nhập tên"
+                        placeholder={action !== "view" && "Nhập tên"}
                     />
                     <Form.Label>Mô tả</Form.Label>
                     <Form.Control
@@ -378,7 +378,7 @@ export const ProductAttributesModal = ({
                         name="description"
                         value={productAttribute.description}
                         onChange={handleChangeDescriptionAttribute}
-                        placeholder="Nhập mô tả"
+                        placeholder={action !== "view" && "Nhập mô tả"}
                     />
                     <Form.Check
                         type="switch"
@@ -386,7 +386,7 @@ export const ProductAttributesModal = ({
                         checked={productAttribute.isActive}
                         onChange={handleChangeActiveAttribute}
                         id="active-switch"
-                        label={productAttribute.isActive ? "Hoạt động" : "Khóa"}
+                        label={productAttribute.isActive ? "Công khai" : "Khóa"}
                     />
                 </Form.Group>
             </Modal.Body>

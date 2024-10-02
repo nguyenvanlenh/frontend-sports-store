@@ -40,14 +40,14 @@ const paymentMethodMap = {
 const orderColumns = (onShow, onEdit) => [
     {
         name: "#",
-        selector: row => <Link to="" className="text-primary" onClick={() => onShow(row.id)}>#{row.id}</Link>,
+        cell: row => <Link to="" className="text-primary" onClick={() => onShow(row.id)}>#{row.id}</Link>,
         sortField: "id",
         sortable: true,
         width: "7%",
     },
     {
         name: "Tên khách hàng",
-        selector: row => <span className="fw-bold text-secondary">{row.nameCustomer}</span>,
+        cell: row => <span className="fw-bold text-secondary">{row.nameCustomer}</span>,
         sortField: "nameCustomer",
         sortable: true,
         width: "17%",
@@ -143,7 +143,7 @@ const orderColumns = (onShow, onEdit) => [
 const productColumns = (onEdit, onLock, onDelete) => [
     {
         name: "#",
-        selector: row => <Link to="" className="text-primary">#{row.id}</Link>,
+        cell: row => <Link to="" className="text-primary">#{row.id}</Link>,
         sortField: "id",
         sortable: true,
         width: "7%",
@@ -221,7 +221,7 @@ const handleFullname = (firstName = "", lastName = "", username) => {
 const userColumns = (onLock, onEdit = () => "") => [
     {
         name: "#",
-        selector: row => <Link to="" className="text-primary">#{row.id}</Link>,
+        cell: row => <Link to="" className="text-primary">#{row.id}</Link>,
         sortField: "id",
         sortable: true,
         width: "10%",
@@ -292,7 +292,7 @@ const userColumns = (onLock, onEdit = () => "") => [
 const commonColumns = (onEdit, onDelete, onShow) => [
     {
         name: "#",
-        selector: row => <Link to="" className="text-primary" onClick={() => onShow(row.id)}>#{row.id}</Link>,
+        cell: row => <Link to="" className="text-primary" onClick={() => onShow(row.id)}>#{row.id}</Link>,
         sortable: true,
         width: "10%",
     },

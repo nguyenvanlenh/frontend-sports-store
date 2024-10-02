@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from 'query-string';
-import { ACCESS_TOKEN, APP_BASE_URL, httpStatus, REFRESH_TOKEN } from "./constant";
+import { ACCESS_TOKEN, API_BASE_URL, httpStatus, REFRESH_TOKEN } from "./constant";
 import { authService } from "../services/authService";
 import { localStorages } from "./localStorage";
 import { errorAlert } from "./sweetAlert";
@@ -11,7 +11,7 @@ const notAuthenticationURL = [
     "/api/auth/outbound/authentication"];
 
 const httpRequest = axios.create({
-    baseURL: APP_BASE_URL,
+    baseURL: API_BASE_URL,
     headers: {
         'Content-Type': 'application/json'
     },

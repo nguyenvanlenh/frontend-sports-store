@@ -1,7 +1,7 @@
 const CART_LS = "cart";
 const ACCESS_TOKEN = "ACCESS_TOKEN";
 const REFRESH_TOKEN = "REFRESH_TOKEN";
-const APP_BASE_URL = "http://localhost:8081";
+const API_BASE_URL = "http://localhost:8081";
 const USER_LS = "USER";
 const ORDER_LS = "ORDER";
 const AUTH_TYPE = "AUTH-TYPE";
@@ -116,7 +116,8 @@ const routeNames = {
 };
 const MAXIMUM_NUMBER_PRODUCTS = 1000;
 const MINIMUM_NUMBER_IMAGE = 5;
-
+const MAXIMUM_NUMBER_IMAGE = 6;
+const MAX_SIZE_IMAGE_MB = 1;
 const ROLE = {
     ADMIN: "ROLE_ADMIN",
     USER: "ROLE_USER",
@@ -126,9 +127,10 @@ const STATUS_TYPES = {
     PAYMENT: "paymentStatus",
     DELIVERY: "deliveryStatus"
 };
+
 export {
     CART_LS,
-    APP_BASE_URL,
+    API_BASE_URL,
     ACCESS_TOKEN,
     REFRESH_TOKEN,
     USER_LS,
@@ -146,8 +148,10 @@ export {
     routeNames,
     MAXIMUM_NUMBER_PRODUCTS,
     MINIMUM_NUMBER_IMAGE,
+    MAXIMUM_NUMBER_IMAGE,
+    MAX_SIZE_IMAGE_MB,
     ROLE,
     deliveryStatusUpdate,
     paymentStatusUpdate,
-    STATUS_TYPES
+    STATUS_TYPES,
 }

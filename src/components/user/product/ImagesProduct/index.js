@@ -2,6 +2,7 @@ import React from 'react';
 import { Carousel, Col, Image, Row } from 'react-bootstrap';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
+import { MAXIMUM_NUMBER_IMAGE } from '../../../../utils/constant';
 const listItemStyle = {
     display: "flex",
     justifyContent: "center",
@@ -30,6 +31,7 @@ export const ImagesProduct = ({ listImages }) => {
         setSelectedIndex(index);
     };
 
+    const displayedImages = listImages?.slice(0, MAXIMUM_NUMBER_IMAGE) || [];
     return (
         <>
             <Row>
@@ -39,7 +41,7 @@ export const ImagesProduct = ({ listImages }) => {
                         onSelect={handleSelect}
                         interval={null}
                         data-bs-theme="light">
-                        {listImages?.slice(0, 5)?.map((image, index) => (
+                        {displayedImages.map((image, index) => (
                             <Carousel.Item key={index}>
                                 <Zoom zoomMargin={10}>
                                     <Image
@@ -55,7 +57,7 @@ export const ImagesProduct = ({ listImages }) => {
             </Row>
             <Row>
                 <ul className="d-flex list-unstyled justify-content-around mt-2">
-                    {listImages.map((item, index) => (
+                    {displayedImages.map((item, index) => (
                         <li
                             key={index}
                             style={index < listImages.length - 1 ? listItemStyle : {}}>

@@ -11,10 +11,11 @@ import { errorAlert, successAlert } from "../../../../utils/sweetAlert";
 import { ItemImageDisplay } from "../ItemImageDisplay";
 import { productService } from "../../../../services/productService";
 import { productRequest } from "../../../../models/productRequest";
-import { MINIMUM_NUMBER_IMAGE } from "../../../../utils/constant";
+import { MAXIMUM_NUMBER_IMAGE, MAX_SIZE_IMAGE_MB, MINIMUM_NUMBER_IMAGE } from "../../../../utils/constant";
 import { Loading } from "../../../common/Loading";
 import { Link, useNavigate } from "react-router-dom";
 import { validationProduct } from "./constants";
+import { validateImageFile } from "../../../../utils/common";
 
 
 const CustomSelect = ({ id, options, defaultValue, formik }) => (
@@ -137,11 +138,26 @@ export const ProductForm = ({ product }) => {
     });
 
     const handleFileChange = (event) => {
+        const maxSizeInMB = 2;
         const files = Array.from(event.target.files);
-        const previewUrls = files.map((file) => URL.createObjectURL(file));
-        setImagePreviews(prev => [...prev, ...previewUrls]);
-        setListImages(files);
-        event.target.value = null;
+
+        if (files?.length > MAXIMUM_NUMBER_IMAGE)
+            errorAlert("Lỗi", `Số hình ảnh được tải lên tối đa là ${MAXIMUM_NUMBER_IMAGE}`);
+        const validFiles = files.filter(file => {
+            const validation = validateImageFile(file, maxSizeInMB);
+            if (!validation.isValid) {
+                errorAlert("Lỗi", validation.message);
+                console.error(validation.message);
+            }
+            return validation.isValid;
+        });
+
+        if (validFiles.length > 0) {
+            const previewUrls = files.map((file) => URL.createObjectURL(file));
+            setImagePreviews(prev => [...prev, ...previewUrls]);
+            setListImages(files);
+            event.target.value = null;
+        }
     };
 
     const handleRemoveImage = (indexToRemove) => {
@@ -370,15 +386,18 @@ export const ProductForm = ({ product }) => {
             </div>
             <InputGroup className="mb-3">
                 <div
-                    className="my-3 p-5 w-100 rounded d-flex justify-content-center align-items-center"
+                    className="my-3 p-5 w-100 rounded d-flex justify-content-center align-items-center flex-column"
                     style={{
                         border: "1px dashed gray",
                         cursor: "pointer"
                     }}
                     onClick={triggerFileInput}
                 >
-                    <span>Tải lên danh sách hình ảnh</span>
-                    <MdOutlineFileUpload size={50} color="gray" />
+                    <div className="d-flex justify-content-center align-items-center">
+                        <span>Tải lên danh sách hình ảnh</span>
+                        <MdOutlineFileUpload size={50} color="gray" />
+                    </div>
+                    <i>{`Lưu ý mỗi file không được vượt quá ${MAX_SIZE_IMAGE_MB}MB, Tải lên không quá ${MAXIMUM_NUMBER_IMAGE} hình ảnh`}</i>
                 </div>
                 <Form.Control
                     ref={fileInputRef}

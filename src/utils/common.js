@@ -57,5 +57,20 @@ export const formatDateTimeVN = (input) => {
 
     return new Intl.DateTimeFormat('vi-VN', options).format(date);
 }
+export const validateImageFile = (file, maxSizeInMB) => {
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+    if (!validImageTypes.includes(file.type)) {
+        return { isValid: false, message: "File không phải là hình ảnh hợp lệ" };
+    }
+
+    const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+
+    if (file.size > maxSizeInBytes) {
+        return { isValid: false, message: `Dung lượng file vượt quá ${maxSizeInMB} MB` };
+    }
+
+    return { isValid: true, message: "File hợp lệ" };
+}
 
 

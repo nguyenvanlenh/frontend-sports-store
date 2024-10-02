@@ -43,6 +43,8 @@ export const maskText = (text) => {
     return maskedText;
 }
 export const formatDateTimeVN = (input) => {
+    if (!input)
+        return "";
     const date = new Date(input);
 
     const options = {

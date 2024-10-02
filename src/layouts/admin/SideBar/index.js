@@ -16,12 +16,12 @@ const ICON_SIZE = 20;
 const menuItems = [
     {
         to: "/admin/dashboard",
-        icon: <MdDashboardCustomize color="yellow" size={ICON_SIZE} />,
+        icon: <MdDashboardCustomize size={ICON_SIZE} />,
         title: "Dashboard"
     },
     {
         to: "/admin/products",
-        icon: <BsBoxSeamFill color="green" size={ICON_SIZE} />,
+        icon: <BsBoxSeamFill size={ICON_SIZE} />,
         title: "Quản lý sản phẩm"
     },
     {
@@ -31,7 +31,7 @@ const menuItems = [
     },
     {
         to: "/admin/users",
-        icon: <FaUserGroup size={ICON_SIZE} color="violet" />,
+        icon: <FaUserGroup size={ICON_SIZE} />,
         title: "Quản lý người dùng"
     },
     {

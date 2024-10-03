@@ -1,11 +1,9 @@
 const CART_LS = "cart";
 const ACCESS_TOKEN = "ACCESS_TOKEN";
 const REFRESH_TOKEN = "REFRESH_TOKEN";
-const API_BASE_URL = "http://localhost:8081";
 const USER_LS = "USER";
 const ORDER_LS = "ORDER";
 const AUTH_TYPE = "AUTH-TYPE";
-const URL_LOCATION = "https://raw.githubusercontent.com/qtv100291/Vietnam-administrative-division-json-server/master/db.json";
 const COUNTRY = "Việt Nam";
 const orderStatus = {
     PENDING: "PENDING",
@@ -130,12 +128,10 @@ const STATUS_TYPES = {
 
 export {
     CART_LS,
-    API_BASE_URL,
     ACCESS_TOKEN,
     REFRESH_TOKEN,
     USER_LS,
     ORDER_LS,
-    URL_LOCATION,
     COUNTRY,
     orderStatus,
     deliveryMethod,

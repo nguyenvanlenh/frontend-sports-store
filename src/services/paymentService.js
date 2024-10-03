@@ -21,7 +21,7 @@ export const paymentService = {
         return httpRequest.get(url);
     },
     getPaymentsByUserId: (userId) => {
-        const url = `${BASE_URL}/user/${userId}`;
+        const url = `${BASE_URL}/users/${userId}`;
         return httpRequest.get(url);
     },
     updatePaymentStatus: (paymentId, status) => {

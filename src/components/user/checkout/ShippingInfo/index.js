@@ -11,7 +11,6 @@ import {
     orderStatus,
     paymentMethod,
     paymentStatus,
-    URL_LOCATION
 } from "../../../../utils/constant";
 import { orderAddressRequest } from "../../../../models/orderAddressRequest";
 import { orderRequest } from "../../../../models/orderRequest";
@@ -64,7 +63,7 @@ export const ShippingInfo = () => {
     }, [productsSelected]);
 
     React.useEffect(() => {
-        axios.get(URL_LOCATION)
+        axios.get(process.env.REACT_APP_URI_LOCATION)
             .then(response => {
                 setData(response.data);
                 setProvinces(response.data.province);

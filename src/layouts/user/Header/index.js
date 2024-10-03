@@ -78,11 +78,10 @@ export const Header = () => {
                                     </Nav.Item>
                                 ))}
                             </div>
-                            : <SearchBar className="d-none d-md-block" ref={searchInputRef} />
+                            : <SearchBar ref={searchInputRef} />
                         }
-                        {<SearchBar className="d-block d-md-none" isPhone={true} />}
                         <div className="d-flex justify-content-between btn-header">
-                            <Nav.Item className="d-none d-md-block">
+                            <Nav.Item>
                                 <Button variant="link" onClick={handleOpenSearch}>
                                     {searchOpen
                                         ? <FaSearchMinus size={SIZE_ICON_HEADER} />

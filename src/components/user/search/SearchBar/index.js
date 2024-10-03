@@ -8,7 +8,7 @@ import { searchService } from "../../../../services/searchService";
 import { clearFilters } from "../../../../redux/filterSlice";
 import { clearSearch, displaySuggest, hideSuggest, searchByName } from "../../../../redux/searchSlice";
 
-export const SearchBar = React.forwardRef(({ className, isPhone = false }, ref) => {
+export const SearchBar = React.forwardRef(({ className }, ref) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [query, setQuery] = React.useState("");
@@ -68,8 +68,6 @@ export const SearchBar = React.forwardRef(({ className, isPhone = false }, ref) 
 
     const handleSearch = () => {
         if (!debouncedQuery.trim()) return;
-        if (isPhone)
-            setHasSearch(true)
         dispatch(clearFilters());
         dispatch(searchByName({ content: debouncedQuery, showSuggest: true }));
         dispatch(hideSuggest());
@@ -77,13 +75,9 @@ export const SearchBar = React.forwardRef(({ className, isPhone = false }, ref) 
     };
 
     const handleKeyDown = (e) => {
-
-        if (isPhone && hasSearch && e.key === "Enter") {
-            handleSearch();
-            return;
-        }
         if (e.key === "Enter") {
             searchButtonRef.current.click();
+            setHasSearch(true);
             return;
         }
     };
@@ -103,7 +97,7 @@ export const SearchBar = React.forwardRef(({ className, isPhone = false }, ref) 
                     onKeyDown={handleKeyDown}
                     placeholder="Nhập từ khoá bạn muốn tìm kiếm: tên áo đấu ..."
                 />
-                {isPhone && hasSearch ? <Button
+                {hasSearch ? <Button
                     className="bg-light btn-outline-light text-secondary"
                     onClick={handleClearSearch}
                 >

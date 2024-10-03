@@ -1,19 +1,19 @@
 
 export const OAuthGGConfig = {
-    clientId: "251859634222-sjtgf4krhvss6fscdfrpv6q647neo3lt.apps.googleusercontent.com",
-    redirectUri: "http://localhost:3000/authenticate",
+    clientId: process.env.REACT_APP_CLIENT_ID_GOOGLE,
+    redirectUri: process.env.REACT_APP_REDIRECT_URI_OAUTH2,
     authUri: "https://accounts.google.com/o/oauth2/auth",
 };
 export const OAuthGHConfig = {
-    clientId: "Ov23limMWIaAHbYQeHYv",
-    redirectUri: "http://localhost:3000/authenticate",
+    clientId: process.env.REACT_APP_CLIENT_ID_GITHUB,
+    redirectUri: process.env.REACT_APP_REDIRECT_URI_OAUTH2,
     authUri: "https://github.com/login/oauth/authorize",
 };
 export const OAuthFBConfig = {
-    clientId: "510076364949007",
-    redirectUri: "http://localhost:3000/authenticate",
+    clientId: process.env.REACT_APP_CLIENT_ID_FACEBOOK,
+    redirectUri: process.env.REACT_APP_REDIRECT_URI_OAUTH2,
     authUri: "https://www.facebook.com/v20.0/dialog/oauth",
 };
 export const TinyMCEConfig = {
-    apiKey: "l6m0sms8m1b81ops428n3p9pn1a5wgjsiddy11o8edl597bz"
+    apiKey: process.env.REACT_APP_API_TINY_MCE
 }

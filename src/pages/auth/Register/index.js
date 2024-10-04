@@ -2,7 +2,7 @@ import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-// import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import React from "react";
 import { authService } from "../../../services/authService";
 import { successAlert } from "../../../utils/sweetAlert";
@@ -19,14 +19,19 @@ export const Register = () => {
         username: Yup.string()
             .required("Vui lòng nhập tên đăng nhập")
             .min(8, "Tên đăng nhập phải từ 8 đến 20 ký tự")
-            .max(20, "Tên đăng nhập phải từ 8 đến 20 ký tự"),
+            .max(20, "Tên đăng nhập phải từ 8 đến 20 ký tự")
+            .matches(/^[^\s]+$/, "Tên đăng nhập không được chứa khoảng trắng")
+            .matches(/^[a-zA-Z0-9]+$/, "Tên đăng nhập không được chứa ký tự đặc biệt"),
         email: Yup.string()
             .required("Vui lòng nhập email")
-            .email("Email không hợp lệ"),
+            .email("Email không hợp lệ")
+            .matches(/^[^\s]+$/, "Email nhập không được chứa khoảng trắng")
+            .matches(/^[a-zA-Z0-9@.]+$/, "Email nhập không được chứa ký tự đặc biệt"),
         password: Yup.string()
             .required("Vui lòng nhập mật khẩu")
             .min(8, "Mật khẩu phải từ 8 đến 50 ký tự")
-            .max(50, "Mật khẩu phải từ 8 đến 50 ký tự"),
+            .max(50, "Mật khẩu phải từ 8 đến 50 ký tự")
+            .matches(/^[^\s]+$/, "Mật khẩu không được chứa khoảng trắng"),
         rePassword: Yup.string()
             .required("Vui lòng nhập lại mật khẩu")
             .oneOf([Yup.ref('password'), null], "Mật khẩu nhập không khớp")
@@ -147,7 +152,7 @@ export const Register = () => {
                                         cursor: "pointer",
                                     }}
                                 >
-                                    {/* {!formik.errors.password && (showPassword ? <FaRegEyeSlash /> : <FaRegEye />)} */}
+                                    {!formik.errors.password && (showPassword ? <FaRegEyeSlash /> : <FaRegEye />)}
 
                                 </div>
                             </Form.Group>

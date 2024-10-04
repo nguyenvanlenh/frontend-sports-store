@@ -111,23 +111,23 @@ export const AppRoutes = createBrowserRouter([
             },
             {
                 path: "users",
-                element: <UsersManagement />
+                element: <ProtectedRoute roles={["MANAGE", "ROLE_ADMIN"]}><UsersManagement /></ProtectedRoute>
             },
             {
                 path: "brands",
-                element: <BrandsManagement />
+                element: <ProtectedRoute roles={["MANAGE", "ROLE_ADMIN"]}><BrandsManagement /></ProtectedRoute>
             },
             {
                 path: "categories",
-                element: <CategoriesManagement />
+                element: <ProtectedRoute roles={["MANAGE", "ROLE_ADMIN"]}><CategoriesManagement /></ProtectedRoute>
             },
             {
                 path: "sizes",
-                element: <SizesManagement />
+                element: <ProtectedRoute roles={["MANAGE", "ROLE_ADMIN"]}><SizesManagement /></ProtectedRoute>
             },
             {
                 path: "orders",
-                element: <OrdersManagement />
+                element: <ProtectedRoute roles={["MANAGE", "ROLE_ADMIN"]}><OrdersManagement /></ProtectedRoute>
             },
         ]
     },

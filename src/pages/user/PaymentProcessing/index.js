@@ -23,7 +23,7 @@ export const PaymentProcessing = () => {
             if (status === "success") {
                 clearOrder();
                 successAlert("Thành công", "Tạo đơn hàng thành công", 2000, () => {
-                    navigate("/profile/order/history");
+                    navigate("/profile/order-history");
                 });
             } else {
                 try {

@@ -19,7 +19,7 @@ export const DocumentTitle = () => {
         document.title = `${pageTitle} - Sporter`;
 
         return () => {
-            document.title = "Sporter shop";
+            document.title = "Sporter Store";
         };
     }, [pathnames]);
 

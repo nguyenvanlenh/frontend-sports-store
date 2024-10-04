@@ -27,7 +27,12 @@ export const UserOrders = () => {
         isError,
         error,
         refetch
-    } = useFetchData(`orders${authentication?.userId}`, () => orderService.getOrdersByUserId(authentication?.userId));
+    } = useFetchData(`orders${authentication?.userId}`,
+        () => orderService.getOrdersByUserId(authentication?.userId),
+        0,
+        0,
+        true
+    );
 
     React.useEffect(() => {
         const header = document.querySelector("#header-user");

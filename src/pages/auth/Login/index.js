@@ -7,7 +7,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { authService } from "../../../services/authService";
 import { localStorages, setLogin } from "../../../utils/localStorage";
-// import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { AUTH_TYPE, authType, httpStatus, ROLE } from "../../../utils/constant";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
@@ -20,11 +20,15 @@ const validationSchema = Yup.object({
     username: Yup.string()
         .required("Vui lòng nhập tên đăng nhập")
         .min(8, "Tên đăng nhập phải từ 8 đến 20 ký tự")
-        .max(20, "Tên đăng nhập phải từ 8 đến 20 ký tự"),
+        .max(20, "Tên đăng nhập phải từ 8 đến 20 ký tự")
+        .matches(/^[^\s]+$/, "Tên đăng nhập không được chứa khoảng trắng")
+        .matches(/^[a-zA-Z0-9@.]+$/, "Tên đăng nhập không được chứa ký tự đặc biệt"),
+
     password: Yup.string()
         .required("Vui lòng nhập mật khẩu")
         .min(8, "Mật khẩu phải từ 8 đến 50 ký tự")
-        .max(50, "Mật khẩu phải từ 8 đến 50 ký tự"),
+        .max(50, "Mật khẩu phải từ 8 đến 50 ký tự")
+        .matches(/^[^\s]+$/, "Mật khẩu không được chứa khoảng trắng"),
 });
 export const Login = () => {
     const [loading, setLoading] = React.useState(false);
@@ -157,7 +161,7 @@ export const Login = () => {
                                         cursor: "pointer",
                                     }}
                                 >
-                                    {/* {!formik.errors.password && (showPassword ? <FaRegEyeSlash /> : <FaRegEye />)} */}
+                                    {!formik.errors.password && (showPassword ? <FaRegEyeSlash /> : <FaRegEye />)}
 
                                 </div>
                             </Form.Group>

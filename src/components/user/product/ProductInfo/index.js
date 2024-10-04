@@ -10,6 +10,7 @@ import { CustomButton } from "../../../common/Button"
 import { setOneProductToOrder } from "../../../../redux/orderSlice";
 import { useNavigate } from "react-router-dom";
 import { confirmAlert } from "../../../../utils/sweetAlert";
+import { MAX_PRODUCTS_PER_PURCHASE } from "../../../../utils/constant";
 
 
 export const ProductInfo = ({ product }) => {
@@ -57,6 +58,7 @@ export const ProductInfo = ({ product }) => {
                 }
             />
             <QuantityAdjuster
+                max={Math.min(MAX_PRODUCTS_PER_PURCHASE, (sizeSelected?.quantity || 0))}
                 onQuantityChange={(quantity) =>
                     setQuantitySelected(quantity)}
             />

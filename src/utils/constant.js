@@ -116,6 +116,7 @@ const MAXIMUM_NUMBER_PRODUCTS = 1000;
 const MINIMUM_NUMBER_IMAGE = 5;
 const MAXIMUM_NUMBER_IMAGE = 6;
 const MAX_SIZE_IMAGE_MB = 1;
+const MAX_PRODUCTS_PER_PURCHASE = 20;
 const ROLE = {
     ADMIN: "ROLE_ADMIN",
     USER: "ROLE_USER",
@@ -146,6 +147,7 @@ export {
     MINIMUM_NUMBER_IMAGE,
     MAXIMUM_NUMBER_IMAGE,
     MAX_SIZE_IMAGE_MB,
+    MAX_PRODUCTS_PER_PURCHASE,
     ROLE,
     deliveryStatusUpdate,
     paymentStatusUpdate,

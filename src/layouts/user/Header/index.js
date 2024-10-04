@@ -13,6 +13,7 @@ import { clearSearch } from "../../../redux/searchSlice";
 import { logout } from "../../../redux/authSlice";
 import Logo from "../../../data/img/logo/main_logo.png"
 import { ROLE } from "../../../utils/constant";
+import { CustomButton } from "../../../components/common/Button";
 
 const active = {
     backgroundColor: "rgba(245, 245, 245,.2)",
@@ -63,7 +64,10 @@ export const Header = () => {
                     <Nav className="d-flex justify-content-between pt-3 pb-3 align-items-center flex-nowrap" activeKey="/home">
                         <Nav.Item>
                             <Link to="/home">
-                                <Image src={Logo} width="115px" /> </Link>
+                                <Image src={Logo} className="d-none d-sm-block" width="115px" />
+
+                                <Image src={Logo} className="d-block d-sm-none me-1" width="75px" />
+                            </Link>
                         </Nav.Item>
                         {!searchOpen
                             ? <div className="d-flex flex-fill justify-content-around main-tab">
@@ -80,27 +84,27 @@ export const Header = () => {
                             </div>
                             : <SearchBar ref={searchInputRef} />
                         }
-                        <div className="d-flex justify-content-between btn-header">
+                        <div className="d-flex justify-content-between align-items-center btn-header ">
                             <Nav.Item>
-                                <Button variant="link" onClick={handleOpenSearch}>
+                                <CustomButton variant="link" onClick={handleOpenSearch} className="p-1 p-md-2">
                                     {searchOpen
                                         ? <FaSearchMinus size={SIZE_ICON_HEADER} />
                                         : <FaSearch size={SIZE_ICON_HEADER} />
                                     }
-                                </Button>
+                                </CustomButton>
                             </Nav.Item>
-                            <Nav.Item>
-                                <Button variant="link">
-                                    <Link to="/cart">
-                                        <IconCart size={SIZE_ICON_HEADER} />
-                                    </Link>
-                                </Button>
-                            </Nav.Item>
+                            {!searchOpen &&
+                                <Nav.Item>
+                                    <Button variant="link" className="p-1 p-md-2">
+                                        <Link to="/cart">
+                                            <IconCart size={SIZE_ICON_HEADER} />
+                                        </Link>
+                                    </Button>
+                                </Nav.Item>}
                             <Nav.Item className="d-none d-md-block">
                                 {
                                     !!(authentication?.userId)
                                         ?
-
                                         <Dropdown drop="down-centered">
                                             <Dropdown.Toggle as={Button} variant="link">
                                                 <FaUser size={SIZE_ICON_HEADER} />
@@ -112,23 +116,23 @@ export const Header = () => {
                                                     : <>
                                                         <Dropdown.Item as={Link} to="/profile/customer-account" className="text-secondary">Trang cá nhân</Dropdown.Item>
                                                         <Dropdown.Item as={Link} to="/profile/order-history" className="text-secondary">Đơn hàng của tôi</Dropdown.Item>
-                                                        <Dropdown.Item as={Button} onClick={handleLogout} className="text-secondary">Đăng xuất</Dropdown.Item>
+                                                        <Dropdown.Item as={CustomButton} onClick={handleLogout} className="text-secondary">Đăng xuất</Dropdown.Item>
                                                     </>}
                                             </Dropdown.Menu>
                                         </Dropdown>
 
-                                        : <Button variant="link" onClick={() => {
+                                        : <CustomButton variant="link" onClick={() => {
                                             navigate("/login")
                                         }}>
                                             <FaUser size={SIZE_ICON_HEADER} />
-                                        </Button>
+                                        </CustomButton>
                                 }
 
                             </Nav.Item>
                             <Nav.Item className="d-block d-md-none">
-                                <Button variant="link" onClick={toggleMenu}>
+                                <CustomButton variant="link" onClick={toggleMenu} className="p-1 p-md-2">
                                     <IoMenuSharp size={30} />
-                                </Button>
+                                </CustomButton>
                             </Nav.Item>
                         </div>
                     </Nav>
@@ -139,7 +143,8 @@ export const Header = () => {
                     style={{ cursor: "pointer" }}
                     onClick={() => {
                         toggleMenu()
-                        navigate("/profile/customer-account")
+                        if (!!(authentication?.userId))
+                            navigate("/profile/customer-account")
                     }}>
                     < Image src={authentication?.avatar || UserImage} roundedCircle height={40} />
                     <h6>{authentication.firstName ||
@@ -154,11 +159,22 @@ export const Header = () => {
                             </Link>
                         </Nav.Item>
                     ))}
-                    <Nav.Item key={1000}>
-                        <Link onClick={handleLogout}>
-                            Đăng xuất
-                        </Link>
-                    </Nav.Item>
+                    {
+                        !!(authentication?.userId)
+                            ? <Nav.Item key={1000}>
+                                <Link onClick={handleLogout}>
+                                    Đăng xuất
+                                </Link>
+                            </Nav.Item>
+                            : <Nav.Item key={1000}>
+                                <Link onClick={() => {
+                                    navigate("/login")
+                                }}>
+                                    Đăng nhập
+                                </Link>
+                            </Nav.Item>
+                    }
+
                 </Nav>
             </OffcanvasComponent >
         </>

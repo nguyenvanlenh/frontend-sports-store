@@ -1,9 +1,9 @@
-import { Button, Col, FloatingLabel, Form, Image, Row } from "react-bootstrap"
+import { Col, FloatingLabel, Form, Image, Row } from "react-bootstrap"
 import UserImage from "../../../../data/img/user_icon.webp";
-import { localStorages } from "../../../../utils/localStorage";
-import { authType, USER_LS } from "../../../../utils/constant";
+import { authType } from "../../../../utils/constant";
 import React from "react";
 import { useSelector } from "react-redux";
+import { CustomButton } from "../../../common/Button";
 export const Account = () => {
     const authentication = useSelector((state) => state.auth);
     const [fullName, setFullName] = React.useState(() => {
@@ -21,9 +21,9 @@ export const Account = () => {
                         <h2 className="fs-5">Thông tin cá nhân</h2>
                         <div className="d-flex justify-content-between">
                             <Image src={authentication?.avatar || UserImage} roundedCircle height={110} />
-                            <div className="flex-fill ms-5 d-flex flex-column justify-content-around">
+                            <div className="flex-fill ms-4 d-flex flex-column justify-content-around">
                                 <div className="d-flex justify-content-between align-items-center flex-nowrap">
-                                    <span style={{
+                                    <span className="d-none d-md-block" style={{
                                         minWidth: "140px"
                                     }}>Họ và Tên</span>
                                     <Form.Group controlId="customer_fullname"
@@ -33,12 +33,13 @@ export const Account = () => {
                                             name="fullname"
                                             placeholder="Họ và Tên của bạn"
                                             value={fullName}
+                                            onChange={(e) => setFullName(e.target.value)}
 
                                         />
                                     </Form.Group>
                                 </div>
                                 <div className="d-flex justify-content-between align-items-center flex-nowrap">
-                                    <span style={{
+                                    <span className="d-none d-md-block" style={{
                                         minWidth: "140px"
                                     }}>Nickname</span>
                                     <Form.Group controlId="customer_nickname"
@@ -56,7 +57,7 @@ export const Account = () => {
                         <div className="mt-3">
                             <div className="d-flex justify-content-between align-items-center flex-nowrap mb-3">
                                 <span style={{
-                                    minWidth: "155px"
+                                    minWidth: "132px"
                                 }}>Địa chỉ</span>
                                 <Form.Group controlId="customer_address" className="flex-fill">
                                     <Form.Control
@@ -70,7 +71,7 @@ export const Account = () => {
                             </div>
                             <div className="d-flex justify-content-between align-items-start flex-nowrap">
                                 <span style={{
-                                    minWidth: "155px"
+                                    minWidth: "132px"
                                 }}>Giới thiệu bản thân</span>
 
                                 <Form.Group className="flex-fill" controlId="introduce">
@@ -90,8 +91,8 @@ export const Account = () => {
                                 </Form.Group>
                             </div>
                         </div>
-                        <div className="d-flex justify-content-center mt-4">
-                            <Button className="px-5">Lưu thay đổi</Button>
+                        <div className="d-flex justify-content-center my-3">
+                            <CustomButton className="px-5">Lưu thay đổi</CustomButton>
                         </div>
                     </Row>
                 </Col>
@@ -104,7 +105,7 @@ export const Account = () => {
                             <span>Số điện thoại</span>
                             <span>{authentication?.phone}</span>
                         </div>
-                        <Button variant="outline-primary">Cập nhật</Button>
+                        <CustomButton variant="outline-primary">Cập nhật</CustomButton>
                     </div>
                     <hr />
                     <div className="d-flex justify-content-between align-items-center">
@@ -112,47 +113,47 @@ export const Account = () => {
                             <span>Email</span>
                             <span>{authentication?.email}</span>
                         </div>
-                        <Button variant="outline-primary">Cập nhật</Button>
+                        <CustomButton variant="outline-primary">Cập nhật</CustomButton>
                     </div>
                     <h2 className="fs-5 mt-4">Bảo mật</h2>
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <div className="d-flex flex-column">
                             <span>Mật khẩu</span>
                         </div>
-                        <Button variant="outline-primary">Cập nhật</Button>
+                        <CustomButton variant="outline-primary">Cập nhật</CustomButton>
                     </div>
                     <hr />
                     <div className="d-flex justify-content-between align-items-center">
                         <div className="d-flex flex-column">
                             <span>Xóa tài khoản</span>
                         </div>
-                        <Button variant="outline-primary">Xóa</Button>
+                        <CustomButton variant="outline-primary">Xóa</CustomButton>
                     </div>
                     <h2 className="fs-5 mt-4">Liên kết mạng xã hội</h2>
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <div className="d-flex flex-column">
                             <span>Facebook</span>
                         </div>
-                        <Button variant={authentication.typeAccount === authType.FACEBOOK ?
-                            "primary" : "outline-primary"}>{authentication.typeAccount === authType.FACEBOOK ? "Đã liên kết" : "Liên kết"}</Button>
+                        <CustomButton variant={authentication.typeAccount === authType.FACEBOOK ?
+                            "primary" : "outline-primary"}>{authentication.typeAccount === authType.FACEBOOK ? "Đã liên kết" : "Liên kết"}</CustomButton>
                     </div>
                     <hr />
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <div className="d-flex flex-column">
                             <span>Google</span>
                         </div>
-                        <Button
+                        <CustomButton
                             variant={authentication.typeAccount === authType.GOOGLE ?
-                                "primary" : "outline-primary"}>{authentication.typeAccount === authType.GOOGLE ? "Đã liên kết" : "Liên kết"}</Button>
+                                "primary" : "outline-primary"}>{authentication.typeAccount === authType.GOOGLE ? "Đã liên kết" : "Liên kết"}</CustomButton>
                     </div>
                     <hr />
                     <div className="d-flex justify-content-between align-items-center">
                         <div className="d-flex flex-column">
                             <span>Github</span>
                         </div>
-                        <Button
+                        <CustomButton
                             variant={authentication.typeAccount === authType.GITHUB ?
-                                "primary" : "outline-primary"}>{authentication.typeAccount === authType.GITHUB ? "Đã liên kết" : "Liên kết"}</Button>
+                                "primary" : "outline-primary"}>{authentication.typeAccount === authType.GITHUB ? "Đã liên kết" : "Liên kết"}</CustomButton>
                     </div>
                 </Col>
             </Row >

@@ -4,13 +4,21 @@ import { QuantityAdjuster } from "../../../common/QuantityAdjuster";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeProductFromCart, updateProductQuantityInCart } from "../../../../redux/cartSlice";
-import { removeProductFromOrder, toggleProductInOrder, updateProductQuantityInOrder } from "../../../../redux/orderSlice";
+import { removeProductFromOrder, updateProductQuantityInOrder } from "../../../../redux/orderSlice";
 import { confirmAlert } from "../../../../utils/sweetAlert";
 import { selectProductsSelected, useToggleProductInOrder } from "../../../../redux/orderSelector";
+import { MAX_PRODUCTS_PER_PURCHASE } from "../../../../utils/constant";
 const imageStyle = {
     width: '80px',
     height: '80px',
     objectFit: 'cover',
+};
+const lineClampStyle = {
+    display: '-webkit-box',
+    WebkitBoxOrient: 'vertical',
+    WebkitLineClamp: 5,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
 };
 export const CartItem = ({ cartItem }) => {
     const dispatch = useDispatch();
@@ -23,15 +31,13 @@ export const CartItem = ({ cartItem }) => {
         setQuantitySelected(quantity);
         dispatch(updateProductQuantityInCart({ id: cartItem.id, quantity: quantity }));
         dispatch(updateProductQuantityInOrder({ id: cartItem.id, quantity: quantity }));
-
     }, [dispatch, cartItem.id]);
     React.useEffect(() => {
         if (quantitySelected === 0) {
             confirmAlert(() => {
                 dispatch(removeProductFromCart({ id: cartItem.id }));
                 dispatch(removeProductFromOrder(cartItem));
-            }
-                ,
+            },
                 "Bạn có muốn xóa sản phẩm này không ?",
                 handleQuantityChange(1)
             )
@@ -62,19 +68,21 @@ export const CartItem = ({ cartItem }) => {
                 </Form>
             </td>
             <td className="col-2">
-                <Image src={cartItem.product.thumbnailImage || cartItem.product.listImages[0]?.path} rounded style={imageStyle} />
+                <Image src={cartItem.product.thumbnailImage || cartItem.product.listImages[0]?.path} thumbnail className="border-0" style={imageStyle} />
             </td>
             <td className="col-3">
-                <strong className="text-uppercase">{cartItem.product.name}</strong>
+                <strong className="text-uppercase" style={lineClampStyle}>{cartItem.product.name}</strong>
                 <p>Size: {cartItem.size.name}</p>
             </td>
-            <td className="text-secondary text-center col-2"><strong>{formatCurrencyVN(price)}</strong></td>
+            <td className="text-secondary ms-1 col-2"><strong>{formatCurrencyVN(price)}</strong></td>
             <td className="col-2 d-flex justify-content-end">
                 <QuantityAdjuster
                     min={0}
                     initialQuantity={quantitySelected}
+                    max={Math.min(MAX_PRODUCTS_PER_PURCHASE, (cartItem.size.quantity || 0))}
                     onQuantityChange={handleQuantityChange}
-                /></td>
+                />
+            </td>
             <td className="text-secondary col-2 text-end"><strong>{formatCurrencyVN(totalPrice())}</strong></td>
         </tr>
     )

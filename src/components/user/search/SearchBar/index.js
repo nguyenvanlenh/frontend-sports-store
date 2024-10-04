@@ -7,6 +7,7 @@ import { useDebounce } from "../../../../hooks/useDebounce";
 import { searchService } from "../../../../services/searchService";
 import { clearFilters } from "../../../../redux/filterSlice";
 import { clearSearch, displaySuggest, hideSuggest, searchByName } from "../../../../redux/searchSlice";
+import { FaSearch, FaSearchMinus } from "react-icons/fa";
 
 export const SearchBar = React.forwardRef(({ className }, ref) => {
     const dispatch = useDispatch();
@@ -71,13 +72,13 @@ export const SearchBar = React.forwardRef(({ className }, ref) => {
         dispatch(clearFilters());
         dispatch(searchByName({ content: debouncedQuery, showSuggest: true }));
         dispatch(hideSuggest());
+        setHasSearch(true);
         navigate("/list-products");
     };
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
             searchButtonRef.current.click();
-            setHasSearch(true);
             return;
         }
     };
@@ -88,7 +89,7 @@ export const SearchBar = React.forwardRef(({ className }, ref) => {
     }
 
     return (
-        <div ref={containerRef} className={`position-relative d-flex justify-content-center align-items-center flex-fill ms-5 me-4 ${className}`}>
+        <div ref={containerRef} className={`position-relative d-flex justify-content-center align-items-center flex-fill mx-md-4 ${className}`}>
             <InputGroup>
                 <Form.Control
                     ref={inputRef}
@@ -101,14 +102,15 @@ export const SearchBar = React.forwardRef(({ className }, ref) => {
                     className="bg-light btn-outline-light text-secondary"
                     onClick={handleClearSearch}
                 >
-                    Hủy
+                    <span className="d-none d-md-block">Hủy</span>
                 </Button> :
                     <Button
                         className="bg-light btn-outline-light text-secondary"
                         ref={searchButtonRef}
                         onClick={handleSearch}
                     >
-                        Tìm kiếm
+                        <span className="d-none d-md-inline">Tìm kiếm</span>
+                        <FaSearch className="d-md-none" />
                     </Button>}
             </InputGroup>
             {showSuggest && <Suggestion suggestions={suggestions} />}

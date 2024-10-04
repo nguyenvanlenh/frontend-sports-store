@@ -63,7 +63,7 @@ export const ShippingInfo = () => {
     }, [productsSelected]);
 
     React.useEffect(() => {
-        axios.get(process.env.REACT_APP_URI_LOCATION)
+        axios.get(process.env.REACT_APP_URL_LOCATION)
             .then(response => {
                 setData(response.data);
                 setProvinces(response.data.province);

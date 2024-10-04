@@ -247,7 +247,7 @@ const OrderFooter = ({
             return <CustomButton
                 variant="danger" style={{
                     backgroundColor: "#d81f19"
-                }} className="px-5">Mua lại</CustomButton>;
+                }} className="px-5 me-2 my-2">Mua lại</CustomButton>;
         }
         return (
             <CustomButton
@@ -255,7 +255,7 @@ const OrderFooter = ({
                 onClick={() => setShowModalCancel(true)}
                 style={{
                     backgroundColor: "#d81f19"
-                }} className="px-5"
+                }} className="px-5 my-2 me-2"
             >
                 Hủy đơn hàng
             </CustomButton>
@@ -267,14 +267,14 @@ const OrderFooter = ({
             {!isRating &&
                 <Button
                     variant="warning"
-                    className="px-5 me-2"
+                    className="px-5 me-2 my-2"
                     onClick={() => setShowModal(true)}
                 >Đánh giá</Button>}
             <CustomButton variant="danger"
                 style={{
                     backgroundColor: "#d81f19"
                 }}
-                className="px-5">Mua lại</CustomButton>
+                className="px-5 me-2 my-2">Mua lại</CustomButton>
         </>
     );
     return (
@@ -287,7 +287,7 @@ const OrderFooter = ({
                     </div>
                     <div>
                         {renderActions()}
-                        <CustomButton variant="outline-secondary" className="px-5 ms-2">Liên hệ shop</CustomButton>
+                        <CustomButton variant="outline-secondary" className="px-5 my-2">Liên hệ shop</CustomButton>
                     </div>
                 </div>
             </div>

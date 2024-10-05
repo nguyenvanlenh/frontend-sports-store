@@ -9,7 +9,6 @@ export const ProductPresentation = ({ product }) => {
             case "description":
                 return (
                     <>
-                        <h2>Mô tả sản phẩm</h2>
                         <p>{product.shortDescription}</p>
                         <div dangerouslySetInnerHTML={{ __html: product.description }} />
                     </>
@@ -17,7 +16,6 @@ export const ProductPresentation = ({ product }) => {
             case "purchase-guide":
                 return (
                     <div>
-                        <h2 className="text-center mb-4 fw-bold">Hướng Dẫn Mua Hàng</h2>
                         <p>Chào mừng bạn đến với hướng dẫn mua hàng của chúng tôi. Dưới đây là các bước đơn giản để hoàn tất việc mua sắm:</p>
                         <ul>
                             <li><strong>Chọn sản phẩm:</strong> Duyệt qua danh mục sản phẩm và chọn sản phẩm bạn yêu thích.</li>
@@ -31,7 +29,6 @@ export const ProductPresentation = ({ product }) => {
             case "policy":
                 return (
                     <div>
-                        <h2 className="text-center mb-4 fw-bold">Chính Sách Mua Hàng</h2>
                         <p>Chúng tôi cam kết mang đến cho bạn chính sách mua hàng tốt nhất với các điều khoản sau:</p>
                         <ul>
                             <li><strong>Đổi trả dễ dàng:</strong> Bạn có thể đổi trả sản phẩm trong vòng 30 ngày kể từ ngày mua.</li>
@@ -51,7 +48,9 @@ export const ProductPresentation = ({ product }) => {
             <Nav
                 variant="underline"
                 defaultActiveKey="description"
-                onSelect={(selectedKey) => setActiveTab(selectedKey)} >
+                onSelect={(selectedKey) => setActiveTab(selectedKey)}
+                className="ps-2"
+            >
                 <Nav.Item>
                     <Nav.Link
                         eventKey="description"
@@ -74,7 +73,7 @@ export const ProductPresentation = ({ product }) => {
                     </Nav.Link>
                 </Nav.Item>
             </Nav>
-            <div className="my-4 ps-0">
+            <div className="my-4">
                 {renderContent()}
             </div>
         </>

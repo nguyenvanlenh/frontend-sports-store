@@ -63,7 +63,7 @@ export const DisplayRatings = ({ productId }) => {
 
     return (
         <>
-            <h2 className="d-flex align-items-center ps-0">
+            <h2 className="d-flex align-items-center">
                 Đánh giá: {averageStar || 5}
                 <FaStar color="#f1c40f" />
             </h2>

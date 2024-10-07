@@ -7,7 +7,7 @@ import { useDebounce } from "../../../../hooks/useDebounce";
 import { searchService } from "../../../../services/searchService";
 import { clearFilters } from "../../../../redux/filterSlice";
 import { clearSearch, displaySuggest, hideSuggest, searchByName } from "../../../../redux/searchSlice";
-import { FaSearch, FaSearchMinus } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 
 export const SearchBar = React.forwardRef(({ className }, ref) => {
     const dispatch = useDispatch();

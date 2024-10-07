@@ -1,6 +1,5 @@
 import { useQuery } from "react-query";
 import { Spinner, Col, Row } from "react-bootstrap";
-import { CardImageProduct } from "../../product/CardImageProduct";
 import { CardProduct } from "../../product/CardProduct";
 
 export const ProductRecommendation = ({ title, type, queryKey, fetchFunction }) => {

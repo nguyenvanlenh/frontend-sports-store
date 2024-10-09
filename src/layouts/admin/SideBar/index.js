@@ -68,9 +68,10 @@ export const SideBar = () => {
         <>
             <Row className="sidebar">
                 <Col md={12} className="p-0">
-                    <div className="sidebar-header">
-                        <Image src={UserImage} roundedCircle height={60} />
-                        <h3>Admin</h3>
+                    <div className="p-1 px-md-5 d-flex align-items-center justify-content-around flex-wrap">
+                        <Image src={UserImage} roundedCircle height={60} className="d-none d-md-block" />
+                        <Image src={UserImage} roundedCircle height={40} className="d-block d-md-none " />
+                        <h4>Admin</h4>
                     </div>
                     <div className="sidebar-content">
                         <ul className="sidebar-menu">
@@ -93,14 +94,14 @@ export const SideBar = () => {
                                     className="w-100 d-flex justify-content-center"
                                     onClick={() => setConfirm(true)}
                                 >
-                                    <span className="icon"><RiLogoutBoxLine /></span>
+                                    <span className="icon"><RiLogoutBoxLine size={ICON_SIZE} /></span>
                                     <span className="text d-none d-md-block text-start">Đăng xuất</span>
                                 </Button>
                             </li>
                         </ul>
                     </div>
-                    <div className="p-2 bg-light">
-                        <p className="text-center text-dark">SPORTER</p>
+                    <div className="bg-light">
+                        <p className="text-center py-3 text-dark">SPORTER</p>
                     </div>
                 </Col>
             </Row>

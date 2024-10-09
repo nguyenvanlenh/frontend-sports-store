@@ -21,10 +21,10 @@ export const PaymentProcessing = () => {
             const orderId = new URLSearchParams(window.location.search).get("orderId") || 0
 
             if (status === "success") {
-                clearOrder();
                 successAlert("Thành công", "Tạo đơn hàng thành công", 2000, () => {
                     navigate("/profile/order-history");
                 });
+                clearOrder();
             } else {
                 try {
                     if (orderIdSaved === Number(orderId)) {
@@ -39,7 +39,7 @@ export const PaymentProcessing = () => {
             }
         };
         handlePaymentStatus();
-    }, [clearOrder, dispatch, navigate, orderIdSaved])
+    }, [dispatch, navigate, orderIdSaved]) // eslint-disable-line
     return (
         <Loading />
     )

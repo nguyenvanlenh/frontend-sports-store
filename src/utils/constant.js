@@ -63,6 +63,10 @@ const paymentMethod = {
     PAYPAL: {
         key: "PAYPAL",
         displayName: "Thanh toán qua PayPal"
+    },
+    VNPAY: {
+        key: "VNPAY",
+        displayName: "Thanh toán qua VNPay"
     }
 };
 const paymentStatus = {

@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN, REFRESH_TOKEN, USER_LS } from "./constant";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constant";
 
 export const localStorages = {
     getDataByKey: (key) => {

@@ -3,7 +3,7 @@ import { Button, Container, Dropdown, Image, Nav } from "react-bootstrap";
 import UserImage from "../../../data/img/user_icon.webp";
 import "./styles.scss";
 import { FaSearch, FaUser, FaSearchMinus } from "react-icons/fa";
-import { IoMenuSharp } from "react-icons/io5";
+import { TiThMenuOutline } from "react-icons/ti";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IconCart } from "../../../components/user/cart/IconCart";
 import { OffcanvasComponent } from "../../../components/common/Offcanvas";
@@ -26,7 +26,7 @@ export const Header = () => {
     const [menuOpen, setMenuOpen] = React.useState(false);
     const [searchOpen, setSearchOpen] = React.useState(false);
     const searchInputRef = React.useRef(null);
-    const SIZE_ICON_HEADER = 20;
+    const SIZE_ICON_HEADER = 21;
     const location = useLocation();
     const pathName = location.pathname;
 
@@ -110,14 +110,14 @@ export const Header = () => {
                                                 <FaUser size={SIZE_ICON_HEADER} />
                                             </Dropdown.Toggle>
                                             <Dropdown.Menu>
-                                                {authentication?.listRoles.includes(ROLE.ADMIN)
-                                                    ?
-                                                    <Dropdown.Item as={Link} to="/admin/dashboard" className="text-secondary">Đi đến Dashboard</Dropdown.Item>
+                                                {(authentication?.listRoles || []).includes(ROLE.ADMIN)
+                                                    ? <Dropdown.Item as={Link} to="/admin/dashboard" className="text-secondary">Đi đến Dashboard</Dropdown.Item>
                                                     : <>
-                                                        <Dropdown.Item as={Link} to="/profile/customer-account" className="text-secondary">Trang cá nhân</Dropdown.Item>
-                                                        <Dropdown.Item as={Link} to="/profile/order-history" className="text-secondary">Đơn hàng của tôi</Dropdown.Item>
-                                                        <Dropdown.Item as={CustomButton} onClick={handleLogout} className="text-secondary">Đăng xuất</Dropdown.Item>
-                                                    </>}
+                                                        <Dropdown.Item as="button" onClick={() => navigate("/profile/customer-account")} className="text-secondary">Trang cá nhân</Dropdown.Item>
+                                                        <Dropdown.Item as="button" onClick={() => navigate("/profile/order-history")} className="text-secondary">Đơn hàng của tôi</Dropdown.Item>
+                                                        <Dropdown.Item as="button" onClick={handleLogout} className="text-secondary">Đăng xuất</Dropdown.Item>
+                                                    </>
+                                                }
                                             </Dropdown.Menu>
                                         </Dropdown>
 
@@ -130,8 +130,8 @@ export const Header = () => {
 
                             </Nav.Item>
                             <Nav.Item className="d-block d-md-none">
-                                <CustomButton variant="link" onClick={toggleMenu} className="p-1 p-md-2">
-                                    <IoMenuSharp size={30} />
+                                <CustomButton variant="link" onClick={toggleMenu} className="p-1 p-md-2 align-end">
+                                    <TiThMenuOutline size={25} />
                                 </CustomButton>
                             </Nav.Item>
                         </div>
@@ -159,6 +159,13 @@ export const Header = () => {
                             </Link>
                         </Nav.Item>
                     ))}
+                    {(authentication?.listRoles || []).includes(ROLE.ADMIN) &&
+                        <Nav.Item key={1000}>
+                            <Link to="/admin/dashboard">
+                                Đi đến Dashboard
+                            </Link>
+                        </Nav.Item>
+                    }
                     {
                         !!(authentication?.userId)
                             ? <Nav.Item key={1000}>

@@ -1,7 +1,17 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { ROLE } from '../../utils/constant';
 const NotFound = () => {
+    const authentication = useSelector((state) => state.auth);
+    const navigate = useNavigate();
+    const handleRedirect = () => {
+        if ((authentication?.listRoles || []).includes(ROLE.ADMIN))
+            navigate("/admin/dashboard")
+        else
+            navigate("/home")
+    }
     return (
         <div className="d-flex align-items-center justify-content-center vh-100">
             <div className="text-center row">
@@ -14,7 +24,7 @@ const NotFound = () => {
                     <p className="lead">
                         The page you’re looking for doesn’t exist.
                     </p>
-                    <Link to="/" className="btn btn-primary">Go Home</Link>
+                    <Link onClick={handleRedirect} className="btn btn-primary">Go Home</Link>
                 </div>
 
             </div>

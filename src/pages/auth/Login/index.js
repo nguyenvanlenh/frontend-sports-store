@@ -1,5 +1,6 @@
 import React from "react";
 import * as Yup from "yup";
+import ReCAPTCHA from "react-google-recaptcha";
 import LogoGithub from "../../../data/img/logo/logoGitBlack.png"
 import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 import { OAuthFBConfig, OAuthGGConfig, OAuthGHConfig } from "../../../configurations/configuration";
@@ -15,6 +16,17 @@ import { saveAuthentication } from "../../../redux/authSlice";
 
 const btnLoginStyle = {
     backgroundColor: "#d81f19"
+};
+const recaptchaStyle = {
+    width: "100%",
+    maxWidth: "300px",
+};
+
+const iframeStyle = {
+    transform: "scale(0.8)",
+    transformOrigin: "0 0",
+    width: "125%",
+    height: "auto",
 };
 const validationSchema = Yup.object({
     username: Yup.string()
@@ -34,6 +46,7 @@ export const Login = () => {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
     const [showPassword, setShowPassword] = React.useState(false);
+    const [recaptchaToken, setRecaptchaToken] = React.useState("");
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
@@ -86,8 +99,17 @@ export const Login = () => {
         onSubmit: async (values) => {
             setLoading(true);
             setError("");
+            if (!recaptchaToken) {
+                setError("Vui lòng xác minh reCAPTCHA");
+                setLoading(false);
+                return;
+            }
+            const data = {
+                ...values,
+                recaptchaToken: recaptchaToken,
+            };
             try {
-                const response = await authService.login(values);
+                const response = await authService.login(data);
                 setLogin(response?.data)
                 dispatch(saveAuthentication(response?.data));
                 if (response?.data.listRoles.includes(ROLE.ADMIN)) {
@@ -105,6 +127,8 @@ export const Login = () => {
                     setError("Tài khoản của bạn đã bị khóa, vui lòng liên hệ quản trị viên qua email  adminsporter@gmail.com để biết thêm thông tin.");
                 else
                     setError("Đăng nhập không thành công. Vui lòng kiểm tra thông tin đăng nhập và thử lại.");
+                setRecaptchaToken("");
+                window.grecaptcha.reset();
             } finally {
                 setLoading(false);
             }
@@ -165,6 +189,14 @@ export const Login = () => {
 
                                 </div>
                             </Form.Group>
+                            <div style={recaptchaStyle}>
+                                <ReCAPTCHA
+                                    sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
+                                    onChange={(token) => setRecaptchaToken(token)}
+                                    onExpired={() => setRecaptchaToken("")}
+                                    style={iframeStyle}
+                                />
+                            </div>
                             <Button
                                 type="submit"
                                 className="w-100 mb-3"
@@ -175,7 +207,7 @@ export const Login = () => {
                             >
                                 {loading ? "Đang đăng nhập..." : "Đăng nhập"}
                             </Button>
-                            {error && <div className="text-danger text-center mt-3">{error}</div>}
+                            {error && <div className="text-danger text-center my-2">{error}</div>}
                             <div className="d-flex justify-content-between">
                                 <Link to={"/forgot-password"} className="text-muted">
                                     Quên mật khẩu?

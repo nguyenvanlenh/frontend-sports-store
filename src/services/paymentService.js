@@ -33,5 +33,11 @@ export const paymentService = {
             const url = `${BASE_URL}/paypal`;
             return httpRequest.post(url, paymentRequest)
         }
+    },
+    vnPay: {
+        pay: (vnPayPaymentRequest) => {
+            const url = `${BASE_URL}/vn-pay`;
+            return httpRequest.post(url, vnPayPaymentRequest)
+        }
     }
 }

@@ -26,6 +26,7 @@ import {
 } from "../../../../redux/orderSlice";
 import { useClearOrder } from "../../../../hooks/useClearOrder";
 import { selectProductsSelected } from "../../../../redux/orderSelector";
+import { vnPayPaymentRequest } from "../../../../models/vnPayPaymentRequest";
 const validationSchema = Yup.object({
     fullName: Yup.string().required("Họ và tên không được để trống"),
     email: Yup.string().email("Email không hợp lệ").required("Email không được để trống"),
@@ -148,16 +149,32 @@ export const ShippingInfo = () => {
                     paymentStatus: paymentStatus.PENDING.key
                 });
                 setProgress("Đang thanh toán")
-                if (selectedMethod !== paymentMethod.PAYPAL.key) {
+                if (selectedMethod === paymentMethod.VNPAY.key) {
+                    const vnPayRequest = vnPayPaymentRequest({
+                        orderId: orderResult.data.id,
+                        amount: orderResult.data.totalPrice,
+                        paymentFee: orderResult.data.deliveryFee
+                    })
+
+                    const vnUrl = await paymentService.vnPay.pay(vnPayRequest);
+                    console.log(vnUrl.data.url);
+
+                    window.location.href = vnUrl.data.url;
+                    return;
+                }
+                if (selectedMethod === paymentMethod.PAYPAL.key) {
+                    const paypalUrl = await paymentService.paypal.createPayment(payment);
+                    window.location.href = `${paypalUrl.data.url}/`;
+                    return;
+                }
+                if (selectedMethod !== paymentMethod.PAYPAL.key ||
+                    selectedMethod !== paymentMethod.VNPAY.key) {
                     await paymentService.createPayment(payment);
                     clearOrder();
                     successAlert("Thành công", "Tạo đơn hàng thành công", 2000,
                         () => navigate("/profile/order-history"));
                     return;
                 }
-                const paypalUrl = await paymentService.paypal.createPayment(payment);
-
-                window.location.href = `${paypalUrl.data.url}/`;
 
             } catch (error) {
                 clearOrder();

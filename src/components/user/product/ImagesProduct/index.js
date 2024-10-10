@@ -10,7 +10,7 @@ const listItemStyle = {
 };
 
 const imageStyle = {
-    height: "150px",
+    height: "160px",
     width: "100px",
     objectFit: "cover",
     cursor: "pointer",
@@ -71,15 +71,15 @@ export const ImagesProduct = ({ listImages }) => {
                             <Carousel.Item key={image.id}>
                                 <a
                                     href={image.path}
-                                    data-pswp-width="1100"
-                                    data-pswp-height="800"
+                                    data-pswp-width="1000"
+                                    data-pswp-height="1000"
                                     target="_blank"
                                     rel="noreferrer"
                                 >
                                     <Image
                                         src={image.path}
                                         style={carouselImageStyle}
-                                        className="d-block w-100"
+                                        className="d-block"
                                         alt={`Image ${image.id}`}
                                     />
                                 </a>

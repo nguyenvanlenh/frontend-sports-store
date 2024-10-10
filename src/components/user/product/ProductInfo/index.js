@@ -91,10 +91,10 @@ const Info = ({ product }) => {
                 {
                     (product.salePrice !== product.regularPrice) &&
                     <strong>
-                        <del className="text-secondary fs-6 me-3">{formatCurrencyVN(product.regularPrice)} </del>
+                        <del className="text-secondary fs-6 me-3 text-nowrap">{formatCurrencyVN(product.regularPrice)} </del>
                     </strong>
                 }
-                <strong className="text-danger fs-5">
+                <strong className="text-danger fs-5 text-nowrap">
                     {formatCurrencyVN(product.salePrice)}
                 </strong>
             </div>

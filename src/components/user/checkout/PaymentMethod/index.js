@@ -58,6 +58,20 @@ export const PaymentMethod = ({ selectedMethod, onMethodChange }) => (
                 Bạn sẽ được chuyển hướng đến PayPal để hoàn tất thanh toán một cách an toàn. Sau khi giao dịch thành công, bạn sẽ được chuyển trở lại trang web của chúng tôi để xác nhận đơn hàng. Vui lòng đảm bảo tất cả thông tin thanh toán chính xác trước khi tiếp tục.
             </PaymentMethodInfo>
         )}
+        <Form.Check
+            type="radio"
+            id={paymentMethod.VNPAY.key}
+            label="Thanh toán với VNPay"
+            name="paymentMethod"
+            className="p-3 pb-3"
+            checked={selectedMethod === paymentMethod.VNPAY.key}
+            onChange={onMethodChange}
+        />
+        {selectedMethod === paymentMethod.VNPAY.key && (
+            <PaymentMethodInfo>
+                Bạn sẽ được chuyển hướng đến VNPay để hoàn tất thanh toán một cách an toàn. Sau khi giao dịch thành công, bạn sẽ được chuyển trở lại trang web của chúng tôi để xác nhận đơn hàng. Vui lòng đảm bảo tất cả thông tin thanh toán chính xác trước khi tiếp tục.
+            </PaymentMethodInfo>
+        )}
     </div>
 );
 

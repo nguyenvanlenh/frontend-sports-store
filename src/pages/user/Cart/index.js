@@ -1,16 +1,17 @@
-import { Col, Row } from "react-bootstrap"
+import { selectProductsSelected } from "../../../redux/orderSelector";
 import { CartItem } from "../../../components/user/cart/CartItem"
 import { CartPrice } from "../../../components/user/cart/CartPrice";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { FaReply, FaShoppingCart } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { confirmAlert } from "../../../utils/sweetAlert";
-import { v4 as uuidv4 } from "uuid";
+import { clearProductsSelected } from "../../../redux/orderSlice";
+import { removeListCartItemThunk } from "../../../redux/cartThunks";
 import { CustomButton } from "../../../components/common/Button";
 import { useClearOrder } from "../../../hooks/useClearOrder";
-import { selectProductsSelected } from "../../../redux/orderSelector";
-import { clearProductsSelected } from "../../../redux/orderSlice";
+import { confirmAlert } from "../../../utils/sweetAlert";
+import { FaReply, FaShoppingCart } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { Col, Row } from "react-bootstrap"
+import { Link } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import React from "react";
 const tableStyle = {
     borderCollapse: 'collapse',
     width: '100%',
@@ -19,25 +20,27 @@ const cartStyle = {
     boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
 }
 export const Cart = () => {
-
-    const dispatch = useDispatch();
-    const cartItems = useSelector(state => state.cart);
+    const { cartItems } = useSelector(state => state.cart);
     const productsSelected = useSelector(selectProductsSelected);
     const clearOrder = useClearOrder(productsSelected);
-    React.useEffect(() => { dispatch(clearProductsSelected()) }, [dispatch]);
 
+    const dispatch = useDispatch();
     const totalPrice = React.useMemo(() => {
         return productsSelected?.reduce((total, item) => {
             return total + item.quantity * item.product.salePrice;
         }, 0);
     }, [productsSelected]);
 
+    React.useEffect(() => { dispatch(clearProductsSelected()) }, [dispatch]);
+
     const handleDelete = () => {
         if (!!productsSelected.length)
-            confirmAlert(() => clearOrder(),
+            confirmAlert(() => {
+                dispatch(removeListCartItemThunk(productsSelected))
+                clearOrder()
+            },
                 "Bạn có muốn xóa sản phẩm đã chọn không ?"
             )
-
     }
     return (
         <Row style={cartStyle}>
@@ -53,7 +56,7 @@ export const Cart = () => {
             </div>
             <hr />
             {
-                cartItems.length
+                (cartItems || []).length
                     ?
                     <>
                         <Col sm={12} md={9}>

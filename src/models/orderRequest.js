@@ -8,7 +8,7 @@ export const orderRequest = ({
     orderStatus,
     deliveryStatus,
     deliveryMethod,
-    couponCode = "",
+    coupondCode = "",
     rejectReason = "",
     listOrderDetails = [],
 } = {}) => ({
@@ -21,7 +21,7 @@ export const orderRequest = ({
     orderStatus,
     deliveryStatus,
     deliveryMethod,
-    couponCode,
+    coupondCode,
     rejectReason,
     listOrderDetails,
 });

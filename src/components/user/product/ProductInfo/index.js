@@ -1,16 +1,17 @@
 import React from "react"
+import { useNavigate } from "react-router-dom";
+import { CustomButton } from "../../../common/Button"
+import { useDispatch, useSelector } from "react-redux"
+import { formatCurrencyVN } from "../../../../utils/common"
+import { confirmAlert } from "../../../../utils/sweetAlert";
+import { setOneProductToOrder } from "../../../../redux/orderSlice";
+import { QuantityAdjuster } from "../../../common/QuantityAdjuster"
+import { MAX_PRODUCTS_PER_PURCHASE } from "../../../../utils/constant";
+import { addCartItemThunk } from "../../../../redux/cartThunks";
+import { cartRequest } from "../../../../models/cartRequest";
 import { ListSizes } from "../ListSizes"
 import { Promotion } from "../Promotion"
-import { QuantityAdjuster } from "../../../common/QuantityAdjuster"
 import { v4 as uuidv4 } from "uuid";
-import { useDispatch, useSelector } from "react-redux"
-import { addProductToCart } from "../../../../redux/cartSlice"
-import { formatCurrencyVN } from "../../../../utils/common"
-import { CustomButton } from "../../../common/Button"
-import { setOneProductToOrder } from "../../../../redux/orderSlice";
-import { useNavigate } from "react-router-dom";
-import { confirmAlert } from "../../../../utils/sweetAlert";
-import { MAX_PRODUCTS_PER_PURCHASE } from "../../../../utils/constant";
 
 
 export const ProductInfo = ({ product }) => {
@@ -18,23 +19,30 @@ export const ProductInfo = ({ product }) => {
     const navigate = useNavigate();
 
     const isLogin = useSelector(state => state.auth)?.userId;
-
+    const currentCartItems = useSelector(state => state.cart.cartItems);
     const [quantitySelected, setQuantitySelected] = React.useState(1);
     const [sizeSelected, setSizeSelected] = React.useState(product.listSize[0]);
 
     const handleAddCart = () => {
-        dispatch(addProductToCart({
-            id: uuidv4(),
-            productId: product.id,
+        const cartItem = cartRequest({
             size: sizeSelected,
             quantity: quantitySelected,
             product: product
-        }));
+        });
+        if (!isLogin) {
+            confirmAlert(() => navigate("/login", { state: { from: `/product/${product.id}` } }), "Bạn phải đăng nhập trước khi thêm sản phẩm vào giỏ hàng")
+            return;
+        }
+
+        dispatch(
+            addCartItemThunk({
+                cartItem,
+                currentCartItems
+            })
+        );
     };
 
     const handleBuyNow = () => {
-
-
         dispatch(setOneProductToOrder([{
             id: uuidv4(),
             productId: product.id,

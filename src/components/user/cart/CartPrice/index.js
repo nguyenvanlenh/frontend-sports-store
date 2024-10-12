@@ -9,16 +9,16 @@ const buttonCheckout = {
     backgroundColor: "#d81f19",
 }
 export const CartPrice = ({ totalPrice }) => {
+    const navigate = useNavigate();
+
     const productsSelected = useSelector(selectProductsSelected);
     const isLogin = useSelector(state => state.auth)?.userId;
-    const navigate = useNavigate();
 
     const handleContinueCheckout = () => {
         if (!productsSelected?.length) {
             confirmAlert(() => "", "Vui lòng chọn sản phẩm cần mua!")
             return;
         }
-
         if (!isLogin) {
             confirmAlert(() => navigate("/login", { state: { from: "/cart" } }), "Bạn phải đăng nhập trước khi thanh toán")
             return;

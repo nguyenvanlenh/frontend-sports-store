@@ -1,9 +1,9 @@
 import axios from "axios";
 import React from "react";
-import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
-import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useFormik } from "formik";
 import { PaymentMethod } from "../PaymentMethod";
+import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import {
     COUNTRY,
     deliveryMethod,
@@ -51,11 +51,11 @@ export const ShippingInfo = () => {
 
     const productsSelected = useSelector(selectProductsSelected);
     const clearOrder = useClearOrder(productsSelected);
+
     React.useEffect(() => {
         if (!productsSelected.length)
             navigate("/cart")
     }, [navigate, productsSelected])
-
 
     const totalPrice = React.useMemo(() => {
         return productsSelected.reduce((acc, item) => {
@@ -118,7 +118,7 @@ export const ShippingInfo = () => {
             });
             const orderDetails = productsSelected?.map((item) => {
                 return orderDetailRequest({
-                    idProduct: item.productId,
+                    idProduct: item.product.id,
                     quantity: item.quantity,
                     price: item.quantity * item.product.salePrice,
                     size: item.size.id,

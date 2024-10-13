@@ -15,8 +15,7 @@ const badgeStyle = {
 };
 
 export const IconCart = ({ size }) => {
-    const cartItemsCount = useSelector((state) => state.cart.length);
-
+    const cartItemsCount = (useSelector((state) => state.cart.cartItems) || []).length;
     return (
         <div style={iconContainerStyle}>
             <FaShoppingBag size={size} />

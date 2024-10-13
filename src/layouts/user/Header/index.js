@@ -1,35 +1,46 @@
 import React from "react";
 import { Button, Container, Dropdown, Image, Nav } from "react-bootstrap";
-import UserImage from "../../../data/img/user_icon.webp";
-import "./styles.scss";
-import { FaSearch, FaUser, FaSearchMinus } from "react-icons/fa";
-import { TiThMenuOutline } from "react-icons/ti";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { IconCart } from "../../../components/user/cart/IconCart";
 import { OffcanvasComponent } from "../../../components/common/Offcanvas";
 import { SearchBar } from "../../../components/user/search/SearchBar";
-import { useDispatch, useSelector } from "react-redux";
-import { clearSearch } from "../../../redux/searchSlice";
-import { logout } from "../../../redux/authSlice";
-import Logo from "../../../data/img/logo/main_logo.png"
-import { ROLE } from "../../../utils/constant";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { IconCart } from "../../../components/user/cart/IconCart";
+import { FaSearch, FaUser, FaSearchMinus } from "react-icons/fa";
 import { CustomButton } from "../../../components/common/Button";
+import { getCartByUserThunk } from "../../../redux/cartThunks";
+import { clearSearch } from "../../../redux/searchSlice";
+import UserImage from "../../../data/img/user_icon.webp";
+import Logo from "../../../data/img/logo/main_logo.png"
+import { useDispatch, useSelector } from "react-redux";
+import { clearCart } from "../../../redux/cartSlice";
+import { logout } from "../../../redux/authSlice";
+import { TiThMenuOutline } from "react-icons/ti";
+import { ROLE } from "../../../utils/constant";
+import "./styles.scss";
+import { confirmAlert } from "../../../utils/sweetAlert";
 
 const active = {
     backgroundColor: "rgba(245, 245, 245,.2)",
 }
 
+const menuItems = [
+    { path: "/home", label: "Trang chủ" },
+    { path: "#", label: "Giảm giá" },
+    { path: "/list-products", label: "Sản phẩm" },
+    { path: "#", label: "Blog" },
+    { path: "#", label: "Sự kiện" }
+];
+const SIZE_ICON_HEADER = 21;
 export const Header = () => {
-    const authentication = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [menuOpen, setMenuOpen] = React.useState(false);
-    const [searchOpen, setSearchOpen] = React.useState(false);
-    const searchInputRef = React.useRef(null);
-    const SIZE_ICON_HEADER = 21;
+    const authentication = useSelector((state) => state.auth);
+
     const location = useLocation();
     const pathName = location.pathname;
 
+    const [menuOpen, setMenuOpen] = React.useState(false);
+    const [searchOpen, setSearchOpen] = React.useState(false);
+    const searchInputRef = React.useRef(null);
 
     const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -43,18 +54,27 @@ export const Header = () => {
             searchInputRef.current.focus();
     }, [searchOpen]);
 
-    const menuItems = [
-        { path: "/home", label: "Trang chủ" },
-        { path: "#", label: "Giảm giá" },
-        { path: "/list-products", label: "Sản phẩm" },
-        { path: "#", label: "Blog" },
-        { path: "#", label: "Sự kiện" }
-    ];
+    React.useEffect(() => {
+        const isLogin = !!(authentication?.userId);
+        if (isLogin)
+            dispatch(getCartByUserThunk())
+    }, [authentication.userId, dispatch]);
+
     const handleLogout = () => {
         dispatch(logout());
+        dispatch(clearCart());
         localStorage.clear();
         navigate("/login")
         window.history.pushState(null, null, "/login");
+    }
+
+    const handleClickCart = () => {
+        const isLogin = !!(authentication?.userId);
+        if (!isLogin) {
+            confirmAlert(() => navigate("/login", { state: { from: "/cart" } }), "Vui lòng đăng nhập trước khi xem giỏ hàng")
+            return;
+        }
+        navigate("/cart")
     }
 
     return (
@@ -95,10 +115,9 @@ export const Header = () => {
                             </Nav.Item>
                             {!searchOpen &&
                                 <Nav.Item>
-                                    <Button variant="link" className="p-1 p-md-2">
-                                        <Link to="/cart">
-                                            <IconCart size={SIZE_ICON_HEADER} />
-                                        </Link>
+                                    <Button variant="link" className="p-1 p-md-2"
+                                        onClick={handleClickCart}>
+                                        <IconCart size={SIZE_ICON_HEADER} />
                                     </Button>
                                 </Nav.Item>}
                             <Nav.Item className="d-none d-md-block">

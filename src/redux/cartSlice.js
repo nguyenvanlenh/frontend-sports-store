@@ -1,54 +1,99 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CART_LS } from "../utils/constant";
-const initialState = JSON.parse(localStorage.getItem(CART_LS)) || [];
+import {
+    addCartItemThunk,
+    removeCartItemThunk,
+    updateProductQuantityCartItemThunk,
+    getCartByUserThunk,
+    deleteCartByUserThunk,
+    removeListCartItemThunk
+} from "./cartThunks";
+
+const initialState = {
+    cartItems: [],
+    status: 'idle',
+    error: null
+};
+
 export const cartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        addProductToCart: (state, action) => {
-            const exists = state.some(item =>
-                item.productId === action.payload.productId
-                && item.size.id === action.payload.size.id);
-
-            if (!exists) {
-                state.push(action.payload);
-            }
-        },
-        removeProductFromCart: (state, action) => {
-            const { id } = action.payload;
-            return state.filter(item =>
-                !(item.id === id));
-        },
-        updateProductQuantityInCart: (state, action) => {
-            const { id, quantity } = action.payload;
-            return state
-                .map(item => {
-                    if (item.id === id)
-                        return {
-                            ...item,
-                            quantity: quantity
-                        }
-                    return item;
-                })
-        },
-        removeCartItemByListSelect: (state, action) => {
-            const listProductSelected = action.payload;
-            return state.filter(item =>
-                !listProductSelected.some(
-                    pr =>
-                        pr.product.id === item.product.id &&
-                        pr.size.id === item.size.id
-                )
-            );
+        clearCart: (state) => {
+            state.cartItems = [];
         }
-        ,
-        clearCart: () => []
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(addCartItemThunk.fulfilled, (state, action) => {
+                state.cartItems.push(action.payload);
+                state.status = 'succeeded';
+            })
+            .addCase(addCartItemThunk.rejected, (state, action) => {
+                state.error = action.payload;
+                state.status = 'failed';
+            })
+
+            .addCase(removeCartItemThunk.fulfilled, (state, action) => {
+                state.cartItems = state.cartItems.filter(item => item.id !== action.payload
+                );
+                state.status = 'succeeded';
+            })
+            .addCase(removeCartItemThunk.rejected, (state, action) => {
+                state.error = action.payload;
+                state.status = 'failed';
+            })
+
+            .addCase(removeListCartItemThunk.fulfilled, (state, action) => {
+                const listCartItemIdDelete = action.payload;
+                state.cartItems = (state.cartItems || []).filter(item =>
+                    !listCartItemIdDelete.some(
+                        pr => pr === item.id
+                    )
+                );
+                state.status = 'succeeded';
+            })
+            .addCase(removeListCartItemThunk.rejected, (state, action) => {
+                state.error = action.payload;
+                state.status = 'failed';
+            })
+
+            .addCase(updateProductQuantityCartItemThunk.fulfilled, (state, action) => {
+                const { cartItemId, quantity } = action.payload;
+                const cartItems = state.cartItems.map(
+                    item => {
+                        if (item.id === cartItemId)
+                            return {
+                                ...item,
+                                quantity: quantity
+                            }
+                        return item;
+                    });
+                state.cartItems = cartItems
+                state.status = 'succeeded';
+            })
+            .addCase(updateProductQuantityCartItemThunk.rejected, (state, action) => {
+                state.error = action.payload;
+                state.status = 'failed';
+            })
+
+            .addCase(getCartByUserThunk.fulfilled, (state, action) => {
+                state.cartItems = action.payload;
+                state.status = 'succeeded';
+            })
+            .addCase(getCartByUserThunk.rejected, (state, action) => {
+                state.error = action.payload;
+                state.status = 'failed';
+            })
+
+            .addCase(deleteCartByUserThunk.fulfilled, (state) => {
+                state.cartItems = [];
+                state.status = 'succeeded';
+            })
+            .addCase(deleteCartByUserThunk.rejected, (state, action) => {
+                state.error = action.payload;
+                state.status = 'failed';
+            });
     }
-})
-export const {
-    addProductToCart,
-    removeProductFromCart,
-    updateProductQuantityInCart,
-    removeCartItemByListSelect,
-    clearCart } = cartSlice.actions
-export default cartSlice.reducer
+});
+export const { clearCart } = cartSlice.actions
+export default cartSlice.reducer;
